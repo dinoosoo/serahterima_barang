@@ -1,0 +1,31 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Posisikan elemen di tengah vertikal */
+    align-items: flex-start; /* Posisikan elemen di kiri */
+    min-height: 100vh;
+    margin: 0;
+    padding-left: 20px; /* Sesuaikan padding jika diperlukan */
+}
+
+h1, p {
+    margin: 0; /* Menghapus margin default */
+}
+h1 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+/* img.img-fluid {
+    max-height: 200px; /* Atur tinggi maksimum gambar 
+} */
+
+/* div.d-flex {
+    padding: 20px; /* Tambahkan padding jika diperlukan 
+} */
+.col-md-4 {
+    display: flex;
+    justify-content: flex-end;
+}
+.img-fluid {
+    max-width: 100%;
+  }
+  
