@@ -19,6 +19,11 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .centered-cell {
+            text-align: center;
+        }
+    </style>
 
 </head>
 
@@ -215,7 +220,7 @@
                                     <div class="font-weight-bold">
                                         <div class="text-truncate">Hi there! I am wondering if you can help me with a
                                             problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                        <div class="small text-gray-500">Emily Fowler • 58m</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
@@ -227,7 +232,7 @@
                                     <div>
                                         <div class="text-truncate">I have the photos that you ordered last month, how
                                             would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
+                                        <div class="small text-gray-500">Jae Chun • 1d</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
@@ -239,7 +244,7 @@
                                     <div>
                                         <div class="text-truncate">Last month's report looks great, I am very happy with
                                             the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+                                        <div class="small text-gray-500">Morgan Alvarez • 2d</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
@@ -251,7 +256,7 @@
                                     <div>
                                         <div class="text-truncate">Am I a good boy? The reason I ask is because someone
                                             told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                                        <div class="small text-gray-500">Chicken the Dog • 2w</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
@@ -304,7 +309,7 @@
         <div class="container-fluid">
           <div class="tab-content">
             <!-- Master Ruangan -->
-            <div class="tab-pane fade show active" id="master-ruangan">
+            <div class="tab-pane fade show active" id="master-jenis">
               <div class="row">
                 <div class="col-md-6">
                   <div class="card">
@@ -318,10 +323,45 @@
                             <tr>
                               <th>ID</th>
                               <th>Jenis</th>
+                              <th colspan=2 class="centered-cell">Aksi</th>
                             </tr>
                           </thead>
-                          <tbody id="ruangan-table-body">
-                            <!-- Data will be added here -->
+                          <tbody id="jenis-table-body">
+                            <!-- Data will be added here by PHP -->
+                            <?php
+                            // Koneksi ke database
+                            $conn = new mysqli("localhost", "root", "", "masterjenis");
+
+                            // Periksa koneksi
+                            if ($conn->connect_error) {
+                                die("Koneksi gagal: " . $conn->connect_error);
+                            }
+
+                            // Ambil data dari tabel tjenis
+                            $sql = "SELECT id, jenis FROM tjenis";
+                            $result = $conn->query($sql);
+
+                            // Loop melalui hasil dan buat baris tabel
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>
+                                    <td>" . $row["id"] . "</td>
+                                    <td>" . $row["jenis"] . "</td>
+                                    <td>
+                                        <div class='d-flex justify-content-center'>
+                                        <a href='master jenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
+                                        <a href='masterjenis/hapus.php?id={$row['id']}' class='btn btn-danger'>Hapus</a>
+                                        </div>
+                                    </td>
+                                    </tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='2'>No data</td></tr>";
+                            }
+
+                            // Tutup koneksi
+                            $conn->close();
+                            ?>
                           </tbody>
                         </table>
                       </div>
@@ -334,13 +374,35 @@
                       <h3 class="card-title">Form Jenis</h3>
                     </div>
                     <div class="card-body">
-                      <form id="main-form">
+                        <?php
+                            // Koneksi ke database
+                            $conn = new mysqli("localhost", "root", "", "masterjenis");
+
+                            // Periksa conn
+                            if ($conn->connect_error) {
+                                die("Koneksi gagal: " . $conn->connect_error);
+                            };
+                            
+                            $edit = isset($_GET['edit']) ? $_GET['edit'] : 0;
+                            $row = array('id' => '', 'jenis' => '');
+                            if ($edit) {
+                                $id = $_GET['id'];
+                                $sql = "SELECT * FROM tjenis WHERE id=$id";
+                                $result = $conn->query($sql);
+                                if ($result && $result->num_rows > 0) {
+                                    $row = $result->fetch_assoc();
+                                }
+                            }
+                        ?>
+                    <form id="main-form" method="post" action="<?php echo $edit == 0 ? 'masterjenis/tambah.php' : 'masterjenis/edit.php?id=' . htmlspecialchars($row['id']); ?>">
                         <div class="form-group">
-                          <label for="ruangan">Jenis</label>
-                          <input type="text" class="form-control" id="ruangan" name="ruangan" required>
+                            <label for="jenis">Jenis</label>
+                            <input type="text" class="form-control" id="jenis" name="jenis" required
+                            <?php echo $edit > 0 ? 'value="' . htmlspecialchars($row['jenis']) . '"' : 'placeholder=""'; ?>>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Tambah</button>
-                      </form>
+                        <button type="button" class="btn btn-danger btn-block" onclick="clearForm()">Bersihkan</button>
+                    </form>
                     </div>
                   </div>
                 </div>
@@ -350,7 +412,6 @@
         </div>
       </div>
     </div>
-
 
                 </div>
                 <!-- /.container-fluid -->
@@ -409,6 +470,13 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
+    <script>
+        function clearForm() {
+            document.getElementById("main-form").reset();
+            window.location.href = 'master jenis.php';
+        }
+    </script>
 </body>
 
 </html>
+
