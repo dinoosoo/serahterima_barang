@@ -66,12 +66,17 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="master ruangan">Master Ruangan</a>
                         <a class="collapse-item" href="master jenis.php">Master Jenis</a>
-                        <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a>
+                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
                         
                     </div>
                 </div>
             </li>
-
+            <li class="nav-item">
+    <a class="nav-link" href="tampilkan_data.php">
+        <i class="fas fa-fw fa-table"></i>
+        <span>Tampilkan Data</span>
+    </a>
+</li>
             <!-- Nav Item - Utilities Collapse Menu -->
         
 

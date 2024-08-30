@@ -330,7 +330,7 @@
                             <!-- Data will be added here by PHP -->
                             <?php
                             // Koneksi ke database
-                            $conn = new mysqli("localhost", "root", "", "masterjenis");
+                            $conn = new mysqli("localhost", "root", "", "masterruangan");
 
                             // Periksa koneksi
                             if ($conn->connect_error) {
@@ -376,7 +376,7 @@
                     <div class="card-body">
                         <?php
                             // Koneksi ke database
-                            $conn = new mysqli("localhost", "root", "", "masterjenis");
+                            $conn = new mysqli("localhost", "root", "", "masterruangan");
 
                             // Periksa conn
                             if ($conn->connect_error) {
