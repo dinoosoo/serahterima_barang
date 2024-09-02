@@ -23,13 +23,17 @@
     <!-- Navbar (Dropdown Button) -->
     <div class="container-fluid">
         <div class="d-flex justify-content-end py-2">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Master
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Master Ruangan</a></li>
-                    <li><a class="dropdown-item" href="#">Master Jenis</a></li>
+            <div>
+            <a class="nav-link d-flex align-items-center" href="halaman-lain.html" role="button">
+    <span class="mr-1 d-none d-lg-inline text-light small">Login</span>
+    <img class="img-profile rounded-circle ms-2" src="img/avatar3.jpg" alt="User Avatar" style="width: 40px; height: 37px;">
+</a>
+
+                <!-- <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Logout</a></li> -->
                 </ul>
             </div>
         </div>
@@ -50,16 +54,19 @@
         <!-- Cards Section -->
         <div class="row">
             <div class="col-xl-3 col-md-2 mb-4">
-                <div class="card border-left-primary shadow h-100 py-1  ">
+                <div class="card border-left-primary shadow h-100 py-1">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Opsi 1
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-1000">
-                                    $erah Terima <br> Barang
-                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray -1000">
+    <a href="form tabel.php" class="text-decoration-none text-gray-1000">
+        $erah Terima <br> Barang
+    </a>
+</div>
+
                             </div>
                         </div>
                     </div>
@@ -83,4 +90,3 @@
 </body>
 
 </html>
-        
