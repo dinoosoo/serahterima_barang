@@ -1,79 +1,124 @@
+<?php
+session_start();
+
+
+
+require 'koneksi.php';
+
+if( isset($_POST["login"])) {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+
+    $result = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username'");
+
+    if(mysqli_num_rows($result) === 1){
+
+        $row = mysqli_fetch_assoc($result);
+        if (password_verify($password, $row["password"])){
+            
+            $_SESSION["login"] = true;
+
+            header("Location: index.php");
+            exit;
+        }
+    }
+
+    $error = true;
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Halaman Utama</title>
+    <title>SB Admin 2 - Login</title>
 
     <!-- Custom fonts for this template-->
-    <link rel="stylesheet" href="css/style.css">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        .text-center {
+            margin-bottom: 40px; /* Atur jarak di bawah teks "Welcome Back" */
+        }
+
+        .form-group {
+            margin-bottom: 30px; /* Atur jarak antara input fields (username dan password) */
+        }
+
+        .btn-user {
+            margin-top: 25px; /* Atur jarak di atas tombol login */
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-primary">
 
-    <!-- Navbar (Dropdown Button) -->
-    <div class="container-fluid">
-        <div class="d-flex justify-content-end py-2">
-            <div>
-            <a class="nav-link d-flex align-items-center" href="halaman-lain.html" role="button">
-    <span class="mr-1 d-none d-lg-inline text-light small">Login</span>
-    <img class="img-profile rounded-circle ms-2" src="img/avatar3.jpg" alt="User Avatar" style="width: 40px; height: 37px;">
-</a>
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
 
-                <!-- <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Logout</a></li> -->
-                </ul>
-            </div>
-        </div>
-    </div>
+            <div class="col-xl-10 col-lg-12 col-md-9">
 
-    <!-- Header Section -->
-    <div class="container my-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="text-light">
-                <h1 class="display-5">SERVICE KATALOG</h1>
-                <p><em>Instalasi Informasi & Teknologi <br> UOBK RSUD SYAMRABU BANGKALAN</em></p>
-            </div>
-            <div class="col-md-5">
-                <img src="img/hero-img.png" class="img-fluid">
-            </div>
-        </div>
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        
+                        <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                            <img src="img/syamrabu.jpg" alt="Login Image" 
+                            style="width: 100%; height: auto; display: block; margin: 0 auto;
+                            position: relative; top: 15%; border-radius: 10px; transform: translateX(40px);">
+                        </div>
 
-        <!-- Cards Section -->
-        <div class="row">
-            <div class="col-xl-3 col-md-2 mb-4">
-                <div class="card border-left-primary shadow h-100 py-1">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Opsi 1
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    </div>
+                                    <form class="user" action="" method="post">
+                                        <div class="form-group">
+                                            <label for="username" style="color: black;">Username</label>
+                                            <input type="text" class="form-control form-control-user"
+                                                id="username" name="username" aria-describedby="emailHelp"
+                                                placeholder="Username">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password" style="color: black;">Password</label>
+                                            <input type="password" class="form-control form-control-user"
+                                                id="password" name="password" placeholder="Password">
+                                        </div>
+                                        <hr>
+                                        <?php if( isset($error)) : ?>
+                                            <p style="color: red; font-style: italic; font-size: 14px; align: center;">username atau password salah</p>
+                                        <?php endif;?>
+                                        <button type="submit" name="login" href="index.html" class="btn btn-primary btn-user btn-block">
+                                            Login
+                                        </button>
+                                    </form>
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray -1000">
-    <a href="form tabel.php" class="text-decoration-none text-gray-1000">
-        $erah Terima <br> Barang
-    </a>
-</div>
-
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
-            <!-- Additional Cards can be added here -->
+
         </div>
+
     </div>
 
     <!-- Bootstrap core JavaScript-->
@@ -85,7 +130,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </body>
 
