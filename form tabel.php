@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['signature'])) {
         $signature = $_POST['signature'];
@@ -29,6 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
+=======
+session_start();
+
+if(!isset($_SESSION["login"])){
+    header("Location: login.php");
+    exit;
+}
+?>
+>>>>>>> 0390532d5c2fb091ec9fecbd116f70bbada7a741
 <!DOCTYPE html>
 <html lang="en">
 
