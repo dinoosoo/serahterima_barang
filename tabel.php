@@ -86,39 +86,41 @@ $result = $conn->query($sql);
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-    <h1 class="h3 mb-4 text-gray-800">Data Periode</h1>
+                <h1 class="h3 mb-4 text-gray-800">Data Periode</h1>
 
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Periode</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            if ($result->num_rows > 0) {
-                $no = 1;
-                while ($row = $result->fetch_assoc()) {
-                    $statusText = $row['status'] === 'open' ? 'Dibuka' : 'Ditutup';
-                    $statusClass = $row['status'] === 'open' ? 'text-success' : 'text-danger';
-                    echo "<tr>";
-                    echo "<td>" . $no++ . "</td>";
-                    echo "<td>" . $row['nama'] . "</td>";
-                    echo "<td class='" . $statusClass . "'>" . $statusText . "</td>";
-                    echo "<td><a href='#' class='btn btn-primary'><i class='fas fa-plus'></i> Add</a></td>";
-                    echo "</tr>";
-                }
-            } else {
-                echo "<tr><td colspan='4' class='text-center'>No data found</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
-
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Periode</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if ($result->num_rows > 0) {
+                            $no = 1;
+                            while ($row = $result->fetch_assoc()) {
+                                $statusText = $row['status'] === 'open' ? 'Dibuka' : 'Ditutup';
+                                $statusClass = $row['status'] === 'open' ? 'text-success' : 'text-danger';
+                                echo "<tr>";
+                                echo "<td>" . $no++ . "</td>";
+                                echo "<td>" . $row['nama'] . "</td>";
+                                echo "<td class='" . $statusClass . "'>" . $statusText . "</td>";
+                                echo "<td>";
+                                echo "<a href='#' class='btn btn-primary'><i class='fas fa-plus'></i> Add</a> ";
+                                echo "<a href='#' class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>";
+                                echo "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='4' class='text-center'>No data found</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
             <!-- End of Main Content -->
 
             <!-- Footer -->
