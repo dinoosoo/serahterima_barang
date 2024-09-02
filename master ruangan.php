@@ -35,7 +35,7 @@
     <div class="sidebar-brand-icon">
         <i class="fas fa-hospital"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">ADMIN SYAMRABU <sup></sup></div>
+    <div class="sidebar-brand-text mx-3">SERVICE KATALOG<sup></sup></div>
 </a>
 
 
@@ -60,7 +60,7 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>INPUT DATA</span>
+                    <span>MASTER</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -74,7 +74,7 @@
             <li class="nav-item">
     <a class="nav-link" href="tampilkan_data.php">
         <i class="fas fa-fw fa-table"></i>
-        <span>Tampilkan Data</span>
+        <span>SERAH TERIMA BARANG</span>
     </a>
 </li>
             <!-- Nav Item - Utilities Collapse Menu -->
@@ -185,7 +185,7 @@
     </div>
 
     <!-- Main content -->
-<div class="content">
+    <div class="content">
   <div class="container-fluid">
     <div class="tab-content">
       <!-- Master Ruangan -->
@@ -230,7 +230,7 @@
                               <td>
                                   <div class='d-flex justify-content-center'>
                                   <a href='master ruangan.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
-                                  <a href='hapus.php?id={$row['id']}' class='btn btn-danger'>Hapus</a>
+                                  <a href='ruanganmaster/hapus.php?id={$row['id']}' class='btn btn-danger'>Hapus</a>
                                   </div>
                               </td>
                               </tr>";
@@ -256,13 +256,13 @@
               <div class="card-body">
                   <?php
                       // Koneksi ke database
-                       $conn = new mysqli("localhost", "root", "", "masterruangan");
+                      $conn = new mysqli("localhost", "root", "", "masterruangan");
 
                       // Periksa koneksi
-                       if ($conn->connect_error) {
+                      if ($conn->connect_error) {
                           die("Koneksi gagal: " . $conn->connect_error);
-                       };
-                      
+                      };
+
                       $edit = isset($_GET['edit']) ? $_GET['edit'] : 0;
                       $row = array('id' => '', 'ruangan' => '');
                       if ($edit) {
@@ -274,25 +274,14 @@
                           }
                       }
                   ?>
-              <form id="main-form" method="post" action="<?php echo $edit == 0 ? 'tambah.php' : 'edit.php?id=' . htmlspecialchars($row['id']); ?>">
+              <form id="main-form" method="post" action="<?php echo $edit == 0 ? 'ruanganmaster/tambah.php' : 'ruanganmaster/edit.php?id=' . htmlspecialchars($row['id']); ?>">
               <div class="form-group">
-    <label for="ruangan">Ruangan</label>
-    <select class="form-control" id="ruangan" name="ruangan" required>
-        <option value="">Pilih Ruangan</option>
-        <option value="Bougenvil" <?php echo $edit > 0 && $row['ruangan'] == 'Bougenvil' ? 'selected' : ''; ?>>Bougenvil</option>
-        <option value="HCU" <?php echo $edit > 0 && $row['ruangan'] == 'HCU' ? 'selected' : ''; ?>>HCU</option>
-        <option value="UGD" <?php echo $edit > 0 && $row['ruangan'] == 'UGD' ? 'selected' : ''; ?>>UGD</option>
-        <option value="Camelia" <?php echo $edit > 0 && $row['ruangan'] == 'Camelia' ? 'selected' : ''; ?>>Camelia</option>
-        <option value="Edelweis" <?php echo $edit > 0 && $row['ruangan'] == 'Edelweis' ? 'selected' : ''; ?>>Edelweis</option>
-        <option value="Flamboyan" <?php echo $edit > 0 && $row['ruangan'] == 'Flamboyan' ? 'selected' : ''; ?>>Flamboyan</option>
-        <option value="Asoka" <?php echo $edit > 0 && $row['ruangan'] == 'Asoka' ? 'selected' : ''; ?>>Asoka</option>
-        <option value="Sakura" <?php echo $edit > 0 && $row['ruangan'] == 'Sakura' ? 'selected' : ''; ?>>Sakura</option>
-        <option value="ICU" <?php echo $edit > 0 && $row['ruangan'] == 'ICU' ? 'selected' : ''; ?>>ICU</option>
-    </select>
-</div>
+                  <label for="ruangan">Ruangan</label>
+                  <input type="text" class="form-control" id="ruangan" name="ruangan" value="<?php echo htmlspecialchars($row['ruangan']); ?>" required>
+              </div>
 
-                  <button type="submit" class="btn btn-primary btn-block">Tambah</button>
-                  <!-- <button type="button" class="btn btn-danger btn-block" onclick="clearForm()">Bersihkan</button> -->
+                  <button type="submit" class="btn btn-primary btn-block"><?php echo $edit == 0 ? 'Tambah' : 'Update'; ?></button>
+                  <button type="button" class="btn btn-danger btn-block" onclick="clearForm()">Bersihkan</button>
               </form>
               </div>
             </div>
@@ -302,6 +291,7 @@
     </div>
   </div>
 </div>
+
 <!-- /.container-fluid -->
 
 </div>

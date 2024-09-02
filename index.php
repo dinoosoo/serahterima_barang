@@ -35,7 +35,7 @@
     <div class="sidebar-brand-icon">
         <i class="fas fa-hospital"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">ADMIN SYAMRABU <sup></sup></div>
+    <div class="sidebar-brand-text mx-3">SERVICE KATALOG<sup></sup></div>
 </a>
 
 
@@ -60,7 +60,7 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>INPUT DATA</span>
+                    <span>MASTER</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
@@ -79,7 +79,7 @@
 <li class="nav-item">
     <a class="nav-link" href="tampilkan_data.php">
         <i class="fas fa-fw fa-table"></i>
-        <span>Tampilkan Data</span>
+        <span>SERAH TERIMA BARANG</span>
     </a>
 </li>
 
@@ -155,7 +155,7 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">SELAMAT DATANG</h1>
-                    <h5>ADMIN SYAMRABU | INSTALASI IT</h5>
+                    <h5>SERVICE KATALOG | INSTALASI IT</h5>
                     <div class="row" >
                     <!-- Earnings (Monthly) Card Example -->
                     <div class="col-xl-3 col-md-6 mb-4">
