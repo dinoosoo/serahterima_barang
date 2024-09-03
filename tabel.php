@@ -24,6 +24,11 @@ if ($conn->connect_error) {
 // Mengambil data dari tabel 'priode'
 $sql = "SELECT id, nama, tanggal_masuk, tanggal_selesai FROM priode";
 $result = $conn->query($sql);
+
+// Mengambil data dari tabel 'priode' yang tanggal keluarnya null atau tidaka ada
+$sql = "SELECT id, nama, tanggal_masuk, tanggal_selesai FROM priode where tanggal_selesai is null";
+$cektombol = $conn->query($sql)->fetch_assoc();
+// print_r($cektombol);
 ?>
 
 <!DOCTYPE html>
@@ -89,12 +94,18 @@ $result = $conn->query($sql);
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Data Periode</h1>
 
+                <?php
+                if($cektombol==null){
+                ?>
                 <!-- Button New -->
                 <div class="d-flex justify-content-end mb-3">
                     <a href="periode.php" class="btn btn-success">
                         <i class="fas fa-plus"></i> New
                     </a>
                 </div>
+                <?php
+                }
+                ?>
 
                 <table class="table table-bordered table-striped">
                     <thead>

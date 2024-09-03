@@ -25,13 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nama_periode = $_POST['nama_periode'];
 
     // Menyimpan data ke dalam tabel 'priode'
-    $sql = "INSERT INTO priode (nama, tanggal_masuk, status) VALUES (?, ?, 'Aktif')";
+    $sql = "INSERT INTO priode (nama, tanggal_masuk) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $nama_periode, $tanggal_mulai);
 
     if ($stmt->execute()) {
         // Redirect ke tabel.php setelah data berhasil disimpan
-        header("Location: tabel.php");
+        header("Location: form tabel.php");
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <form method="POST">
                     <div class="form-group">
                         <label for="tanggal_mulai">Tanggal Mulai:</label>
-                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control" required>
+                        <input type="datetime-local" id="tanggal_mulai" name="tanggal_mulai" class="form-control" required>
                     </div>
 
                     <div class="form-group">
