@@ -1,66 +1,3 @@
-<?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Koneksi ke database
-    $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-    // Cek koneksi
-    if ($conn->connect_error) {
-        die("Koneksi gagal: " . $conn->connect_error);
-    }
-
-    // Memeriksa apakah ada tanda tangan yang dikirim
-    if (isset($_POST['signature'])) {
-        $signature = $_POST['signature'];
-
-        // Menghapus bagian base64 sebelum data sebenarnya
-        $signature = str_replace('data:image/png;base64,', '', $signature);
-        $signature = str_replace(' ', '+', $signature);
-
-        // Dekode string base64
-        $data = base64_decode($signature);
-
-        // Membuat nama file unik untuk gambar tanda tangan
-        $fileName = 'signature_' . uniqid() . '.png';
-        $filePath = 'signatures/' . $fileName;
-
-        // Simpan gambar tanda tangan ke server
-        if (file_put_contents($filePath, $data)) {
-            $tanggal = $_POST['tanggal'];
-            $ruangan = $_POST['ruangan'];
-            $jenis = $_POST['jenis'];
-            $jumlah = $_POST['jumlah'];
-            $keterangan = $_POST['keterangan'];
-
-            // Persiapkan statement SQL untuk memasukkan data ke dalam database
-            $stmt = $conn->prepare("INSERT INTO serah_terima_barang (tanggal, ruangan, jenis, jumlah, keterangan, signature_path) VALUES (?, ?, ?, ?, ?, ?)");
-
-            if (!$stmt) {
-                echo json_encode(['success' => false, 'message' => 'Kesalahan persiapan query: ' . $conn->error]);
-                exit;
-            }
-
-            $stmt->bind_param("ssssss", $tanggal, $ruangan, $jenis, $jumlah, $keterangan, $filePath);
-
-            // Eksekusi statement
-            if ($stmt->execute()) {
-                echo json_encode(['success' => true, 'message' => 'Data berhasil ditambahkan.']);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Error: ' . $stmt->error]);
-            }
-
-            // Menutup statement dan koneksi
-            $stmt->close();
-            $conn->close();
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Gagal menyimpan tanda tangan']);
-        }
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Tidak ada data tanda tangan ditemukan']);
-    }
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Form Serah Terima Barang</title>
+    <title>SB Admin 2 - Formulir Serah Terima Barang</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -80,86 +17,142 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Custom styles -->
     <style>
         #canvasDiv {
             position: relative;
             border: 2px dashed grey;
-            height: 200px; /* Tinggi canvas lebih kecil */
-            width: 100%; /* Lebar penuh */
-        }
-
-        .form-control-user {
-            border-radius: 0 !important; /* Menghilangkan sudut bulat */
-        }
-
-        #canvas {
-            display: block;
-            margin: 0 auto;
-        }
-
-        .btn-custom {
+            height: 200px;
             margin-top: 10px;
+            max-width: 100%;
+        }
+
+        .form-group label {
+            font-weight: bold;
         }
 
         .btn-primary {
-            background-color: #4e73df; /* Warna utama */
-            border-color: #4e73df;
+            background-color: #007bff;
+            border: none;
         }
 
         .btn-primary:hover {
-            background-color: #2e59d9;
-            border-color: #2653d4;
-        }
-
-        .card {
-            border-radius: 8px;
-            position: relative;
+            background-color: #0056b3;
         }
 
         .form-container {
-            padding-top: 60px; /* Mengatur jarak padding untuk form */
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 700px; /* Adjust this value to match the width of your table */
+            margin: 0 auto;
         }
 
-        select {
-            padding: 0.5rem;
-            font-size: 1rem;
+        .form-control {
+            border-radius: 4px;
         }
 
-        .btn-close-transaksi {
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .error {
+            border-color: red;
+        }
+
+        .close-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #fff;
-            background-color: #6c757d;
-            border-color: #6c757d;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
         }
 
-        .btn-close-transaksi:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 15px;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 
 <body class="bg-gradient-primary">
-
     <div class="container">
-        <!-- Outer Row -->
         <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="col-xl-10 col-lg-12 col-md-12">
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
-                        <!-- Tombol Tutup Transaksi -->
-                        <button class="btn btn-secondary btn-close-transaksi">Tutup Transaksi</button>
-                        <!-- Nested Row within Card Body -->
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="p-5 form-container">
+                                <div class="p-5">
+                                    <button class="btn btn-danger mr-1 mb-5" onclick="window.location.href='periode.php'">Tutup Transaksi</button>
+                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabel.php'">Kembali</button>
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Form Serah Terima Barang</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
                                     </div>
-                                    <form class="user" id="signature-form" method="post">
+
+                                    <!-- PHP for handling form submission -->
+                                    <?php
+                                    $conn = new mysqli("localhost", "root", "", "masterruangan");
+
+                                    if ($conn->connect_error) {
+                                        die("Koneksi gagal: " . $conn->connect_error);
+                                    }
+
+                                    if (isset($_POST['signaturesubmit'])) {
+                                        $signature = $_POST['signature'];
+                                        $tanggal = $_POST['tanggal'];
+                                        $ruangan = $_POST['ruangan'];
+                                        $jenis = $_POST['jenis'];
+                                        $jumlah = $_POST['jumlah'];
+                                        $keterangan = $_POST['keterangan'];
+
+                                        if (empty($signature)) {
+                                            $msg = "<div class='alert alert-danger'>Tidak ada data tanda tangan yang diterima.</div>";
+                                        } else {
+                                            $signatureFileName = uniqid() . '.png';
+                                            $signature = str_replace('data:image/png;base64,', '', $signature);
+                                            $signature = str_replace(' ', '+', $signature);
+                                            $data = base64_decode($signature);
+
+                                            if ($data === false) {
+                                                $msg = "<div class='alert alert-danger'>Gagal mendekode tanda tangan.</div>";
+                                            } else {
+                                                $dir = 'signatures';
+                                                if (!file_exists($dir)) {
+                                                    mkdir($dir, 0777, true);
+                                                }
+
+                                                $file = $dir . '/' . $signatureFileName;
+                                                if (file_put_contents($file, $data) === false) {
+                                                    $msg = "<div class='alert alert-danger'>Gagal menyimpan tanda tangan.</div>";
+                                                } else {
+                                                    $sql = "INSERT INTO form_serah_terima (tanggal, ruangan, jenis, jumlah, keterangan, ttd) VALUES ('$tanggal', '$ruangan', '$jenis', '$jumlah', '$keterangan', '$file')";
+
+                                                    if ($conn->query($sql) === TRUE) {
+                                                        $msg = "<div class='alert alert-success'>Data berhasil disimpan.</div>";
+                                                    } else {
+                                                        $msg = "<div class='alert alert-danger'>Gagal menyimpan data: " . $conn->error . "</div>";
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    $conn->close();
+                                    ?>
+
+                                    <!-- Show message if set -->
+                                    <?php if (isset($msg)) echo $msg; ?>
+
+                                    <!-- Form -->
+                                    <form method="post" action="" onsubmit="return validateForm();" id="transactionForm">
                                         <div class="form-container">
                                             <div class="form-group">
                                                 <label for="tanggal">Tanggal</label>
@@ -195,140 +188,70 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="form-group">
                                                 <label for="signature">Tanda Tangan</label>
                                                 <div id="canvasDiv">
-                                                    <canvas id="canvas"></canvas>
+                                                    <canvas id="signatureCanvas" width="400" height="200"></canvas>
                                                 </div>
-                                                <br>
-                                                <button type="button" class="btn btn-danger btn-custom" id="reset-btn">Clear</button>
                                             </div>
+                                            <button type="button" class="btn btn-primary" id="clearSignature">Clear</button>
                                             <input type="hidden" id="signature" name="signature">
-                                            <button type="submit" class="btn btn-primary btn-user btn-block btn-custom">
-                                                Kirim
-                                            </button>
+                                            <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
                                         </div>
                                     </form>
-                                
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-    <!-- JavaScript -->
+    <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Signature Pad and AJAX Handling -->
     <script>
-        $(document).ready(() => {
-            var canvasDiv = document.getElementById('canvasDiv');
-            var canvas = document.getElementById('canvas');
-            canvas.width = canvasDiv.clientWidth;
-            canvas.height = canvasDiv.clientHeight;
-            var context = canvas.getContext("2d");
-            var paint = false;
+        var canvas = document.getElementById('signatureCanvas');
+        var context = canvas.getContext('2d');
+        var isDrawing = false;
 
-            $('#canvas').mousedown(function(e) {
-                var offset = $(this).offset();
-                var mouseX = e.pageX - this.offsetLeft;
-                var mouseY = e.pageY - this.offsetTop;
+        canvas.addEventListener('mousedown', function (e) {
+            isDrawing = true;
+            context.moveTo(e.offsetX, e.offsetY);
+        });
 
-                paint = true;
-                addClick(e.pageX - offset.left, e.pageY - offset.top);
-                redraw();
-            });
-
-            $('#canvas').mousemove(function(e) {
-                if (paint) {
-                    var offset = $(this).offset();
-                    addClick(e.pageX - offset.left, e.pageY - offset.top, true);
-                    redraw();
-                }
-            });
-
-            $('#canvas').mouseup(function(e) {
-                paint = false;
-            });
-
-            $('#canvas').mouseleave(function(e) {
-                paint = false;
-            });
-
-            var clickX = [];
-            var clickY = [];
-            var clickDrag = [];
-
-            function addClick(x, y, dragging) {
-                clickX.push(x);
-                clickY.push(y);
-                clickDrag.push(dragging);
-            }
-
-            $("#reset-btn").click(function() {
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                clickX = [];
-                clickY = [];
-                clickDrag = [];
-            });
-
-            $("#signature-form").submit(function(e) {
-                e.preventDefault();
-
-                // Konversi canvas menjadi gambar
-                var img = canvas.toDataURL("image/png");
-                $("#signature").val(img);
-
-                // Serialize form data
-                var formData = new FormData($(this)[0]);
-
-                $.ajax({
-                    url: '', // Sesuaikan dengan URL skrip PHP yang memproses form
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        console.log(response); // Log respons server untuk debugging
-                        var res = JSON.parse(response); // Parse JSON response
-
-                        // if (res.success) {
-                        //     alert('Form berhasil dikirim!');
-                        // } else {
-                        //     alert('Error: ' + res.message);
-                        // }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.error('AJAX Error: ' + textStatus, errorThrown); // Log error jika ada
-                    }
-                });
-            });
-
-            function redraw() {
-                context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-                context.strokeStyle = "#000000";
-                context.lineJoin = "round";
-                context.lineWidth = 2;
-
-                for (var i = 0; i < clickX.length; i++) {
-                    context.beginPath();
-                    if (clickDrag[i] && i) {
-                        context.moveTo(clickX[i - 1], clickY[i - 1]);
-                    } else {
-                        context.moveTo(clickX[i] - 1, clickY[i]);
-                    }
-                    context.lineTo(clickX[i], clickY[i]);
-                    context.closePath();
-                    context.stroke();
-                }
+        canvas.addEventListener('mousemove', function (e) {
+            if (isDrawing) {
+                context.lineTo(e.offsetX, e.offsetY);
+                context.stroke();
             }
         });
+
+        canvas.addEventListener('mouseup', function () {
+            isDrawing = false;
+            document.getElementById('signature').value = canvas.toDataURL('image/png');
+        });
+
+        document.getElementById('clearSignature').addEventListener('click', function () {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('signature').value = '';
+        });
+
+        function validateForm() {
+            var signature = document.getElementById('signature').value;
+            if (signature.trim() === '') {
+                alert('Please provide a signature.');
+                return false;
+            }
+            return true;
+        }
     </script>
 </body>
 
