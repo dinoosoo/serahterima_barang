@@ -62,7 +62,7 @@
                                     Opsi 1
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray -1000">
-    <a href="periode.php" class="text-decoration-none text-gray-1000">
+    <a href="tabel.php" class="text-decoration-none text-gray-1000">
         $erah Terima <br> Barang
     </a>
 </div>
