@@ -1,24 +1,56 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Koneksi ke database
+    $conn = new mysqli("localhost", "root", "", "masterruangan");
+
+    // Cek koneksi
+    if ($conn->connect_error) {
+        die("Koneksi gagal: " . $conn->connect_error);
+    }
+
+    // Memeriksa apakah ada tanda tangan yang dikirim
     if (isset($_POST['signature'])) {
         $signature = $_POST['signature'];
 
-        // Menghapus bagian data URL (bagian sebelum koma)
+        // Menghapus bagian base64 sebelum data sebenarnya
         $signature = str_replace('data:image/png;base64,', '', $signature);
         $signature = str_replace(' ', '+', $signature);
 
-        // Decode string base64
+        // Dekode string base64
         $data = base64_decode($signature);
 
-        // Generate nama file yang unik
+        // Membuat nama file unik untuk gambar tanda tangan
         $fileName = 'signature_' . uniqid() . '.png';
-
-        // Definisikan path untuk menyimpan file
         $filePath = 'signatures/' . $fileName;
 
-        // Simpan file gambar ke server
+        // Simpan gambar tanda tangan ke server
         if (file_put_contents($filePath, $data)) {
-            echo json_encode(['success' => true, 'file' => $filePath]);
+            $tanggal = $_POST['tanggal'];
+            $ruangan = $_POST['ruangan'];
+            $jenis = $_POST['jenis'];
+            $jumlah = $_POST['jumlah'];
+            $keterangan = $_POST['keterangan'];
+
+            // Persiapkan statement SQL untuk memasukkan data ke dalam database
+            $stmt = $conn->prepare("INSERT INTO serah_terima_barang (tanggal, ruangan, jenis, jumlah, keterangan, signature_path) VALUES (?, ?, ?, ?, ?, ?)");
+
+            if (!$stmt) {
+                echo json_encode(['success' => false, 'message' => 'Kesalahan persiapan query: ' . $conn->error]);
+                exit;
+            }
+
+            $stmt->bind_param("ssssss", $tanggal, $ruangan, $jenis, $jumlah, $keterangan, $filePath);
+
+            // Eksekusi statement
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'Data berhasil ditambahkan.']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error: ' . $stmt->error]);
+            }
+
+            // Menutup statement dan koneksi
+            $stmt->close();
+            $conn->close();
         } else {
             echo json_encode(['success' => false, 'message' => 'Gagal menyimpan tanda tangan']);
         }
@@ -29,15 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 
-=======
-session_start();
-
-if(!isset($_SESSION["login"])){
-    header("Location: login.php");
-    exit;
-}
-?>
->>>>>>> 0390532d5c2fb091ec9fecbd116f70bbada7a741
 <!DOCTYPE html>
 <html lang="en">
 
@@ -275,11 +298,11 @@ if(!isset($_SESSION["login"])){
                         console.log(response); // Log respons server untuk debugging
                         var res = JSON.parse(response); // Parse JSON response
 
-                        if (res.success) {
-                            alert('Form berhasil dikirim!');
-                        } else {
-                            alert('Error: ' + res.message);
-                        }
+                        // if (res.success) {
+                        //     alert('Form berhasil dikirim!');
+                        // } else {
+                        //     alert('Error: ' + res.message);
+                        // }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error('AJAX Error: ' + textStatus, errorThrown); // Log error jika ada
