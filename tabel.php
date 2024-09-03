@@ -6,6 +6,7 @@ if(!isset($_SESSION["login"])){
     exit;
 }
 ?>
+
 <?php
 $host = 'localhost';
 $db = 'masterruangan';
@@ -21,8 +22,13 @@ if ($conn->connect_error) {
 }
 
 // Mengambil data dari tabel 'priode'
-$sql = "SELECT id, nama, status FROM priode";
+$sql = "SELECT id, nama, tanggal_masuk, tanggal_selesai FROM priode";
 $result = $conn->query($sql);
+
+// Mengambil data dari tabel 'priode' yang tanggal keluarnya null atau tidaka ada
+$sql = "SELECT id, nama, tanggal_masuk, tanggal_selesai FROM priode where tanggal_selesai is null";
+$cektombol = $conn->query($sql)->fetch_assoc();
+// print_r($cektombol);
 ?>
 
 <!DOCTYPE html>
@@ -88,12 +94,26 @@ $result = $conn->query($sql);
             <div class="container-fluid">
                 <h1 class="h3 mb-4 text-gray-800">Data Periode</h1>
 
+                <?php
+                if($cektombol==null){
+                ?>
+                <!-- Button New -->
+                <div class="d-flex justify-content-end mb-3">
+                    <a href="periode.php" class="btn btn-success">
+                        <i class="fas fa-plus"></i> New
+                    </a>
+                </div>
+                <?php
+                }
+                ?>
+
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Nama Periode</th>
-                            <th>Status</th>
+                            <th>Tanggal Masuk</th>
+                            <th>Tanggal Selesai</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -102,25 +122,24 @@ $result = $conn->query($sql);
                         if ($result->num_rows > 0) {
                             $no = 1;
                             while ($row = $result->fetch_assoc()) {
-                                $statusText = $row['status'] === 'open' ? 'Dibuka' : 'Ditutup';
-                                $statusClass = $row['status'] === 'open' ? 'text-success' : 'text-danger';
                                 echo "<tr>";
                                 echo "<td>" . $no++ . "</td>";
                                 echo "<td>" . $row['nama'] . "</td>";
-                                echo "<td class='" . $statusClass . "'>" . $statusText . "</td>";
+                                echo "<td>" . $row['tanggal_masuk'] . "</td>";
+                                echo "<td>" . $row['tanggal_selesai'] . "</td>";
                                 echo "<td>";
-                                echo "<a href='#' class='btn btn-primary'><i class='fas fa-plus'></i> Add</a> ";
                                 echo "<a href='#' class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>";
                                 echo "</td>";
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='4' class='text-center'>No data found</td></tr>";
+                            echo "<tr><td colspan='5' class='text-center'>No data found</td></tr>";
                         }
                         ?>
                     </tbody>
                 </table>
             </div>
+
             <!-- End of Main Content -->
 
             <!-- Footer -->

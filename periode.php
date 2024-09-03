@@ -1,12 +1,11 @@
 <?php
 session_start();
 
-if(!isset($_SESSION["login"])){
+if (!isset($_SESSION["login"])) {
     header("Location: login.php");
     exit;
 }
-?>
-<?php
+
 $host = 'localhost';
 $db = 'masterruangan';
 $user = 'root';
@@ -23,17 +22,19 @@ if ($conn->connect_error) {
 // Menangani form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $tanggal_mulai = $_POST['tanggal_mulai'];
-    $tanggal_selesai = $_POST['tanggal_selesai'];
     $nama_periode = $_POST['nama_periode'];
 
     // Menyimpan data ke dalam tabel 'priode'
-    $sql = "INSERT INTO priode (nama, status) VALUES ('$nama_periode', 'Aktif')";
-    if ($conn->query($sql) === TRUE) {
+    $sql = "INSERT INTO priode (nama, tanggal_masuk) VALUES (?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $nama_periode, $tanggal_mulai);
+
+    if ($stmt->execute()) {
         // Redirect ke tabel.php setelah data berhasil disimpan
-        header("Location: tabel.php");
+        header("Location: form tabel.php");
         exit();
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        echo "Error: " . $stmt->error;
     }
 }
 ?>
@@ -47,6 +48,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        /* CSS tambahan untuk footer spacing */
+        .footer-spacing {
+            padding: 20px 0; /* Atur jarak atas dan bawah */
+            margin-top: 30px; /* Atur jarak atas dari konten di atasnya */
+        }
+
+        /* Atur margin bawah form untuk memberi ruang yang cukup sebelum footer */
+        .container-fluid {
+            margin-bottom: 170px; /* Atur jarak bawah untuk memberi ruang footer */
+        }
+    </style>
 </head>
 <body id="page-top">
 
@@ -66,12 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <span>Input Periode</span>
             </a>
         </li>
-        <!-- <li class="nav-item">
-            <a class="nav-link" href="tabel.php">
-                <i class="fas fa-table"></i>
-                <span>Data Periode</span>
-            </a>
-        </li> -->
     </ul>
 
     <!-- Content Wrapper -->
@@ -110,12 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <form method="POST">
                     <div class="form-group">
                         <label for="tanggal_mulai">Tanggal Mulai:</label>
-                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tanggal_selesai">Tanggal Selesai:</label>
-                        <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control" required>
+                        <input type="datetime-local" id="tanggal_mulai" name="tanggal_mulai" class="form-control" required>
                     </div>
 
                     <div class="form-group">
@@ -129,13 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
+            <footer class="sticky-footer bg-white footer-spacing">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; ADMIN SYAMRABU 2024</span>
                     </div>
                 </div>
             </footer>
+
         </div>
     </div>
 </div>
