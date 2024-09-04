@@ -8,7 +8,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+<<<<<<< HEAD
+    <title> Formulir Serah Terima Barang</title>
+=======
     <title>Formulir Serah Terima Barang</title>
+>>>>>>> 2f9596e278c3c713f2ebc3110e4070fc4160ad28
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -72,6 +76,13 @@
             cursor: pointer;
         }
 
+<<<<<<< HEAD
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 15px;
+                max-width: 100%;
+            }
+=======
         .table-container {
             margin-top: 20px;
             width: 100%;
@@ -90,6 +101,7 @@
 
         th {
             background-color: #f2f2f2;
+>>>>>>> 2f9596e278c3c713f2ebc3110e4070fc4160ad28
         }
     </style>
 </head>
@@ -98,6 +110,19 @@
     <div class="container">
         <!-- Form Section -->
         <div class="row justify-content-center">
+<<<<<<< HEAD
+            <div class="col-xl-10 col-lg-12 col-md-12">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <button class="btn btn-danger mr-1 mb-5" onclick="window.location.href='periode.php'">Tutup Transaksi</button>
+                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabel.php'">Kembali</button>
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
+                                    </div>
+=======
             <div class="col-lg-8">
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
@@ -107,6 +132,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
                             </div>
+>>>>>>> 2f9596e278c3c713f2ebc3110e4070fc4160ad28
 
                             <!-- PHP for handling form submission -->
                             <?php
@@ -285,6 +311,57 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        var canvas = document.getElementById('signatureCanvas');
+        var context = canvas.getContext('2d');
+        var isDrawing = false;
+
+        canvas.addEventListener('mousedown', function (e) {
+            isDrawing = true;
+            context.moveTo(e.offsetX, e.offsetY);
+        });
+
+        canvas.addEventListener('mousemove', function (e) {
+            if (isDrawing) {
+                context.lineTo(e.offsetX, e.offsetY);
+                context.stroke();
+            }
+        });
+
+        canvas.addEventListener('mouseup', function () {
+            isDrawing = false;
+            document.getElementById('signature').value = canvas.toDataURL('image/png');
+        });
+
+        document.getElementById('clearSignature').addEventListener('click', function () {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('signature').value = '';
+        });
+
+        function validateForm() {
+            var signature = document.getElementById('signature').value;
+            if (signature.trim() === '') {
+                alert('Please provide a signature.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+=======
+>>>>>>> 2f9596e278c3c713f2ebc3110e4070fc4160ad28
 </body>
 
 <script>
