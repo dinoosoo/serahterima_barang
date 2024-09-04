@@ -102,7 +102,7 @@
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <div class="p-5">
-                            <button class="btn btn-danger mr-1 mb-5" onclick="window.location.href='periode.php'">Tutup Transaksi</button>
+                            <button class="btn btn-danger mr-1 mb-5" onclick="window.location.href='tabel.php'">Tutup Transaksi</button>
                             <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabel.php'">Kembali</button>
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
@@ -169,18 +169,35 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="ruangan">Ruangan</label>
-                                        <input list="ruanganList" class="form-control" id="ruangan" name="ruangan" required>
+                                        <SELECT list="ruanganList" class="form-control" id="ruangan" name="ruangan" required>
                                         <datalist id="ruanganList">
-                                            <option value="Bougenvil">
-                                            <option value="HCU">
-                                            <option value="UGD">
-                                            <option value="Camelia">
-                                            <option value="Edelweis">
-                                            <option value="Flamboyan">
-                                            <option value="Asoka">
-                                            <option value="Sakura">
-                                            <option value="ICU">
+                                            <?php
+                                                // Koneksi ke database
+                                                $conn = new mysqli("localhost", "root", "", "masterruangan");
+
+                                                // Periksa koneksi
+                                                if ($conn->connect_error) {
+                                                    die("Koneksi gagal: " . $conn->connect_error);
+                                                }
+
+                                                // Ambil data dari tabel ruangan
+                                                $sql = "SELECT id, ruangan FROM ruangan";
+                                                $result = $conn->query($sql);
+
+                                                // Loop melalui hasil dan buat opsi dalam datalist
+                                                if ($result->num_rows > 0) {
+                                                    while ($row = $result->fetch_assoc()) {
+                                                        echo "<option value=\"" . $row["ruangan"] . "\">" . $row["ruangan"] . "</option>";
+                                                    }
+                                                } else {
+                                                    echo "<option>No data</option>";
+                                                }
+
+                                                // Tutup koneksi
+                                                $conn->close();
+                                            ?>
                                         </datalist>
+                                            </SELECT>
                                     </div>
                                     <div class="form-group">
                                         <label for="jenis">Jenis</label>

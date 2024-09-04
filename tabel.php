@@ -90,22 +90,30 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                 </ul>
             </nav>
 
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Data Periode</h1>
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <h1 class="h3 mb-4 text-gray-800">Data Periode</h1>
 
-                <?php
-                if($cektombol==null){
-                ?>
-                <!-- Button New -->
-                <div class="d-flex justify-content-end mb-3">
-                    <a href="periode.php" class="btn btn-success">
-                        <i class="fas fa-plus"></i> New
-                    </a>
+                    <?php
+                    if($cektombol == null){
+                        echo '
+                        <!-- Button New -->
+                        <div class="d-flex justify-content-end mb-3">
+                            <a href="periode.php" class="btn btn-success">
+                                <i class="fas fa-plus"></i> New
+                            </a>
+                        </div>';
+                    } else {
+                        echo '
+                        <div class="d-flex justify-content-end mb-3">
+                            <a href="form tabel.php" class="btn btn-danger">
+                                <i class=""></i> Back
+                            </a>
+                        </div>';
+                    }
+                    ?>
                 </div>
-                <?php
-                }
-                ?>
+
 
                 <table class="table table-bordered table-striped">
                     <thead>
