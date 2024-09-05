@@ -212,8 +212,8 @@ $conn->close();
         </div>
         <!-- Jumlah -->
         <div class="form-group">
-            <label for="jumlah">Jumlah</label>
-            <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+        <label for="jumlah">Jumlah</label>
+        <input type="number" class="form-control" id="jumlah" name="jumlah" required>
         </div>
         <!-- Keterangan -->
         <div class="form-group">
@@ -228,10 +228,10 @@ $conn->close();
             </div>
         </div>
         <button type="button" class="btn btn-primary" id="clearSignature">Clear</button>
-        <input type="hidden" id="signature" name="signature">
-        <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
-    </div>
-</form>
+                                <input type="hidden" id="signature" name="signature">
+                                 <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
+                                </div>
+                                </form>
 
 
                                 </div>
