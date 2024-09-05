@@ -8,7 +8,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Formulir Serah Terima Barang</title>
+    <title> Formulir Serah Terima Barang</title>
+
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -40,13 +41,12 @@
         }
 
         .form-container {
-        width: 80%;  /* Lebar form ditingkatkan */
-        margin: 0 auto;  /* Posisikan form di tengah */
-        padding: 20px;  /* Tambah padding untuk jarak yang nyaman */
-        background-color: #f9f9f9;  /* Latar belakang yang lebih cerah */
-        border-radius: 10px;  /* Tambahkan sudut yang membulat */
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Bayangan halus untuk tampilan modern */
-    }
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+        }
 
         .form-control {
             border-radius: 4px;
@@ -73,27 +73,39 @@
             cursor: pointer;
         }
 
+ 
         @media (max-width: 768px) {
             .form-container {
                 padding: 15px;
                 max-width: 100%;
             }
+=======
+        .table-container {
+            margin-top: 20px;
+            width: 100%;
         }
 
-        /* Custom styles for the heading */
-        .custom-heading {
-            font-weight: bold;
-            border: 2px solid #007bff; /* Blue border color */
-            border-radius: 8px;
-            padding: 10px;
-            background-color: #e9ecef; /* Light gray background */
-            display: inline-block;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        th {
+            background-color: #f2f2f2;
+
         }
     </style>
 </head>
 
 <body class="bg-gradient-primary">
     <div class="container">
+        <!-- Form Section -->
         <div class="row justify-content-center">
             <div class="col-xl-10 col-lg-12 col-md-12">
                 <div class="card o-hidden border-0 shadow-lg my-5">
@@ -106,136 +118,178 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
                                     </div>
-    <?php
-$conn = new mysqli("localhost", "root", "", "masterruangan");
 
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+            <div class="col-lg-8">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="p-5">
+                            <button class="btn btn-danger mr-1 mb-5" onclick="window.location.href='periode.php'">Tutup Transaksi</button>
+                            <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabel.php'">Kembali</button>
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
+                            </div>
 
-if (isset($_POST['signaturesubmit'])) {
-    $signature = $_POST['signature'];
-    $jenis_berkas = $_POST['jenis_berkas'];  // Ambil nilai jenis_berkas
-    $tanggal = $_POST['tanggal'];
-    $ruangan = $_POST['ruangan'];
-    $jenis = $_POST['jenis'];
-    $jumlah = $_POST['jumlah'];
-    $keterangan = $_POST['keterangan'];
 
-    if (empty($signature)) {
-        $msg = "<div class='alert alert-danger' id='notification'>Tidak ada data tanda tangan yang diterima.</div>";
-    } else {
-        $signatureFileName = uniqid() . '.png';
-        $signature = str_replace('data:image/png;base64,', '', $signature);
-        $signature = str_replace(' ', '+', $signature);
-        $data = base64_decode($signature);
+                            <!-- PHP for handling form submission -->
+                            <?php
+                            $conn = new mysqli("localhost", "root", "", "masterruangan");
 
-        if ($data === false) {
-            $msg = "<div class='alert alert-danger' id='notification'>Gagal mendekode tanda tangan.</div>";
-        } else {
-            $dir = 'signatures';
-            if (!file_exists($dir)) {
-                mkdir($dir, 0777, true);
-            }
+                            if ($conn->connect_error) {
+                                die("Koneksi gagal: " . $conn->connect_error);
+                            }
 
-            $file = $dir . '/' . $signatureFileName;
-            if (file_put_contents($file, $data) === false) {
-                $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan tanda tangan.</div>";
-            } else {
-                // Masukkan data ke dalam tabel form_serah_terima, termasuk jenis_berkas
-                $sql = "INSERT INTO form_serah_terima (jenis_berkas, tanggal, ruangan, jenis, jumlah, keterangan, ttd)
-                        VALUES ('$jenis_berkas', '$tanggal', '$ruangan', '$jenis', '$jumlah', '$keterangan', '$file')";
+                            if (isset($_POST['signaturesubmit'])) {
+                                $signature = $_POST['signature'];
+                                $tanggal = $_POST['tanggal'];
+                                $ruangan = $_POST['ruangan'];
+                                $jenis = $_POST['jenis'];
+                                $jumlah = $_POST['jumlah'];
+                                $keterangan = $_POST['keterangan'];
 
-                if ($conn->query($sql) === TRUE) {
-                    $msg = "<div class='alert alert-success' id='notification'>Data berhasil disimpan.</div>";
-                } else {
-                    $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan data: " . $conn->error . "</div>";
-                }
-            }
-        }
-    }
-}
+                                if (empty($signature)) {
+                                    $msg = "<div class='alert alert-danger'>Tidak ada data tanda tangan yang diterima.</div>";
+                                } else {
+                                    $signatureFileName = uniqid() . '.png';
+                                    $signature = str_replace('data:image/png;base64,', '', $signature);
+                                    $signature = str_replace(' ', '+', $signature);
+                                    $data = base64_decode($signature);
 
-$conn->close();
-?>
+                                    if ($data === false) {
+                                        $msg = "<div class='alert alert-danger'>Gagal mendekode tanda tangan.</div>";
+                                    } else {
+                                        $dir = 'signatures';
+                                        if (!file_exists($dir)) {
+                                            mkdir($dir, 0777, true);
+                                        }
 
-<!-- Show message if set -->
-<?php if (isset($msg)) echo $msg; ?>
+                                        $file = $dir . '/' . $signatureFileName;
+                                        if (file_put_contents($file, $data) === false) {
+                                            $msg = "<div class='alert alert-danger'>Gagal menyimpan tanda tangan.</div>";
+                                        } else {
+                                            $sql = "INSERT INTO form_serah_terima (tanggal, ruangan, jenis, jumlah, keterangan, ttd) VALUES ('$tanggal', '$ruangan', '$jenis', '$jumlah', '$keterangan', '$file')";
 
-<!-- Form -->
-<form method="post" action="" onsubmit="return validateForm();" id="transactionForm">
-    <div class="form-container">
-        <!-- Pilihan Barang Rusak atau Baru -->
-        <div class="form-group">
-            <label>Jenis Berkas</label><br>
-            <input type="radio" id="barangBaru" name="jenis_berkas" value="baru" required>
-            <label for="barangBaru">Barang Baru</label>
-            <input type="radio" id="barangRusak" name="jenis_berkas" value="rusak" required>
-            <label for="barangRusak">Barang Rusak</label>
-        </div>
-        <!-- Tanggal -->
-        <div class="form-group">
-            <label for="tanggal">Tanggal</label>
-            <input type="date" class="form-control" id="tanggal" name="tanggal" required>
-        </div>
-        <!-- Ruangan -->
-        <div class="form-group">
-            <label for="ruangan">Ruangan</label>
-            <input list="ruanganList" class="form-control" id="ruangan" name="ruangan" required>
-            <datalist id="ruanganList">
-            <?php
-                $conn = new mysqli("localhost", "root", "", "masterruangan");
+                                            if ($conn->query($sql) === TRUE) {
+                                                $msg = "<div class='alert alert-success'>Data berhasil disimpan.</div>";
+                                            } else {
+                                                $msg = "<div class='alert alert-danger'>Gagal menyimpan data: " . $conn->error . "</div>";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            ?>
 
-                if ($conn->connect_error) {
-                    die("Koneksi gagal: " . $conn->connect_error);
-                }
+                            <!-- Show message if set -->
+                            <?php if (isset($msg)) echo $msg; ?>
 
-                $sql = "SELECT id, ruangan FROM ruangan";
-                $result = $conn->query($sql);
+                            <!-- Form -->
+                            <form method="post" action="" onsubmit="return validateForm();" id="transactionForm">
+                                <div class="form-container">
+                                    <div class="form-group">
+                                        <label for="tanggal">Tanggal</label>
+                                        <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ruangan">Ruangan</label>
+                                        <input list="ruanganList" class="form-control" id="ruangan" name="ruangan" required>
+                                        <datalist id="ruanganList">
+                                            <option value="Bougenvil">
+                                            <option value="HCU">
+                                            <option value="UGD">
+                                            <option value="Camelia">
+                                            <option value="Edelweis">
+                                            <option value="Flamboyan">
+                                            <option value="Asoka">
+                                            <option value="Sakura">
+                                            <option value="ICU">
+                                        </datalist>
+                                    </div>
+                                    <div class="form-group">
+    <label for="jenis">Jenis</label>
+    <select class="form-control" id="jenis" name="jenis" required>
+        <option value="" disabled selected>Pilih Jenis</option>
+        <option value="Keyboard">Jenis1</option>
+        <option value="Tab Advan">Jenis2</option>
+        <!-- Tambahkan lebih banyak opsi sesuai kebutuhan -->
+    </select>
+</div>
 
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value=\"" . $row["ruangan"] . "\">" . $row["ruangan"] . "</option>";
-                    }
-                } else {
-                    echo "<option>No data</option>";
-                }
-
-                $conn->close();
-            ?>
-            </datalist>
-        </div>
-        <!-- Jenis Barang -->
-        <div class="form-group">
-            <label for="jenis">Jenis</label>
-            <input type="text" class="form-control" id="jenis" name="jenis" required>
-        </div>
-        <!-- Jumlah -->
-        <div class="form-group">
-            <label for="jumlah">Jumlah</label>
-            <input type="number" class="form-control" id="jumlah" name="jumlah" required>
-        </div>
-        <!-- Keterangan -->
-        <div class="form-group">
-            <label for="keterangan">Keterangan</label>
-            <textarea class="form-control" id="keterangan" name="keterangan" rows="3" required></textarea>
-        </div>
-        <!-- Tanda Tangan -->
-        <div class="form-group">
-            <label for="signature">Tanda Tangan</label>
-            <div id="canvasDiv">
-                <canvas id="signatureCanvas" width="400" height="200"></canvas>
+                                    <div class="form-group">
+                                        <label for="jumlah">Jumlah</label>
+                                        <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="keterangan">Keterangan</label>
+                                        <textarea class="form-control" id="keterangan" name="keterangan" rows="3" required></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="signature">Tanda Tangan</label>
+                                        <div id="canvasDiv">
+                                            <canvas id="signatureCanvas" width="400" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" id="clearSignature">Clear</button>
+                                    <input type="hidden" id="signature" name="signature">
+                                    <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="clearSignature">Clear</button>
-        <input type="hidden" id="signature" name="signature">
-        <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
-    </div>
-</form>
 
+        <!-- Table Section -->
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="p-5 table-container">
+                            <h3>Data Serah Terima Barang</h3>
 
-                                </div>
-                            </div>
+                            <?php
+                            // Retrieve data for the table
+                            $conn = new mysqli("localhost", "root", "", "masterruangan");
+
+                            if ($conn->connect_error) {
+                                die("Koneksi gagal: " . $conn->connect_error);
+                            }
+
+                            $result = $conn->query("SELECT * FROM form_serah_terima ORDER BY id DESC");
+
+                            if ($result->num_rows > 0) : ?>
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Tanggal</th>
+                                        <th>Ruangan</th>
+                                        <th>Jenis</th>
+                                        <th>Jumlah</th>
+                                        <th>Keterangan</th>
+                                        <th>Tanda Tangan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $no = 1;
+                                    while ($row = $result->fetch_assoc()) : ?>
+                                        <tr>
+                                            <td><?php echo $no++; ?></td>
+                                            <td><?php echo $row['tanggal']; ?></td>
+                                            <td><?php echo $row['ruangan']; ?></td>
+                                            <td><?php echo $row['jenis']; ?></td>
+                                            <td><?php echo $row['jumlah']; ?></td>
+                                            <td><?php echo $row['keterangan']; ?></td>
+                                            <td><img src="<?php echo $row['ttd']; ?>" alt="Tanda Tangan" style="width: 100px;"></td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                            </table>
+
+                            <?php else : ?>
+                                <p>Belum ada data yang disimpan.</p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -243,54 +297,38 @@ $conn->close();
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         var canvas = document.getElementById('signatureCanvas');
         var context = canvas.getContext('2d');
         var isDrawing = false;
-        var x = 0;
-        var y = 0;
 
         canvas.addEventListener('mousedown', function (e) {
             isDrawing = true;
-            x = e.offsetX;
-            y = e.offsetY;
+            context.moveTo(e.offsetX, e.offsetY);
         });
 
         canvas.addEventListener('mousemove', function (e) {
-            if (isDrawing === true) {
-                drawLine(context, x, y, e.offsetX, e.offsetY);
-                x = e.offsetX;
-                y = e.offsetY;
+            if (isDrawing) {
+                context.lineTo(e.offsetX, e.offsetY);
+                context.stroke();
             }
         });
 
         canvas.addEventListener('mouseup', function () {
-            if (isDrawing === true) {
-                drawLine(context, x, y, x, y);
-                isDrawing = false;
-                updateSignatureInput();
-            }
+            isDrawing = false;
+            document.getElementById('signature').value = canvas.toDataURL('image/png');
         });
-
-        function drawLine(context, x1, y1, x2, y2) {
-            context.beginPath();
-            context.strokeStyle = 'black';
-            context.lineWidth = 2;
-            context.moveTo(x1, y1);
-            context.lineTo(x2, y2);
-            context.stroke();
-        }
-
-        function updateSignatureInput() {
-            var dataURL = canvas.toDataURL();
-            document.getElementById('signature').value = dataURL;
-        }
 
         document.getElementById('clearSignature').addEventListener('click', function () {
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -299,25 +337,50 @@ $conn->close();
 
         function validateForm() {
             var signature = document.getElementById('signature').value;
-            if (!signature) {
-                alert('Tanda tangan diperlukan!');
+            if (signature.trim() === '') {
+                alert('Please provide a signature.');
                 return false;
             }
             return true;
         }
-
-        // Auto-hide notification after 5 seconds
-        setTimeout(function () {
-            var notification = document.getElementById('notification');
-            if (notification) {
-                notification.style.transition = 'opacity 1s';
-                notification.style.opacity = 0;
-                setTimeout(function () {
-                    notification.remove();
-                }, 1000); // Delay to match the transition
-            }
-        }, 5000);
     </script>
 </body>
+
+<script>
+    // Add JavaScript to handle signature pad
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    canvas.addEventListener('mousedown', () => isDrawing = true);
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mousemove', draw);
+
+    function draw(event) {
+        if (!isDrawing) return;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000';
+        ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+    }
+
+    document.getElementById('clearSignature').addEventListener('click', () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('signature').value = '';
+    });
+
+    document.getElementById('transactionForm').addEventListener('submit', () => {
+        const signatureData = canvas.toDataURL('image/png');
+        document.getElementById('signature').value = signatureData;
+    });
+
+    function validateForm() {
+        // Implement form validation if needed
+        return true;
+    }
+</script>
 
 </html>
