@@ -8,13 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-<<<<<<< HEAD
-
-    <title> Formulir Serah Terima Barang</title>
-
-=======
     <title>Formulir Serah Terima Barang</title>
->>>>>>> eb7d7ecf4b950ba23f647f43a7c7c00a1fbe2847
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -79,37 +73,11 @@
             cursor: pointer;
         }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> eb7d7ecf4b950ba23f647f43a7c7c00a1fbe2847
         @media (max-width: 768px) {
             .form-container {
                 padding: 15px;
                 max-width: 100%;
             }
-<<<<<<< HEAD
-
-        .table-container {
-            margin-top: 20px;
-            width: 100%;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 8px;
-            text-align: left;
-            word-wrap: break-word;
-        }
-
-        th {
-            background-color: #f2f2f2;
-
-=======
         }
 
         /* Custom styles for the heading */
@@ -120,7 +88,6 @@
             padding: 10px;
             background-color: #e9ecef; /* Light gray background */
             display: inline-block;
->>>>>>> eb7d7ecf4b950ba23f647f43a7c7c00a1fbe2847
         }
     </style>
 </head>
@@ -128,18 +95,6 @@
 <body class="bg-gradient-primary">
     <div class="container">
         <div class="row justify-content-center">
-<<<<<<< HEAD
-            <div class="col-lg-8">
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <div class="p-5">
-                            <button class="btn btn-danger mr-1 mb-5" onclick="window.location.href='tabel.php'">Tutup Transaksi</button>
-                            <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabel.php'">Kembali</button>
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
-                            </div>
-
-=======
             <div class="col-xl-10 col-lg-12 col-md-12">
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
@@ -153,7 +108,6 @@
                                     </div>
     <?php
 $conn = new mysqli("localhost", "root", "", "masterruangan");
->>>>>>> eb7d7ecf4b950ba23f647f43a7c7c00a1fbe2847
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
@@ -279,11 +233,6 @@ $conn->close();
     </div>
 </form>
 
-<<<<<<< HEAD
- 
-    </div>
-
-=======
 
                                 </div>
                             </div>
@@ -293,7 +242,6 @@ $conn->close();
             </div>
         </div>
     </div>
->>>>>>> eb7d7ecf4b950ba23f647f43a7c7c00a1fbe2847
 
     <!-- JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -370,10 +318,6 @@ $conn->close();
             }
         }, 5000);
     </script>
-<<<<<<< HEAD
-
-=======
->>>>>>> eb7d7ecf4b950ba23f647f43a7c7c00a1fbe2847
 </body>
 
 </html>
