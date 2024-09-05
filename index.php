@@ -86,7 +86,7 @@ if(!isset($_SESSION["login"])){
 
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
-    <a class="nav-link" href="tampilkan_data.php">
+    <a class="nav-link" href="tabel.php">
         <i class="fas fa-fw fa-table"></i>
         <span>SERAH TERIMA BARANG</span>
     </a>
