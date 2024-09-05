@@ -228,10 +228,10 @@ $conn->close();
             </div>
         </div>
         <button type="button" class="btn btn-primary" id="clearSignature">Clear</button>
-                                <input type="hidden" id="signature" name="signature">
-                                 <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
-                                </div>
-                                </form>
+        <input type="hidden" id="signature" name="signature">
+        <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
+    </div>
+</form>
 
 
                                 </div>
