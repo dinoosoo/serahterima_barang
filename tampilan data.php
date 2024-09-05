@@ -51,7 +51,6 @@
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
             <!-- Sidebar - Merek -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
                 <div class="sidebar-brand-icon">
@@ -81,21 +80,21 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="master ruangan.php">Master Ruangan</a>
-                        <a class="collapse-item" href="master jenis.php">Master Jenis</a>
-                        <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a>
+                        <a class="collapse-item" href="master_ruangan.php">Master Ruangan</a>
+                        <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
+                        <a class="collapse-item" href="tampilan_data.php">Tampilkan Data</a>
                     </div>
                 </div>
             </li>
             <hr class="sidebar-divider">
 
-<!-- Nav Item - Tampilkan Data -->
-<li class="nav-item">
-    <a class="nav-link" href="tampilkan_data.php">
-        <i class="fas fa-fw fa-table"></i>
-        <span>Tampilkan Data</span>
-    </a>
-</li>
+            <!-- Nav Item - Tampilkan Data -->
+            <li class="nav-item">
+                <a class="nav-link" href="tampilan_data.php">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Tampilkan Data</span>
+                </a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -103,7 +102,6 @@
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
         </ul>
         <!-- End of Sidebar -->
 
@@ -115,7 +113,6 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
@@ -135,7 +132,6 @@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -148,9 +144,7 @@
                                 </a>
                             </div>
                         </li>
-
                     </ul>
-
                 </nav>
                 <!-- End of Topbar -->
 
@@ -161,7 +155,7 @@
                             <div class="container-fluid">
                                 <div class="row mb-2">
                                     <div class="col-sm-6">
-                                    <h1 class="m-0 text-dark">Instalasi Informasi & Teknologi</h1>
+                                        <h1 class="m-0 text-dark">Instalasi Informasi & Teknologi</h1>
                                     </div>
                                 </div>
                             </div>
@@ -227,58 +221,43 @@
                                                     }
                                                 }
 
-                                                $conn->close();
+                                                $sql = "SELECT * FROM form_serah_terima";
+                                                $result = $conn->query($sql);
                                                 ?>
+
+                                                <!-- Tampilkan pesan jika ada -->
                                                 <?php if (isset($msg)) echo $msg; ?>
 
-                                                <!-- Table Data -->
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>Tanggal</th>
-                                                                <th>Ruangan</th>
-                                                                <th>Jenis</th>
-                                                                <th>Jumlah</th>
-                                                                <th>Keterangan</th>
-                                                                <th>Tanda Tangan</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php
-                                                            // Koneksi ke database
-                                                            $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-                                                            // Periksa koneksi
-                                                            if ($conn->connect_error) {
-                                                                die("Koneksi gagal: " . $conn->connect_error);
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Tanggal</th>
+                                                            <th>Ruangan</th>
+                                                            <th>Jenis</th>
+                                                            <th>Jumlah</th>
+                                                            <th>Keterangan</th>
+                                                            <th>Tanda Tangan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        if ($result->num_rows > 0) {
+                                                            while ($row = $result->fetch_assoc()) {
+                                                                echo "<tr>";
+                                                                echo "<td>" . $row['tanggal'] . "</td>";
+                                                                echo "<td>" . $row['ruangan'] . "</td>";
+                                                                echo "<td>" . $row['jenis'] . "</td>";
+                                                                echo "<td>" . $row['jumlah'] . "</td>";
+                                                                echo "<td>" . $row['keterangan'] . "</td>";
+                                                                echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan'></td>";
+                                                                echo "</tr>";
                                                             }
-
-                                                            $sql = "SELECT * FROM form_serah_terima";
-                                                            $result = $conn->query($sql);
-
-                                                            if ($result->num_rows > 0) {
-                                                                while ($row = $result->fetch_assoc()) {
-                                                                    echo "<tr>";
-                                                                    echo "<td>" . $row['id'] . "</td>";
-                                                                    echo "<td>" . $row['tanggal'] . "</td>";
-                                                                    echo "<td>" . $row['ruangan'] . "</td>";
-                                                                    echo "<td>" . $row['jenis'] . "</td>";
-                                                                    echo "<td>" . $row['jumlah'] . "</td>";
-                                                                    echo "<td>" . $row['keterangan'] . "</td>";
-                                                                    echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan'></td>";
-                                                                    echo "</tr>";
-                                                                }
-                                                            } else {
-                                                                echo "<tr><td colspan='7'>Tidak ada data</td></tr>";
-                                                            }
-
-                                                            $conn->close();
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                        } else {
+                                                            echo "<tr><td colspan='6'>Tidak ada data.</td></tr>";
+                                                        }
+                                                        ?>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -286,63 +265,61 @@
                             </div>
                         </div>
 
+                        <!-- End of Main Content -->
                     </div>
                 </div>
-                <!-- /.container-fluid -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>© 2024 Admin Syamrabu</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
 
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>© 2024 Admin Syamrabu</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+            <!-- End of Content Wrapper -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="logoutModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="login.html">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+
     </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
 </body>
 
 </html>
