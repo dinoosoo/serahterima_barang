@@ -22,11 +22,11 @@ if ($conn->connect_error) {
 }
 
 // Mengambil data dari tabel 'priode'
-$sql = "SELECT id, nama, tanggal_masuk, tanggal_selesai FROM priode";
+$sql = "SELECT * FROM priode";
 $result = $conn->query($sql);
 
 // Mengambil data dari tabel 'priode' yang tanggal keluarnya null atau tidaka ada
-$sql = "SELECT id, nama, tanggal_masuk, tanggal_selesai FROM priode where tanggal_selesai is null";
+$sql = "SELECT * FROM priode where tanggal_selesai is null";
 $cektombol = $conn->query($sql)->fetch_assoc();
 // print_r($cektombol);
 ?>
@@ -133,15 +133,15 @@ $cektombol = $conn->query($sql)->fetch_assoc();
             if ($result->num_rows > 0) {
                 $no = 1;
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $no++ . "</td>";
-                    echo "<td>" . $row['nama'] . "</td>";
-                    echo "<td>" . $row['tanggal_masuk'] . "</td>";
-                    echo "<td>" . $row['tanggal_selesai'] . "</td>";
-                    echo "<td>";
-                    echo "<a href='#' class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>";
-                    echo "</td>";
-                    echo "</tr>";
+                    echo "<tr>
+                    <td>" . $row['id'] . "</td>
+                    <td>" . $row['nama'] . "</td>
+                    <td>" . $row['tanggal_masuk'] . "</td>
+                    <td>" . $row['tanggal_selesai'] . "</td>
+                    <td>
+                    <a href='tabeldetail.php?id=" . $row['id'] . "'class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>
+                    </td>
+                    </tr>";
                 }
             } else {
                 echo "<tr><td colspan='5' class='text-center'>No data found</td></tr>";
