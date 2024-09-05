@@ -258,8 +258,8 @@ $conn->close();
         </div>
         <!-- Jumlah -->
         <div class="form-group">
-            <label for="jumlah">Jumlah</label>
-            <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+        <label for="jumlah">Jumlah</label>
+        <input type="number" class="form-control" id="jumlah" name="jumlah" required>
         </div>
         <!-- Keterangan -->
         <div class="form-group">
