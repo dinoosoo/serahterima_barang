@@ -101,8 +101,34 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="p-5">
-                                    <button class="btn btn-danger mr-1 mb-5" onclick="window.location.href='periode.php'">Tutup Transaksi</button>
-                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabel.php'">Kembali</button>
+                                <form method="post" action="">
+                                    <button type="submit" class="btn btn-danger mr-1 mb-5" name="tutup_transaksi">Tutup Transaksi</button>
+                                    
+                                </form>
+                                <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tampilan.php'">Kembali</button>
+                                    <?php
+                                        $conn = new mysqli("localhost", "root", "", "masterruangan");
+
+                                        if ($conn->connect_error) {
+                                            die("Koneksi gagal: " . $conn->connect_error);
+                                        }
+
+                                        // Jika tombol 'Tutup Transaksi' ditekan
+                                        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tutup_transaksi'])) {
+                                            // Query untuk meng-update kolom `tanggal_selesai` pada baris yang masih null
+                                            $sql = "UPDATE priode SET tanggal_selesai = NOW() WHERE tanggal_selesai IS NULL";
+
+                                            if ($conn->query($sql) === TRUE) {
+                                                $msg = "<div class='alert alert-success'>Transaksi berhasil ditutup.</div>";
+                                                header("Location: tabel.php");
+                                            } else {
+                                                $msg = "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+                                            }
+
+                                            $conn->close();
+                                        }
+                                    ?>
+
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
                                     </div>
@@ -115,7 +141,7 @@ if ($conn->connect_error) {
 
 if (isset($_POST['signaturesubmit'])) {
     $signature = $_POST['signature'];
-    $jenis_berkas = $_POST['jenis_berkas'];  // Ambil nilai jenis_berkas
+    $jenis_berkas = $_POST['jenis_berkas'];
     $tanggal = $_POST['tanggal'];
     $ruangan = $_POST['ruangan'];
     $jenis = $_POST['jenis'];
@@ -142,14 +168,25 @@ if (isset($_POST['signaturesubmit'])) {
             if (file_put_contents($file, $data) === false) {
                 $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan tanda tangan.</div>";
             } else {
-                // Masukkan data ke dalam tabel form_serah_terima, termasuk jenis_berkas
-                $sql = "INSERT INTO form_serah_terima (jenis_berkas, tanggal, ruangan, jenis, jumlah, keterangan, ttd)
-                        VALUES ('$jenis_berkas', '$tanggal', '$ruangan', '$jenis', '$jumlah', '$keterangan', '$file')";
+                // Ambil ID transaksi dari tabel periode yang kolom tanggal_selesai-nya masih kosong
+                $sql = "SELECT id FROM priode WHERE tanggal_selesai IS NULL LIMIT 1";
+                $result = $conn->query($sql);
+                
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $id_transaksi = $row['id'];
+                    
+                    // Masukkan data ke dalam tabel form_serah_terima, termasuk jenis_berkas dan id_transaksi
+                    $sql = "INSERT INTO form_serah_terima (jenis_berkas, tanggal, ruangan, jenis, jumlah, keterangan, ttd, id_transaksi)
+                            VALUES ('$jenis_berkas', '$tanggal', '$ruangan', '$jenis', '$jumlah', '$keterangan', '$file', '$id_transaksi')";
 
-                if ($conn->query($sql) === TRUE) {
-                    $msg = "<div class='alert alert-success' id='notification'>Data berhasil disimpan.</div>";
+                    if ($conn->query($sql) === TRUE) {
+                        $msg = "<div class='alert alert-success' id='notification'>Data berhasil disimpan.</div>";
+                    } else {
+                        $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan data: " . $conn->error . "</div>";
+                    }
                 } else {
-                    $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan data: " . $conn->error . "</div>";
+                    $msg = "<div class='alert alert-danger' id='notification'>Tidak ada transaksi aktif yang ditemukan.</div>";
                 }
             }
         }
@@ -179,37 +216,59 @@ $conn->close();
             <input type="date" class="form-control" id="tanggal" name="tanggal" required>
         </div>
         <!-- Ruangan -->
-        <div class="form-group">
-            <label for="ruangan">Ruangan</label>
-            <input list="ruanganList" class="form-control" id="ruangan" name="ruangan" required>
-            <datalist id="ruanganList">
-            <?php
-                $conn = new mysqli("localhost", "root", "", "masterruangan");
+<div class="form-group">
+    <label for="ruangan">Ruangan</label>
+    <select class="form-control" id="ruangan" name="ruangan" required>
+        <option value="" disabled selected>Pilih Ruangan</option> Opsi default
+        <?php
+            $conn = new mysqli("localhost", "root", "", "masterruangan");
 
-                if ($conn->connect_error) {
-                    die("Koneksi gagal: " . $conn->connect_error);
+            if ($conn->connect_error) {
+                die("Koneksi gagal: " . $conn->connect_error);
+            }
+
+            $sql = "SELECT id, ruangan FROM ruangan";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value=\"" . $row["ruangan"] . "\">" . $row["ruangan"] . "</option>";
                 }
+            } else {
+                echo "<option value=''>No data available</option>";
+            }
 
-                $sql = "SELECT id, ruangan FROM ruangan";
-                $result = $conn->query($sql);
+            $conn->close();
+        ?>
+    </select>
+</div>
+        <!-- Jenis -->
+<div class="form-group">
+    <label for="jenis">Jenis</label>
+    <select class="form-control" id="jenis" name="jenis" required>
+        <option value="" disabled selected>Pilih Jenis</option> <!-- Opsi default -->
+        <?php
+            $conn = new mysqli("localhost", "root", "", "masterruangan");
 
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<option value=\"" . $row["ruangan"] . "\">" . $row["ruangan"] . "</option>";
-                    }
-                } else {
-                    echo "<option>No data</option>";
+            if ($conn->connect_error) {
+                die("Koneksi gagal: " . $conn->connect_error);
+            }
+
+            $sql = "SELECT id, jenis FROM tjenis";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    echo "<option value=\"" . $row["jenis"] . "\">" . $row["jenis"] . "</option>";
                 }
+            } else {
+                echo "<option value=''>No data available</option>";
+            }
 
-                $conn->close();
-            ?>
-            </datalist>
-        </div>
-        <!-- Jenis Barang -->
-        <div class="form-group">
-            <label for="jenis">Jenis</label>
-            <input type="text" class="form-control" id="jenis" name="jenis" required>
-        </div>
+            $conn->close();
+        ?>
+    </select>
+</div>
         <!-- Jumlah -->
         <div class="form-group">
         <label for="jumlah">Jumlah</label>

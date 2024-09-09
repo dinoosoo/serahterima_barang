@@ -79,7 +79,7 @@ if(!isset($_SESSION["login"])){
                 </div>
             </li>
             <li class="nav-item">
-    <a class="nav-link" href="tampilkan_data.php">
+    <a class="nav-link" href="tampilan_data.php">
         <i class="fas fa-fw fa-table"></i>
         <span>SERAH TERIMA BARANG</span>
     </a>

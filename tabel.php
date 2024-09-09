@@ -30,7 +30,28 @@ $sql = "SELECT * FROM priode where tanggal_selesai is null";
 $cektombol = $conn->query($sql)->fetch_assoc();
 // print_r($cektombol);
 ?>
+<?php
+    $conn = new mysqli("localhost", "root", "", "masterruangan");
 
+    if ($conn->connect_error) {
+        die("Koneksi gagal: " . $conn->connect_error);
+    }
+
+    // Jika tombol 'Tutup Transaksi' ditekan
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tutup_transaksi'])) {
+        // Query untuk meng-update kolom `tanggal_selesai` pada baris yang masih null
+        $sql = "UPDATE priode SET tanggal_selesai = NOW() WHERE tanggal_selesai IS NULL";
+
+        if ($conn->query($sql) === TRUE) {
+            $msg = "<div class='alert alert-success'>Transaksi berhasil ditutup.</div>";
+        } else {
+            $msg = "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+        }
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+        $conn->close();
+    }
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -129,25 +150,35 @@ $cektombol = $conn->query($sql)->fetch_assoc();
             </tr>
         </thead>
         <tbody>
-            <?php
-            if ($result->num_rows > 0) {
-                $no = 1;
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
-                    <td>" . $row['id'] . "</td>
-                    <td>" . $row['nama'] . "</td>
-                    <td>" . $row['tanggal_masuk'] . "</td>
-                    <td>" . $row['tanggal_selesai'] . "</td>
-                    <td>
-                    <a href='tabeldetail.php?id=" . $row['id'] . "'class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>
-                    </td>
-                    </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='5' class='text-center'>No data found</td></tr>";
+    <?php
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // Determine if the transaction is still open
+            $isOpen = is_null($row['tanggal_selesai']);
+            echo "<tr>
+                <td>" . $row['id'] . "</td>
+                <td>" . $row['nama'] . "</td>
+                <td>" . $row['tanggal_masuk'] . "</td>
+                <td>" . ($isOpen ? 'Belum Selesai' : $row['tanggal_selesai']) . "</td>
+                <td>
+                    <a href='tabeldetail.php?id=" . $row['id'] . "' class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>";
+            
+            if ($isOpen) {
+                echo "
+                    <form method='post' style='display:inline;' action=''>
+                        <input type='hidden' name='transaction_id' value='" . $row['id'] . "'>
+                        <button type='submit' class='btn btn-danger' name='tutup_transaksi'>Tutup Transaksi</button>
+                    </form>";
             }
-            ?>
-        </tbody>
+            
+            echo "</td></tr>";
+        }
+    } else {
+        echo "<tr><td colspan='5' class='text-center'>No data found</td></tr>";
+    }
+    ?>
+</tbody>
+
     </table>
 </div>
 

@@ -142,8 +142,11 @@
                 size: A4;
                 margin: 0;
             }
+        }.data-table img {
+            max-width: 50px;
         }
     </style>
+
 </head>
 <body>
     <div class="button-group">
