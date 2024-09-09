@@ -2,7 +2,7 @@
 session_start();
 
 if(!isset($_SESSION["login"])){
-    header("Location: login.php");
+    header("Location: tampilan.php");
     exit;
 }
 ?>
@@ -83,7 +83,11 @@ if(!isset($_SESSION["login"])){
                 </div>
             </li>
             <li class="nav-item">
+<<<<<<< HEAD
     <a class="nav-link" href="tampilan_data.php">
+=======
+    <a class="nav-link" href="tabel.php">
+>>>>>>> 9a55e77bf02cb7a70a84eff74a11efc5703fe748
         <i class="fas fa-fw fa-table"></i>
         <span>SERAH TERIMA BARANG</span>
     </a>

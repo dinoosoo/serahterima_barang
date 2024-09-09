@@ -164,7 +164,7 @@
             <a href="tabel.php" class="btn btn-danger">
                 <i class=""></i> Back
             </a>
-            <a href="kertas.php?id=<?php echo $_GET['id']; ?>&jenis_berkas=<?php echo $_GET['jenis_berkas']; ?>" class="btn btn-primary">
+            <a href="kertas.php?id=<?php echo isset($_GET['id']); ?>&jenis_berkas=<?php echo isset($_GET['jenis_berkas']); ?>" class="btn btn-primary">
                 <i class=""></i> print
             </a>
         </div>
@@ -221,7 +221,7 @@
                                 if (isset($result) && $result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr>";
-                                        echo "<td>" . $row['id_transaksi'] . "</td>";
+                                        echo "<td>" . $no++ . "</td>";
                                         echo "<td>" . $row['tanggal'] . "</td>";
                                         echo "<td>" . $row['ruangan'] . "</td>";
                                         echo "<td>" . $row['jenis'] . "</td>";
