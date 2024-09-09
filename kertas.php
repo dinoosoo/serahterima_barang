@@ -122,6 +122,10 @@
             background-color: #007bff;
             color: white;
         }
+        .back-button {
+            background-color: red;
+            color: white;
+        }
 
         .period-button {
             background-color: #28a745;
@@ -148,6 +152,7 @@
 <body>
     <div class="button-group">
         <button class="print-button" onclick="window.print()">Print</button>
+        <button class="back-button" href="tabeldetail.php">Back</button>
     </div>
     
     <div class="container">
