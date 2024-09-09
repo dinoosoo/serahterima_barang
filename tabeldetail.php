@@ -164,7 +164,7 @@
             <a href="tabel.php" class="btn btn-danger">
                 <i class=""></i> Back
             </a>
-            <a href="tabel.php" class="btn btn-primary">
+            <a href="kertas.php?id=<?php echo $_GET['id']; ?>&jenis_berkas=<?php echo $_GET['jenis_berkas']; ?>" class="btn btn-primary">
                 <i class=""></i> print
             </a>
         </div>
