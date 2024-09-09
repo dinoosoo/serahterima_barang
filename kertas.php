@@ -148,9 +148,6 @@
 <body>
     <div class="button-group">
         <button class="print-button" onclick="window.print()">Print</button>
-        <button class="period-button" onclick="document.getElementById('filter-form').style.display='block'">Show Filter</button>
-        <button class="period-button" onclick="changeTitle('TANDA SERAH TERIMA BARANG RUSAK')">Barang Rusak</button>
-        <button class="period-button" onclick="changeTitle('TANDA SERAH TERIMA BARANG BARU')">Barang Baru</button>
     </div>
     
     <div class="container">
@@ -160,18 +157,6 @@
             <h5 class="bold" id="serah-terima-title">TANDA SERAH TERIMA BARANG RUSAK</h5>
             <h5>Instalasi Informasi & Teknologi</h5>
             <h5>UOBK RSUD Syarifah Ambami Rato Ebu Bangkalan</h5>
-        </div>
-
-        <div id="filter-form" style="display: none;">
-            <form method="POST" action="">
-                <div style="text-align: center; margin-top: 20px;">
-                    <label for="dari_tgl">Dari tanggal:</label>
-                    <input type="date" id="dari_tgl" name="dari_tgl" required>
-                    <label for="sampai_tgl">Sampai tanggal:</label>
-                    <input type="date" id="sampai_tgl" name="sampai_tgl" required>
-                    <input type="submit" value="Filter">
-                </div>
-            </form>
         </div>
 
         <table class="data-table">
@@ -213,7 +198,7 @@
                         if (isset($result) && $result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td>" . $row['id_transaksi'] . "</td>";
+                                echo "<td>" . $no++ . "</td>";
                                 echo "<td>" . $row['tanggal'] . "</td>";
                                 echo "<td>" . $row['ruangan'] . "</td>";
                                 echo "<td>" . $row['jenis'] . "</td>";
