@@ -101,37 +101,22 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="p-5">
-                                <form method="post" action="">
-                                    <button type="submit" class="btn btn-danger mr-1 mb-5" name="tutup_transaksi">Tutup Transaksi</button>
+                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='index.php'">Kembali</button>
                                     
-                                </form>
-                                <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tampilan.php'">Kembali</button>
                                     <?php
                                         $conn = new mysqli("localhost", "root", "", "masterruangan");
 
                                         if ($conn->connect_error) {
                                             die("Koneksi gagal: " . $conn->connect_error);
                                         }
-
-                                        // Jika tombol 'Tutup Transaksi' ditekan
-                                        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tutup_transaksi'])) {
-                                            // Query untuk meng-update kolom `tanggal_selesai` pada baris yang masih null
-                                            $sql = "UPDATE priode SET tanggal_selesai = NOW() WHERE tanggal_selesai IS NULL";
-
-                                            if ($conn->query($sql) === TRUE) {
-                                                $msg = "<div class='alert alert-success'>Transaksi berhasil ditutup.</div>";
-                                                header("Location: tabel.php");
-                                            } else {
-                                                $msg = "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
-                                            }
-
-                                            $conn->close();
-                                        }
                                     ?>
 
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
+                                    <!-- Kotak untuk teks "Serah Terima Barang" dengan ukuran dan warna lebih pas -->
+                                    <div class="border p-2 rounded mb-4 text-center" style="background-color: #e0e7ff; border-color: #b0c4de;">
+                                        <h1 class="h5" style="color: #4a5568;"><strong>Serah Terima Barang</strong></h1>
                                     </div>
+
+
     <?php
 $conn = new mysqli("localhost", "root", "", "masterruangan");
 
@@ -219,7 +204,7 @@ $conn->close();
 <div class="form-group">
     <label for="ruangan">Ruangan</label>
     <select class="form-control" id="ruangan" name="ruangan" required>
-        <option value="" disabled selected>Pilih Ruangan</option> Opsi default
+        <option value="" disabled selected></option> Opsi default
         <?php
             $conn = new mysqli("localhost", "root", "", "masterruangan");
 
@@ -246,7 +231,7 @@ $conn->close();
 <div class="form-group">
     <label for="jenis">Jenis</label>
     <select class="form-control" id="jenis" name="jenis" required>
-        <option value="" disabled selected>Pilih Jenis</option> <!-- Opsi default -->
+        <option value="" disabled selected></option> <!-- Opsi default -->
         <?php
             $conn = new mysqli("localhost", "root", "", "masterruangan");
 
@@ -271,8 +256,8 @@ $conn->close();
 </div>
         <!-- Jumlah -->
         <div class="form-group">
-        <label for="jumlah">Jumlah</label>
-        <input type="number" class="form-control" id="jumlah" name="jumlah" required>
+            <label for="jumlah">Jumlah</label>
+            <input type="number" class="form-control" id="jumlah" name="jumlah" min="0" required>
         </div>
         <!-- Keterangan -->
         <div class="form-group">

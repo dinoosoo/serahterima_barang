@@ -2,10 +2,11 @@
 session_start();
 
 if(!isset($_SESSION["login"])){
-    header("Location: tampilan.php");
+    header("Location: login.php");
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,23 +28,24 @@ if(!isset($_SESSION["login"])){
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    
-</head>
+
 <body id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 <!-- Sidebar - Merek -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center"class="nav-link" href="admin.php">
+<a class="sidebar-brand d-flex align-items-center justify-content-center" class="nav-link" href="admin.php">
     <div class="sidebar-brand-icon">
         <img src="img/rsud syamrabu.png" alt="" style="width: 80px; height: auto;">
     </div>
     <div class="sidebar-brand-text mx-3" style="margin-right: 70px;">SERVICE KATALOG<sup></sup></div>
 </a>
+
+
 
 
 
@@ -79,16 +81,20 @@ if(!isset($_SESSION["login"])){
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
 
-        <a class="nav-link" href="index.php">
-            <a class="nav-link" href="tabel.php">
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <hr class="sidebar-divider">
+
+<!-- Nav Item - Tampilkan Data -->
+<li class="nav-item">
+    <a class="nav-link" href="tabel.php">
         <i class="fas fa-fw fa-table"></i>
         <span>SERAH TERIMA BARANG</span>
     </a>
 </li>
-            <!-- Nav Item - Utilities Collapse Menu -->
-        
+
+<hr class="sidebar-divider d-none d-md-block">
+
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -107,8 +113,8 @@ if(!isset($_SESSION["login"])){
             <!-- Main Content -->
             <div id="content">
 
-                <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                                <!-- Topbar -->
+                                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             <div class="mb-3">
                     <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Search data...">
                 </div>
@@ -131,27 +137,21 @@ if(!isset($_SESSION["login"])){
                                 </div>
                             </form>
                         </div>
-                    </li>
-                </ul>
-            </nav>
 
-
-                     
+                    
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-    <!-- <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-user-circle fa-2x"></i> 
-    </a> -->
+    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-circle fa-2x"></i> <!-- Ganti gambar dengan ikon kepala polos -->
+    </a>
     <!-- Dropdown - User Information -->
-    <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
             Logout
         </a>
-    </div> -->
+    </div>
 </li>
-
-
                     </ul>
 
                 </nav>
@@ -159,145 +159,86 @@ if(!isset($_SESSION["login"])){
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
- <!-- Content Wrapper -->
 
- <div class="content-wrapper">
-    <!-- Content Header -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Master Ruangan</h1>
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">SELAMAT DATANG</h1>
+                    <h5>SERVICE KATALOG | INSTALASI IT</h5>
+                    <div class="row" >
+                    <!-- Earnings (Monthly) Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Master Ruangan
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-building fa-2x text-gray-300"></i>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Main content -->
-    <div class="content">
-  <div class="container-fluid">
-    <div class="tab-content">
-      <!-- Master Ruangan -->
-      <div class="tab-pane fade show active" id="master-ruangan">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Data Ruangan</h3>
-              </div>
-              <div class="card-body">
-                <div class="table-container">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Ruangan</th>
-                        <th colspan=2 class="centered-cell">Aksi</th>
-                      </tr>
-                    </thead>
-                    <tbody id="ruangan-table-body">
-                      <!-- Data will be added here by PHP -->
-                      <?php
-                      // Koneksi ke database
-                      $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-                      // Periksa koneksi
-                      if ($conn->connect_error) {
-                          die("Koneksi gagal: " . $conn->connect_error);
-                      }
-
-                      // Ambil data dari tabel ruangan
-                      $sql = "SELECT id, ruangan FROM ruangan";
-                      $result = $conn->query($sql);
-
-                      // Loop melalui hasil dan buat baris tabel
-                      if ($result->num_rows > 0) {
-                          while ($row = $result->fetch_assoc()) {
-                              echo "<tr>
-                              <td>" . $row["id"] . "</td>
-                              <td>" . $row["ruangan"] . "</td>
-                              <td>
-                                  <div class='d-flex justify-content-center'>
-                                  <a href='master ruangan.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
-                                  <a href='ruanganmaster/hapus.php?id={$row['id']}' class='btn btn-danger'>Hapus</a>
-                                  </div>
-                              </td>
-                              </tr>";
-                          }
-                      } else {
-                          echo "<tr><td colspan='3'>No data</td></tr>";
-                      }
-
-                      // Tutup koneksi
-                      $conn->close();
-                      ?>
-                    </tbody>
-                  </table>
+<!-- Master Jenis Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Master Jenis
+                    </div>
                 </div>
-              </div>
+                <div class="col-auto">
+                    <i class="fas fa-box fa-2x text-gray-300"></i>
+                </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Form Ruangan</h3>
-              </div>
-              <div class="card-body">
-                  <?php
-                      // Koneksi ke database
-                      $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-                      // Periksa koneksi
-                      if ($conn->connect_error) {
-                          die("Koneksi gagal: " . $conn->connect_error);
-                      };
-
-                      $edit = isset($_GET['edit']) ? $_GET['edit'] : 0;
-                      $row = array('id' => '', 'ruangan' => '');
-                      if ($edit) {
-                          $id = $_GET['id'];
-                          $sql = "SELECT * FROM ruangan WHERE id=$id";
-                          $result = $conn->query($sql);
-                          if ($result && $result->num_rows > 0) {
-                              $row = $result->fetch_assoc();
-                          }
-                      }
-                  ?>
-              <form id="main-form" method="post" action="<?php echo $edit == 0 ? 'ruanganmaster/tambah.php' : 'ruanganmaster/edit.php?id=' . htmlspecialchars($row['id']); ?>">
-              <div class="form-group">
-                  <label for="ruangan">Ruangan</label>
-                  <input type="text" class="form-control" id="ruangan" name="ruangan" value="<?php echo htmlspecialchars($row['ruangan']); ?>" required>
-              </div>
-
-                  <button type="submit" class="btn btn-primary btn-block"><?php echo $edit == 0 ? 'Tambah' : 'Update'; ?></button>
-                  <button type="button" class="btn btn-danger btn-block" onclick="clearForm()">Bersihkan</button>
-              </form>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
-<!-- /.container-fluid -->
-
+<!-- Tampilkan Data Card Example -->
+<div class="col-xl-3 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Serah Terima Barang
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <i class="fas fa-table fa-2x text-gray-300"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
                 <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
-        </div>
 
+         <!-- Footer -->
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
     <!-- End of Page Wrapper -->
     <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; MAGANG SYAMRABU  2024</span>
+                        <span>Copyright &copy; MAGANG SYAMRABU 2024</span>
                     </div>
                 </div>
             </footer>
+
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -314,7 +255,8 @@ if(!isset($_SESSION["login"])){
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Apakah Anda yakin ingin keluar dari halaman ini? 
+                    Pastikan untuk menyimpan semua pekerjaan Anda sebelum melanjutkan.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="logout.php">Logout</a>
@@ -332,12 +274,6 @@ if(!isset($_SESSION["login"])){
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <script>
-        function clearForm() {
-            document.getElementById("main-form").reset();
-            window.location.href = 'master ruangan.php';
-        }
-    </script>
 
 </body>
 

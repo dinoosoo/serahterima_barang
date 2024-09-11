@@ -53,11 +53,11 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="tabel.php">
     <div class="sidebar-brand-icon">
-        <i class="fas fa-hospital"></i>
+        <img src="img/rsud syamrabu.png" alt="" style="width: 80px; height: auto;">
     </div>
-    <div class="sidebar-brand-text mx-3">SERVICE KATALOG<sup></sup></div>
+    <div class="sidebar-brand-text mx-3" style="margin-right: 70px;">SERVICE KATALOG<sup></sup></div>
 </a>
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -164,8 +164,8 @@
             <a href="tabel.php" class="btn btn-danger">
                 <i class=""></i> Back
             </a>
-            <a href="kertas.php?id=<?php echo isset($_GET['id']); ?>&jenis_berkas=<?php echo isset($_GET['jenis_berkas']); ?>" class="btn btn-primary">
-                <i class=""></i> print
+            <a href="kertas.php?id=<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>&jenis_berkas=<?php echo isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''; ?>" class="btn btn-primary">
+            <i class=""></i> Print
             </a>
         </div>
         </div>
@@ -183,7 +183,7 @@
                         if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
                             $id = isset($_GET['id']) ? $_GET['id'] : null;
                             $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
-
+                            $no =1;
                             $sql = "SELECT * FROM form_serah_terima WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
                             $result = $conn->query($sql);
                         } else {
@@ -207,7 +207,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>id</td>
+                                    <th>No</td>
                                     <th>Tanggal</th>
                                     <th>Ruangan</th>
                                     <th>Jenis</th>
@@ -239,17 +239,6 @@
                     </div>
 
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; ADMIN SYAMRABU  2024</span>
-                    </div>
-                    <div >
-                        
-                    </div>
-                </div>
-            </footer>
             <!-- End of Footer -->
 
         </div>
@@ -257,6 +246,17 @@
 
     </div>
     <!-- End of Page Wrapper -->
+     <!-- Footer -->
+     <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; MAGANG SYAMRABU  2024</span>
+                    </div>
+                    <div >
+                        
+                    </div>
+                </div>
+            </footer>
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
