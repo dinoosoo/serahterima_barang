@@ -2,7 +2,7 @@
 session_start();
 
 if(!isset($_SESSION["login"])){
-    header("Location: login.php");
+    header("Location: index.php");
     exit;
 }
 ?>
@@ -38,7 +38,7 @@ if(!isset($_SESSION["login"])){
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 <!-- Sidebar - Merek -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" class="nav-link" href="admin.php">
+<a class="sidebar-brand d-flex align-items-center justify-content-center" class="nav-link" href="index.php">
     <div class="sidebar-brand-icon">
         <img src="img/rsud syamrabu.png" alt="" style="width: 80px; height: auto;">
     </div>

@@ -21,7 +21,7 @@ if( isset($_POST["login"])) {
             
             $_SESSION["login"] = true;
 
-            header("Location: index.php");
+            header("Location: admin.php");
             exit;
         }
     }

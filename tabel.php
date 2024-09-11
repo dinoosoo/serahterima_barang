@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION["login"])) {
-    header("Location: tampilan.php");
+    header("Location: index.php");
     exit;
 }
 
@@ -246,8 +246,19 @@ $conn->close();
             }
             </script>
         </div>
+        <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; MAGANG SYAMRABU  2024</span>
+                    </div>
+                    <div >
+                        
+                    </div>
+                </div>
+            </footer>
     </div>
 </div>
+
 
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>

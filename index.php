@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Tampilkan Data</title>
+    <title>Service Katalog</title>
 
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" href="css/style.css">
