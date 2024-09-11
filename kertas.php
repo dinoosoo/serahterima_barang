@@ -122,6 +122,10 @@
             background-color: #007bff;
             color: white;
         }
+        .back-button {
+            background-color: red;
+            color: white;
+        }
 
         .period-button {
             background-color: #28a745;
@@ -142,36 +146,54 @@
                 size: A4;
                 margin: 0;
             }
+        }.data-table img {
+            max-width: 50px;
         }
     </style>
+
 </head>
 <body>
     <div class="button-group">
         <button class="print-button" onclick="window.print()">Print</button>
-        <button class="period-button" onclick="document.getElementById('filter-form').style.display='block'">Show Filter</button>
-        <button class="period-button" onclick="changeTitle('TANDA SERAH TERIMA BARANG RUSAK')">Barang Rusak</button>
-        <button class="period-button" onclick="changeTitle('TANDA SERAH TERIMA BARANG BARU')">Barang Baru</button>
+        <button class="back-button" onclick="window.location.href='tabeldetail.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
+
     </div>
-    
+    <?php
+// Koneksi ke database
+$conn = new mysqli("localhost", "root", "", "masterruangan");
+
+// Periksa koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Menentukan teks judul berdasarkan parameter jenis_berkas
+$judul = "TANDA SERAH TERIMA BARANG RUSAK"; // Default title
+if (isset($_GET['jenis_berkas'])) {
+    $jenis_berkas = $_GET['jenis_berkas'];
+    if ($jenis_berkas == "Baru") {
+        $judul = "TANDA SERAH TERIMA BARANG BARU";
+    }
+}
+
+// Memeriksa apakah ID dan jenis_berkas ada di GET
+if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
+    $id = isset($_GET['id']) ? $_GET['id'] : null;
+    $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
+    $no = 1;
+    $sql = "SELECT * FROM form_serah_terima WHERE id_transaksi = '$id' AND jenis_berkas = '$jenis_berkas'";
+    $result = $conn->query($sql);
+} else {
+    echo "Tidak ada data";
+}
+?>
     <div class="container">
         <img src="img/logorsud.jpeg" alt="Logo RSUD" class="logo">
         
         <div class="header-text">
-            <h5 class="bold" id="serah-terima-title">TANDA SERAH TERIMA BARANG RUSAK</h5>
+            <h5 id="judul" class="bold"><?php echo $judul; ?></h5>
             <h5>Instalasi Informasi & Teknologi</h5>
             <h5>UOBK RSUD Syarifah Ambami Rato Ebu Bangkalan</h5>
-        </div>
-
-        <div id="filter-form" style="display: none;">
-            <form method="POST" action="">
-                <div style="text-align: center; margin-top: 20px;">
-                    <label for="dari_tgl">Dari tanggal:</label>
-                    <input type="date" id="dari_tgl" name="dari_tgl" required>
-                    <label for="sampai_tgl">Sampai tanggal:</label>
-                    <input type="date" id="sampai_tgl" name="sampai_tgl" required>
-                    <input type="submit" value="Filter">
-                </div>
-            </form>
         </div>
 
         <table class="data-table">
@@ -191,29 +213,11 @@
             </thead>
             <tbody>
             <?php
-                            // Koneksi ke database
-                        $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-                        // Periksa koneksi
-                        if ($conn->connect_error) {
-                            die("Koneksi gagal: " . $conn->connect_error);
-                        }
-
-                        // Memeriksa apakah ID dan jenis_berkas ada di GET
-                        if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
-                            $id = isset($_GET['id']) ? $_GET['id'] : null;
-                            $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
-
-                            $sql = "SELECT * FROM form_serah_terima WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
-                            $result = $conn->query($sql);
-                        } else {
-                            echo "Tidak ada data";
-                        }
                 
                         if (isset($result) && $result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td>" . $row['id_transaksi'] . "</td>";
+                                echo "<td>" . $no++ . "</td>";
                                 echo "<td>" . $row['tanggal'] . "</td>";
                                 echo "<td>" . $row['ruangan'] . "</td>";
                                 echo "<td>" . $row['jenis'] . "</td>";
@@ -225,7 +229,7 @@
                         } else {
                             echo "<tr><td colspan='7'>Tidak ada data.</td></tr>";
                         }
-                        ?>
+                ?>
             </tbody>
         </table>
     </div>

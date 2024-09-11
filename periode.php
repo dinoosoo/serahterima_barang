@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION["login"])) {
-    header("Location: login.php");
+    header("Location: tampilan.php");
     exit;
 }
 
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center"class="nav-link" href="index.php">
             <div class="sidebar-brand-icon">
                 <i class="fas fa-hospital"></i>
             </div>
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </a>
         <hr class="sidebar-divider my-0">
         <li class="nav-item active">
-            <a class="nav-link" href="input_periode.php">
+            <a class="nav-link" href="index.php">
                 <i class="fas fa-calendar-alt"></i>
                 <span>Input Periode</span>
             </a>
@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <footer class="sticky-footer bg-white footer-spacing">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; ADMIN SYAMRABU 2024</span>
+                        <span>Copyright &copy; MAGANG SYAMRABU 2024</span>
                     </div>
                 </div>
             </footer>
