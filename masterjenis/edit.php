@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
         $conn->close();
         // Redirect kembali ke halaman form
-        header("Location: ../master jenis.php");
+        header("Location: ../master_jenis.php");
         exit();
 
         } else {

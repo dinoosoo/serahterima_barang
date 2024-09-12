@@ -72,41 +72,42 @@ if(!isset($_SESSION["login"])){
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="master ruangan.php">Master Ruangan</a>
-                        <a class="collapse-item" href="master jenis.php">Master Jenis</a>
+                        <a class="collapse-item" href="master_ruangan.php">Master Ruangan</a>
+                        <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
                         <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
                         
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <hr class="sidebar-divider">
 
-        <a class="nav-link" href="index.php">
-            <a class="nav-link" href="tabel.php">
+<!-- Nav Item - Tampilkan Data -->
+<li class="nav-item">
+    <a class="nav-link" href="tabel.php">
         <i class="fas fa-fw fa-table"></i>
         <span>SERAH TERIMA BARANG</span>
     </a>
 </li>
-            <!-- Nav Item - Utilities Collapse Menu -->
-        
 
-            <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+<hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
+<!-- Divider -->
+<hr class="sidebar-divider d-none d-md-block">
 
-        </ul>
-        <!-- End of Sidebar -->
+<!-- Sidebar Toggler (Sidebar) -->
+<div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+</div>
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+</ul>
+<!-- End of Sidebar -->
 
-            <!-- Main Content -->
-            <div id="content">
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
 
+<!-- Main Content -->
+<div id="content">
                 <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             <div class="mb-3">
@@ -131,24 +132,22 @@ if(!isset($_SESSION["login"])){
                                 </div>
                             </form>
                         </div>
-                    </li>
-                </ul>
-            </nav>
+
 
 
                      
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-    <!-- <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-user-circle fa-2x"></i> 
-    </a> -->
+    </a>
     <!-- Dropdown - User Information -->
-    <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
             Logout
         </a>
-    </div> -->
+    </div>
 </li>
 
 
@@ -218,14 +217,15 @@ if(!isset($_SESSION["login"])){
                               <td>" . $row["ruangan"] . "</td>
                               <td>
                                   <div class='d-flex justify-content-center'>
-                                  <a href='master ruangan.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
+                                  <a href='master_ruangan.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
                                   <a href='ruanganmaster/hapus.php?id={$row['id']}' class='btn btn-danger'>Hapus</a>
                                   </div>
                               </td>
                               </tr>";
                           }
                       } else {
-                          echo "<tr><td colspan='3'>No data</td></tr>";
+                        echo "<tr><td colspan='3' style='text-align: center;'>No data</td></tr>";
+
                       }
 
                       // Tutup koneksi
@@ -314,7 +314,8 @@ if(!isset($_SESSION["login"])){
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Apakah Anda yakin ingin keluar dari halaman ini? 
+                    Pastikan untuk menyimpan semua pekerjaan Anda sebelum melanjutkan.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="logout.php">Logout</a>
@@ -335,7 +336,7 @@ if(!isset($_SESSION["login"])){
     <script>
         function clearForm() {
             document.getElementById("main-form").reset();
-            window.location.href = 'master ruangan.php';
+            window.location.href = 'master_ruangan.php';
         }
     </script>
 

@@ -76,24 +76,26 @@ if(!isset($_SESSION["login"])){
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="master ruangan.php">Master Ruangan</a>
-                        <a class="collapse-item" href="master jenis.php">Master Jenis</a>
+                        <a class="collapse-item" href="master_ruangan.php">Master Ruangan</a>
+                        <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
                         <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
                         
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
 
-    <a class="nav-link" href="index.php">
-    <a class="nav-link" href="tabel.php">
-        <i class="fas fa-fw fa-table"></i>
-        <span>SERAH TERIMA BARANG</span>
-    </a>
-</li>
-            <!-- Nav Item - Utilities Collapse Menu -->
-        
-            
+           <!-- Nav Item - Utilities Collapse Menu -->
+           <hr class="sidebar-divider">
+
+            <!-- Nav Item - Tampilkan Data -->
+            <li class="nav-item">
+                <a class="nav-link" href="tabel.php">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>SERAH TERIMA BARANG</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -136,23 +138,19 @@ if(!isset($_SESSION["login"])){
                                 </div>
                             </form>
                         </div>
-                    </li>
-                </ul>
-            </nav>
-
 
 <!-- Nav Item - User Information -->
-<!-- <li class="nav-item dropdown no-arrow">
+<li class="nav-item dropdown no-arrow">
     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-user-circle fa-2x"></i> 
-    </a> -->
+    </a>
     <!-- Dropdown - User Information -->
-    <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
             Logout
         </a>
-    </div> -->
+    </div>
 </li>
 
                     </ul>
@@ -220,17 +218,16 @@ if(!isset($_SESSION["login"])){
                                     <td>" . $row["jenis"] . "</td>
                                     <td>
                                         <div class='d-flex justify-content-center'>
-                                        <a href='master jenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
+                                        <a href='master_jenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
                                         <a href='masterjenis/hapus.php?id={$row['id']}' class='btn btn-danger'>Hapus</a>
                                         </div>
                                     </td>
                                     </tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='2'>No data</td></tr>";
-                            }
+                                echo "<tr><td colspan='3' style='text-align: center;'>No data</td></tr>";
 
-                            // Tutup koneksi
+                            }  // Tutup koneksi
                             $conn->close();
                             ?>
                           </tbody>
@@ -271,7 +268,7 @@ if(!isset($_SESSION["login"])){
                             <input type="text" class="form-control" id="jenis" name="jenis" required
                             <?php echo $edit > 0 ? 'value="' . htmlspecialchars($row['jenis']) . '"' : 'placeholder=""'; ?>>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Tambah</button>
+                        <button type="submit" class="btn btn-primary btn-block"><?php echo $edit == 0 ? 'Tambah' : 'Update'; ?></button>
                         <button type="button" class="btn btn-danger btn-block" onclick="clearForm()">Bersihkan</button>
                     </form>
                     </div>
@@ -310,7 +307,26 @@ if(!isset($_SESSION["login"])){
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
+<!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Apakah Anda yakin ingin keluar dari halaman ini? 
+                    Pastikan untuk menyimpan semua pekerjaan Anda sebelum melanjutkan.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -325,7 +341,7 @@ if(!isset($_SESSION["login"])){
     <script>
         function clearForm() {
             document.getElementById("main-form").reset();
-            window.location.href = 'master jenis.php';
+            window.location.href = 'master_jenis.php';
         }
     </script>
 </body>

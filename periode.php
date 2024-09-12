@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->execute()) {
         // Redirect ke tabel.php setelah data berhasil disimpan
-        header("Location: form tabel.php");
+        header("Location: tabel.php");
         exit();
     } else {
         echo "Error: " . $stmt->error;
@@ -66,12 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div id="wrapper">
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center"class="nav-link" href="index.php">
-            <div class="sidebar-brand-icon">
-                <i class="fas fa-hospital"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">INPUT DATA</div>
-        </a>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center"class=class="nav-link" href="admin.php">
+    <div class="sidebar-brand-icon">
+        <img src="img/rsud syamrabu.png" alt="" style="width: 80px; height: auto;">
+    </div>
+    <div class="sidebar-brand-text mx-3" style="margin-right: 70px;">SERVICE KATALOG<sup></sup></div>
+</a>
         <hr class="sidebar-divider my-0">
         <li class="nav-item active">
             <a class="nav-link" href="index.php">
@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <h1 class="h3 mb-4 text-gray-800">Input Periode</h1>
+                <h1 class="h3 mb-4 text-gray-800">Masukan Priode</h1>
 
                 <form method="POST">
                     <div class="form-group">
