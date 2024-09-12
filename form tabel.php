@@ -40,15 +40,6 @@
         }
 
         .form-container {
-<<<<<<< HEAD
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
         width: 80%;  /* Lebar form ditingkatkan */
         margin: 0 auto;  /* Posisikan form di tengah */
         padding: 20px;  /* Tambah padding untuk jarak yang nyaman */
@@ -56,7 +47,6 @@
         border-radius: 10px;  /* Tambahkan sudut yang membulat */
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);  /* Bayangan halus untuk tampilan modern */
     }
-
 
         .form-control {
             border-radius: 4px;
@@ -83,24 +73,12 @@
             cursor: pointer;
         }
 
-        .top-right-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
         @media (max-width: 768px) {
             .form-container {
                 padding: 15px;
                 max-width: 100%;
             }
         }
-        .custom-heading {
-            font-weight: bold;
-            border: 2px solid #007bff;
-            border-radius: 8px;
-            padding: 10px;
-            background-color: #e9ecef;
 
         /* Custom styles for the heading */
         .custom-heading {
@@ -123,16 +101,6 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="p-5">
-<<<<<<< HEAD
-                                    <!-- Tambahkan tombol Periode di bagian atas kanan -->
-                                    <div class="top-right-button">
-                                        <button class="btn btn-info" onclick="window.location.href='login.php'">Periode</button>
-                                    </div>
-                                    <button class="btn btn-danger mr-1 mb-5" onclick="window.location.href='periode.php'">Tutup Transaksi</button>
-                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabel.php'">Kembali</button>
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Formulir Serah Terima Barang</h1>
-=======
                                     <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='index.php'">Kembali</button>
                                     
                                     <?php
@@ -146,7 +114,6 @@
                                     <!-- Kotak untuk teks "Serah Terima Barang" dengan ukuran dan warna lebih pas -->
                                     <div class="border p-2 rounded mb-4 text-center" style="background-color: #e0e7ff; border-color: #b0c4de;">
                                         <h1 class="h5" style="color: #4a5568;"><strong>Serah Terima Barang</strong></h1>
->>>>>>> 530ad3821e4638361813c05f88a5447363f55f48
                                     </div>
 
 
@@ -237,130 +204,9 @@ $conn->close();
 <div class="form-group">
     <label for="ruangan">Ruangan</label>
     <select class="form-control" id="ruangan" name="ruangan" required>
-<<<<<<< HEAD
-        <option value="" disabled selected>Pilih Ruangan</option> <!-- Opsi default -->
-        <?php
-            $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-            if ($conn->connect_error) {
-                die("Koneksi gagal: " . $conn->connect_error);
-            }
-
-            $sql = "SELECT id, ruangan FROM ruangan";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<option value=\"" . $row["ruangan"] . "\">" . $row["ruangan"] . "</option>";
-                }
-            } else {
-                echo "<option value=''>No data available</option>";
-            }
-
-            $conn->close();
-        ?>
-    </select>
-</div>
-
-<!-- Jenis -->
-<div class="form-group">
-    <label for="jenis">Jenis</label>
-    <select class="form-control" id="jenis" name="jenis" required>
-        <option value="" disabled selected>Pilih Jenis</option> <!-- Opsi default -->
-        <?php
-            $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-            if ($conn->connect_error) {
-                die("Koneksi gagal: " . $conn->connect_error);
-            }
-
-            $sql = "SELECT id, jenis FROM tjenis";
-            $result = $conn->query($sql);
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<option value=\"" . $row["jenis"] . "\">" . $row["jenis"] . "</option>";
-                }
-            } else {
-                echo "<option value=''>No data available</option>";
-            }
-
-            $conn->close();
-        ?>
-    </select>
-</div>
-
-
-
-
-    if (empty($signature)) {
-        $msg = "<div class='alert alert-danger' id='notification'>Tidak ada data tanda tangan yang diterima.</div>";
-    } else {
-        $signatureFileName = uniqid() . '.png';
-        $signature = str_replace('data:image/png;base64,', '', $signature);
-        $signature = str_replace(' ', '+', $signature);
-        $data = base64_decode($signature);
-
-        if ($data === false) {
-            $msg = "<div class='alert alert-danger' id='notification'>Gagal mendekode tanda tangan.</div>";
-        } else {
-            $dir = 'signatures';
-            if (!file_exists($dir)) {
-                mkdir($dir, 0777, true);
-            }
-
-            $file = $dir . '/' . $signatureFileName;
-            if (file_put_contents($file, $data) === false) {
-                $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan tanda tangan.</div>";
-            } else {
-                // Masukkan data ke dalam tabel form_serah_terima, termasuk jenis_berkas
-                $sql = "INSERT INTO form_serah_terima (jenis_berkas, tanggal, ruangan, jenis, jumlah, keterangan, ttd)
-                        VALUES ('$jenis_berkas', '$tanggal', '$ruangan', '$jenis', '$jumlah', '$keterangan', '$file')";
-
-                if ($conn->query($sql) === TRUE) {
-                    $msg = "<div class='alert alert-success' id='notification'>Data berhasil disimpan.</div>";
-                } else {
-                    $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan data: " . $conn->error . "</div>";
-                }
-            }
-        }
-    }
-}
-
-$conn->close();
-?>
-
-<!-- Show message if set -->
-<?php if (isset($msg)) echo $msg; ?>
-
-<!-- Form -->
-<form method="post" action="" onsubmit="return validateForm();" id="transactionForm">
-    <div class="form-container">
-        <!-- Pilihan Barang Rusak atau Baru -->
-        <div class="form-group">
-            <label>Jenis Berkas</label><br>
-            <input type="radio" id="barangBaru" name="jenis_berkas" value="baru" required>
-            <label for="barangBaru">Barang Baru</label>
-            <input type="radio" id="barangRusak" name="jenis_berkas" value="rusak" required>
-            <label for="barangRusak">Barang Rusak</label>
-        </div>
-        <!-- Tanggal -->
-        <div class="form-group">
-            <label for="tanggal">Tanggal</label>
-            <input type="date" class="form-control" id="tanggal" name="tanggal" required>
-        </div>
-        <!-- Ruangan -->
-        <div class="form-group">
-            <label for="ruangan">Ruangan</label>
-            <input list="ruanganList" class="form-control" id="ruangan" name="ruangan" required>
-            <datalist id="ruanganList">
-            <?php
-                $conn = new mysqli("localhost", "root", "", "masterruangan");
-=======
         <option value="" disabled selected></option> Opsi default
         <?php
             $conn = new mysqli("localhost", "root", "", "masterruangan");
->>>>>>> 530ad3821e4638361813c05f88a5447363f55f48
 
             if ($conn->connect_error) {
                 die("Koneksi gagal: " . $conn->connect_error);
@@ -404,23 +250,10 @@ $conn->close();
                 echo "<option value=''>No data available</option>";
             }
 
-<<<<<<< HEAD
-                $conn->close();
-            ?>
-            </datalist>
-        </div>
-        <!-- Jenis Barang -->
-        <div class="form-group">
-            <label for="jenis">Jenis</label>
-            <input type="text" class="form-control" id="jenis" name="jenis" required>
-        </div>
->>>>>>> 402f01de0f447f633f0f6b514a979a87cb951113
-=======
             $conn->close();
         ?>
     </select>
 </div>
->>>>>>> 530ad3821e4638361813c05f88a5447363f55f48
         <!-- Jumlah -->
         <div class="form-group">
             <label for="jumlah">Jumlah</label>
@@ -530,5 +363,5 @@ $conn->close();
         }, 5000);
     </script>
 </body>
-</html>
+
 </html>
