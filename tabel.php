@@ -213,7 +213,7 @@ $conn->close();
                 } else {
                     echo '
                     <div class="d-flex justify-content-end mb-3">
-                        <a href="form_tabel.php" class="btn btn-danger">
+                        <a href="form_tabel.php?kembali=tabel.php" class="btn btn-danger">
                             <i class=""></i> Back
                         </a>
                     </div>';

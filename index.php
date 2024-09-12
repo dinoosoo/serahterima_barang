@@ -62,7 +62,7 @@
                                     Opsi 1
                                 </div>
                                 <div class="h5 mb-0 font-weight-bold text-gray -1000">
-    <a href="form_tabel.php" class="text-decoration-none text-gray-1000">
+    <a href="form_tabel.php?kembali=index.php" class="text-decoration-none text-gray-1000">
         $erah Terima <br> Barang
     </a>
 </div>

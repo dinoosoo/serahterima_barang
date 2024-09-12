@@ -218,7 +218,7 @@ if(!isset($_SESSION["login"])){
                                     <td>" . $row["jenis"] . "</td>
                                     <td>
                                         <div class='d-flex justify-content-center'>
-                                        <a href='master_master_jenis.phpjenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
+                                        <a href='master_jenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
                                         <a href='masterjenis/hapus.php?id={$row['id']}' class='btn btn-danger'>Hapus</a>
                                         </div>
                                     </td>
@@ -268,7 +268,7 @@ if(!isset($_SESSION["login"])){
                             <input type="text" class="form-control" id="jenis" name="jenis" required
                             <?php echo $edit > 0 ? 'value="' . htmlspecialchars($row['jenis']) . '"' : 'placeholder=""'; ?>>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Tambah</button>
+                        <button type="submit" class="btn btn-primary btn-block"><?php echo $edit == 0 ? 'Tambah' : 'Update'; ?></button>
                         <button type="button" class="btn btn-danger btn-block" onclick="clearForm()">Bersihkan</button>
                     </form>
                     </div>
