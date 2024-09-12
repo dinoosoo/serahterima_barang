@@ -72,8 +72,8 @@ if(!isset($_SESSION["login"])){
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="master ruangan.php">Master Ruangan</a>
-                        <a class="collapse-item" href="master jenis.php">Master Jenis</a>
+                        <a class="collapse-item" href="master_ruangan.php">Master Ruangan</a>
+                        <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
                         <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
                         
                     </div>
@@ -131,24 +131,22 @@ if(!isset($_SESSION["login"])){
                                 </div>
                             </form>
                         </div>
-                    </li>
-                </ul>
-            </nav>
+
 
 
                      
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-    <!-- <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-user-circle fa-2x"></i> 
-    </a> -->
+    </a>
     <!-- Dropdown - User Information -->
-    <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
             Logout
         </a>
-    </div> -->
+    </div>
 </li>
 
 

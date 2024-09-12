@@ -74,8 +74,8 @@ if(!isset($_SESSION["login"])){
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="master ruangan.php">Master Ruangan</a>
-                        <a class="collapse-item" href="master jenis.php">Master Jenis</a>
+                        <a class="collapse-item" href="master_ruangan.php">Master Ruangan</a>
+                        <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
                         <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
                         
                     </div>
