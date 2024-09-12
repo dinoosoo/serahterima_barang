@@ -171,7 +171,7 @@ if(!isset($_SESSION["login"])){
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">Master Jenis</h1>
+              <h1 class="m-0 text-dark">Master Aplikasi</h1>
             </div>
           </div>
         </div>
@@ -187,7 +187,7 @@ if(!isset($_SESSION["login"])){
                 <div class="col-md-6">
                   <div class="card">
                     <div class="card-header">
-                      <h3 class="card-title">Data Jenis</h3>
+                      <h3 class="card-title">Data Aplikasi</h3>
                     </div>
                     <div class="card-body">
                       <div class="table-container">
@@ -195,7 +195,7 @@ if(!isset($_SESSION["login"])){
                           <thead>
                             <tr>
                               <th>ID</th>
-                              <th>Jenis</th>
+                              <th>Aplikasi</th>
                               <th colspan=2 class="centered-cell">Aksi</th>
                             </tr>
                           </thead>
@@ -211,7 +211,7 @@ if(!isset($_SESSION["login"])){
                             }
 
                             // Ambil data dari tabel tjenis
-                            $sql = "SELECT id, jenis FROM master_jenis";
+                            $sql = "SELECT id, aplikasi FROM master_aplikasi";
                             $result = $conn->query($sql);
 
                             // Loop melalui hasil dan buat baris tabel
@@ -219,11 +219,11 @@ if(!isset($_SESSION["login"])){
                                 while ($row = $result->fetch_assoc()) {
                                     echo "<tr>
                                     <td>" . $row["id"] . "</td>
-                                    <td>" . $row["jenis"] . "</td>
+                                    <td>" . $row["aplikasi"] . "</td>
                                     <td>
                                         <div class='d-flex justify-content-center'>
-                                        <a href='master_jenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
-                                        <a href='crud/hapus.php?id={$row['id']}&tabel=master_jenis&master=master_jenis.php' class='btn btn-danger'>Hapus</a>
+                                        <a href='master_aplikasi.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
+                                        <a href='crud/hapus.php?id={$row['id']}&tabel=master_aplikasi&master=master_aplikasi.php' class='btn btn-danger'>Hapus</a>
                                         </div>
                                     </td>
                                     </tr>";
@@ -244,7 +244,7 @@ if(!isset($_SESSION["login"])){
                 <div class="col-md-6">
                   <div class="card">
                     <div class="card-header">
-                      <h3 class="card-title">Form Jenis</h3>
+                      <h3 class="card-title">Form Aplikasi</h3>
                     </div>
                     <div class="card-body">
                         <?php
@@ -257,22 +257,22 @@ if(!isset($_SESSION["login"])){
                             };
                             
                             $edit = isset($_GET['edit']) ? $_GET['edit'] : 0;
-                            $row = array('id' => '', 'jenis' => '');
+                            $row = array('id' => '', 'aplikasi' => '');
                             if ($edit) {
                                 $id = $_GET['id'];
-                                $sql = "SELECT * FROM master_jenis WHERE id=$id";
+                                $sql = "SELECT * FROM master_aplikasi WHERE id=$id";
                                 $result = $conn->query($sql);
                                 if ($result && $result->num_rows > 0) {
                                     $row = $result->fetch_assoc();
                                 }
                             }
                         ?>
-                    <form id="main-form" method="post" action="<?php echo $edit == 0 ? 'crud/tambah.php?tabel=master_jenis&kolom=jenis&master=master_jenis.php' : 'crud/edit.php?id=' . htmlspecialchars($row['id']) . '&tabel=master_jenis&kolom=jenis&master=master_jenis.php'; ?>">
+                    <form id="main-form" method="post" action="<?php echo $edit == 0 ? 'crud/tambah.php?tabel=master_aplikasi&kolom=aplikasi&master=master_aplikasi.php' : 'crud/edit.php?id=' . htmlspecialchars($row['id']) . '&tabel=master_aplikasi&kolom=aplikasi&master=master_aplikasi.php'; ?>">
 
                         <div class="form-group">
-                            <label for="jenis">Jenis</label>
-                            <input type="text" class="form-control" id="jenis" name="isi" required
-                            <?php echo $edit > 0 ? 'value="' . htmlspecialchars($row['jenis']) . '"' : 'placeholder=""'; ?>>
+                            <label for="aplikasi">aplikasi</label>
+                            <input type="text" class="form-control" id="aplikasi" name="isi" required
+                            <?php echo $edit > 0 ? 'value="' . htmlspecialchars($row['aplikasi']) . '"' : 'placeholder=""'; ?>>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block"><?php echo $edit == 0 ? 'Tambah' : 'Update'; ?></button>
                         <button type="button" class="btn btn-danger btn-block" onclick="clearForm()">Bersihkan</button>
@@ -328,7 +328,7 @@ if(!isset($_SESSION["login"])){
     <script>
         function clearForm() {
             document.getElementById("main-form").reset();
-            window.location.href = 'master_jenis.php';
+            window.location.href = 'master_aplikasi.php';
         }
     </script>
 </body>
