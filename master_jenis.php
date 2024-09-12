@@ -83,17 +83,19 @@ if(!isset($_SESSION["login"])){
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
 
-    <a class="nav-link" href="index.php">
-    <a class="nav-link" href="tabel.php">
-        <i class="fas fa-fw fa-table"></i>
-        <span>SERAH TERIMA BARANG</span>
-    </a>
-</li>
-            <!-- Nav Item - Utilities Collapse Menu -->
-        
-            
+           <!-- Nav Item - Utilities Collapse Menu -->
+           <hr class="sidebar-divider">
+
+            <!-- Nav Item - Tampilkan Data -->
+            <li class="nav-item">
+                <a class="nav-link" href="tabel.php">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>SERAH TERIMA BARANG</span>
+                </a>
+            </li>
+
+            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -216,17 +218,16 @@ if(!isset($_SESSION["login"])){
                                     <td>" . $row["jenis"] . "</td>
                                     <td>
                                         <div class='d-flex justify-content-center'>
-                                        <a href='master jenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
+                                        <a href='master_master_jenis.phpjenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
                                         <a href='masterjenis/hapus.php?id={$row['id']}' class='btn btn-danger'>Hapus</a>
                                         </div>
                                     </td>
                                     </tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='2'>No data</td></tr>";
-                            }
+                                echo "<tr><td colspan='3' style='text-align: center;'>No data</td></tr>";
 
-                            // Tutup koneksi
+                            }  // Tutup koneksi
                             $conn->close();
                             ?>
                           </tbody>
@@ -306,7 +307,26 @@ if(!isset($_SESSION["login"])){
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
+<!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Apakah Anda yakin ingin keluar dari halaman ini? 
+                    Pastikan untuk menyimpan semua pekerjaan Anda sebelum melanjutkan.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -321,7 +341,7 @@ if(!isset($_SESSION["login"])){
     <script>
         function clearForm() {
             document.getElementById("main-form").reset();
-            window.location.href = 'master jenis.php';
+            window.location.href = 'master_jenis.php';
         }
     </script>
 </body>
