@@ -224,6 +224,7 @@ if(!isset($_SESSION["login"])){
                                         <div class='d-flex justify-content-center'>
                                         <a href='master_jenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
                                         <a href='crud/hapus.php?id={$row['id']}&tabel=master_jenis&master=master_jenis.php' class='btn btn-danger'>Hapus</a>
+
                                         </div>
                                     </td>
                                     </tr>";

@@ -102,8 +102,7 @@
                             <div class="col-lg-12">
                                 <div class="p-5">
                                     <?php $kembali = $_GET['kembali']; ?>
-                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='<?php echo $kembali; ?>'">Kembali</button>
-                                    
+                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='<?php echo $kembali;?>'">Kembali</button>                                   
                                     <?php
                                         $conn = new mysqli("localhost", "root", "", "masterruangan");
 
