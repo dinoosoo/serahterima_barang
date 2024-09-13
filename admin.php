@@ -93,6 +93,14 @@ if(!isset($_SESSION["login"])){
     </a>
 </li>
 
+<!-- Nav Item - Tampilkan Data -->
+<li class="nav-item">
+    <a class="nav-link" href="pengajuan.php">
+        <i class="fas fa-fw fa-table"></i>
+        <span>SERAH PENGAJUAN</span>
+    </a>
+</li>
+
 <hr class="sidebar-divider d-none d-md-block">
 
 
@@ -158,79 +166,99 @@ if(!isset($_SESSION["login"])){
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+<div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">SELAMAT DATANG</h1>
-                    <h5>SERVICE KATALOG | INSTALASI IT</h5>
-                    <div class="row" >
-                    <!-- Earnings (Monthly) Card Example -->
-                    <div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Master Ruangan
+<!-- Page Heading -->
+<h1 class="h3 mb-4 text-gray-800">SELAMAT DATANG</h1>
+<h5>SERVICE KATALOG | INSTALASI IT</h5>
+
+<!-- Cards Row -->
+<div class="row">
+    <!-- Master Ruangan Card Example -->
+    <div class="col-xl-6 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Master Ruangan
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-building fa-2x text-gray-300"></i>
                     </div>
                 </div>
-                <div class="col-auto">
-                    <i class="fas fa-building fa-2x text-gray-300"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Master Jenis Card Example -->
+    <div class="col-xl-6 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Master Jenis
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-box fa-2x text-gray-300"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Master Jenis Card Example -->
-<div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Master Jenis
+<div class="row">
+    <!-- Serah Terima Barang Card Example -->
+    <div class="col-xl-6 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Serah Terima Barang
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-table fa-2x text-gray-300"></i>
                     </div>
                 </div>
-                <div class="col-auto">
-                    <i class="fas fa-box fa-2x text-gray-300"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Serah Terima Barang Card Example -->
+    <div class="col-xl-6 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Serah Terima Barang
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-table fa-2x text-gray-300"></i>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Tampilkan Data Card Example -->
-<div class="col-xl-3 col-md-6 mb-4">
-    <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-            <div class="row no-gutters align-items-center">
-                <div class="col mr-2">
-                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        Serah Terima Barang
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <i class="fas fa-table fa-2x text-gray-300"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- /.container-fluid -->
+
 </div>
+<!-- End of Main Content -->
+</div>
+<!-- Footer -->
+<!-- End of Footer -->
 
-                <!-- /.container-fluid -->
 
-            </div>
-            <!-- End of Main Content -->
-
-         <!-- Footer -->
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
+<!-- End of Content Wrapper -->
     <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
