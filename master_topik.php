@@ -95,7 +95,16 @@ if(!isset($_SESSION["login"])){
 </li>
             <!-- Nav Item - Utilities Collapse Menu -->
         
-            
+            <!-- Nav Item - Tampilkan Data -->
+<li class="nav-item">
+    <a class="nav-link" href="serah_pengajuan.php">
+        <i class="fas fa-fw fa-table"></i>
+        <span>SERAH PENGAJUAN</span>
+    </a>
+</li>
+
+<hr class="sidebar-divider d-none d-md-block">
+
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -137,24 +146,19 @@ if(!isset($_SESSION["login"])){
                                     </div>
                                 </div>
                             </form>
-                        </div>
-                    </li>
-                </ul>
-            </nav>
-
 
 <!-- Nav Item - User Information -->
-<!-- <li class="nav-item dropdown no-arrow">
+<li class="nav-item dropdown no-arrow">
     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-user-circle fa-2x"></i> 
-    </a> -->
+    </a>
     <!-- Dropdown - User Information -->
-    <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
             Logout
         </a>
-    </div> -->
+    </div>
 </li>
 
                     </ul>
@@ -227,10 +231,11 @@ if(!isset($_SESSION["login"])){
                                         </div>
                                     </td>
                                     </tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='2'>No data</td></tr>";
-                            }
+                               }
+                      } else {
+                        echo "<tr><td colspan='3' style='text-align: center;'>No data</td></tr>";
+
+                      }
 
                             // Tutup koneksi
                             $conn->close();
@@ -308,6 +313,28 @@ if(!isset($_SESSION["login"])){
 
     </div>
     <!-- End of Page Wrapper -->
+
+    
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Apakah Anda yakin ingin keluar dari halaman ini? 
+                    Pastikan untuk menyimpan semua pekerjaan Anda sebelum melanjutkan.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">

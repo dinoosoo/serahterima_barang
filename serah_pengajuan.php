@@ -199,106 +199,28 @@ $conn->close();
 
                 <!-- Heading Data Barang -->
                 <div class="content-header">
-        <div class="container-fluid">
-          <div class="row mb-2">
-            <div class="col-sm-6">
-              <h1 class="m-0 text-dark">Data Barang</h1>
-            </div>
-          </div>
-        </div>
-      </div>
-
-                <?php
-                if ($cektombol == null) {
-                    echo '
-                    <!-- Button New -->
-                    <div class="d-flex justify-content-end mb-3">
-                        <a href="periode.php" class="btn btn-success">
-                            <i class="fas fa-plus"></i> New
-                        </a>
-                    </div>';
-                } else {
-                    echo '
-                    <div class="d-flex justify-content-end mb-3">
-                        <a href="form_tabel.php?kembali=tabel.php" class="btn btn-danger">
-                            <i class=""></i> Back
-                        </a>
-                    </div>';
-                }
-                ?>
-
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-6">
+                                <h1 class="m-0 text-dark" style="margin-bottom: 40px;">Data Serah Pengajuan</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <table class="table table-bordered table-striped" id="dataTable">
+                                    <thead>
                 <table class="table table-bordered table-striped" id="dataTable">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Periode</th>
-                            <th>Tanggal Masuk</th>
-                            <th>Tanggal Selesai</th>
+                            <th>Keterangan</th>
+                            <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php
-                        // Initialize counter variable
-                        $no = 1;
-
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                // Determine if the transaction is still open
-                                $isOpen = is_null($row['tanggal_selesai']);
-                                echo "<tr>
-                                    <td>" . $no++ . "</td>
-                                    <td>" . $row['nama'] . "</td>
-                                    <td>" . $row['tanggal_masuk'] . "</td>
-                                    <td>" . ($isOpen ? 'Belum Selesai' : $row['tanggal_selesai']) . "</td>
-                                    <td>
-                                        <a href='tabeldetail.php?id=" . $row['id'] . "' class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>";
-
-                                        if ($isOpen) {
-                                            echo "
-                                                <form method='post' style='display:inline;' action=''>
-                                                    <input type='hidden' name='transaction_id' value='" . $row['id'] . "'>
-                                                    <button type='submit' class='btn btn-danger' name='tutup_transaksi'
-                                                        onclick=\"return confirm('Apakah Anda yakin akan menutup transaksi ini?');\">
-                                                        Tutup Transaksi
-                                                    </button>
-                                                </form>";
-                                        }
-
-                                echo "</td></tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='5' class='text-center'>No data found</td></tr>";
-                        }
-                        ?>
-                    </tbody>
                 </table>
-            </div>
-
-            <script>
-            function searchTable() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("searchInput");
-                filter = input.value.toLowerCase();
-                table = document.getElementById("dataTable");
-                tr = table.getElementsByTagName("tr");
-
-                for (i = 1; i < tr.length; i++) { // Skip the header row
-                    tr[i].style.display = "none";
-                    td = tr[i].getElementsByTagName("td");
-                    for (var j = 0; j < td.length; j++) {
-                        if (td[j]) {
-                            txtValue = td[j].textContent || td[j].innerText;
-                            if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                                tr[i].style.display = "";
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            </script>
-        </div>
+             </div>
+         </div>
         <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
