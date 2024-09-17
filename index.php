@@ -50,31 +50,46 @@
                 <img src="img/hero-img.png" class="img-fluid">
             </div>
         </div>
-
-        <!-- Cards Section -->
-        <div class="row">
-            <div class="col-xl-3 col-md-2 mb-4">
-                <div class="card border-left-primary shadow h-100 py-1">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Opsi 1
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray -1000">
-    <a href="form_tabel.php?kembali=index.php" class="text-decoration-none text-gray-1000">
-        $erah Terima <br> Barang
-    </a>
-</div>
-
-                            </div>
+<!-- Cards Section -->
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="h6 mb-0 font-weight-bold text-gray-1000">
+                            <a href="form_tabel.php?kembali=index.php" class="text-decoration-none text-gray-1000">
+                                Serah Terima <br> Barang
+                            </a>
                         </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-400"></i>
                     </div>
                 </div>
             </div>
-            <!-- Additional Cards can be added here -->
         </div>
     </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="h6 mb-0 font-weight-bold text-gray-1000">
+                            <a href="form_tabel.php?kembali=index.php" class="text-decoration-none text-gray-1000">
+                                Form pengajuan perubahan <br> Aplikasi
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-clipboard-list fa-2x text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

@@ -212,7 +212,7 @@ $conn->close();
                 die("Koneksi gagal: " . $conn->connect_error);
             }
 
-            $sql = "SELECT id, ruangan FROM ruangan";
+            $sql = "SELECT id, ruangan FROM master_ruangan";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
@@ -239,7 +239,7 @@ $conn->close();
                 die("Koneksi gagal: " . $conn->connect_error);
             }
 
-            $sql = "SELECT id, jenis FROM tjenis";
+            $sql = "SELECT id, jenis FROM mater_jenis";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
