@@ -1,4 +1,17 @@
 <?php
+session_start();
+
+if(!isset($_SESSION["login"])){
+    header("Location: index.php");
+    exit;
+}
+// Pastikan pengguna adalah admin
+if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
+    header("Location: index.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
+    exit;
+}
+?>
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Connect to the database
     $conn = new mysqli("localhost", "root", "", "masterruangan");

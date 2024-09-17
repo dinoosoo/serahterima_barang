@@ -5,7 +5,11 @@ if(!isset($_SESSION["login"])){
     header("Location: tampilan.php");
     exit;
 }
-
+// Pastikan pengguna adalah admin
+if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
+    header("Location: admin.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

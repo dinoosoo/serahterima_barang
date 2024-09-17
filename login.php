@@ -2,7 +2,11 @@
 session_start();
 
 if(isset($_SESSION["login"])){
-    header("Location: admin.php");
+    if($_SESSION["role"] == "admin"){
+        header("Location: admin.php");
+    } elseif($_SESSION["role"] == "it"){
+        header("Location: admin.php");
+    }
     exit;
 }
 
@@ -20,8 +24,14 @@ if( isset($_POST["login"])) {
         if (password_verify($password, $row["password"])){
             
             $_SESSION["login"] = true;
+            $_SESSION["role"] = $row["role"];
 
-            header("Location: admin.php");
+            // Arahkan berdasarkan role
+            if($row["role"] == "admin") {
+                header("Location: admin.php");
+            } elseif($row["role"] == "it") {
+                header("Location: admin.php");
+            }
             exit;
         }
     }

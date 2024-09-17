@@ -5,6 +5,11 @@ if (!isset($_SESSION["login"])) {
     header("Location: index.php");
     exit;
 }
+// Pastikan pengguna adalah admin
+if($_SESSION["role"] != "admin"){
+    header("Location: index.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
+    exit;
+}
 
 $host = 'localhost';
 $db = 'masterruangan';
