@@ -135,9 +135,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <input type="text" class="form-control form-control-no-radius" id="namaAplikasi" name="nama_aplikasi" placeholder="Masukkan Nama Aplikasi" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="kepada">Ditujukan Kepada</label>
-                                            <input type="text" class="form-control form-control-no-radius" id="kepada" name="kepada" placeholder="Ditujukan Kepada" required>
+                                            <label for="instalasi">Ditujukan Kepada</label>
+                                            <input type="text" class="form-control form-control-no-radius" id="Instalasi IT" name="Instalasi IT" value="Instalasi IT" disabled>
                                         </div>
+
                                         <div class="form-group">
                                             <label for="tanggal">Tanggal</label>
                                             <input type="date" class="form-control form-control-no-radius" id="tanggal" name="tanggal" required>
