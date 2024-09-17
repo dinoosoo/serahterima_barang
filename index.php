@@ -77,7 +77,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="h6 mb-0 font-weight-bold text-gray-1000">
-                            <a href="form_tabel.php?kembali=index.php" class="text-decoration-none text-gray-1000">
+                            <a href="form_pengajuan_aplikasi.php?kembali=index.php" class="text-decoration-none text-gray-1000">
                                 Form pengajuan perubahan <br> Aplikasi
                             </a>
                         </div>

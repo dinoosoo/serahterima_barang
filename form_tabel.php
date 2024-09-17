@@ -239,7 +239,7 @@ $conn->close();
                 die("Koneksi gagal: " . $conn->connect_error);
             }
 
-            $sql = "SELECT id, jenis FROM mater_jenis";
+            $sql = "SELECT id, jenis FROM master_jenis";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
