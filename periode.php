@@ -43,55 +43,128 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input Periode</title>
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <style>
-        /* CSS tambahan untuk footer spacing */
-        .footer-spacing {
-            padding: 20px 0; /* Atur jarak atas dan bawah */
-            margin-top: 30px; /* Atur jarak atas dari konten di atasnya */
-        }
+<html lang="en">
 
-        /* Atur margin bawah form untuk memberi ruang yang cukup sebelum footer */
-        .container-fluid {
-            margin-bottom: 170px; /* Atur jarak bawah untuk memberi ruang footer */
-        }
-    </style>
-</head>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>ADMIN SYAMRABU</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
 <body id="page-top">
 
-<div id="wrapper">
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-    <a class="sidebar-brand d-flex align-items-center justify-content-center"class=class="nav-link" href="admin.php">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+<!-- Sidebar - Merek -->
+<a class="sidebar-brand d-flex align-items-center justify-content-center" class="nav-link" href="index.php">
     <div class="sidebar-brand-icon">
         <img src="img/rsud syamrabu.png" alt="" style="width: 80px; height: auto;">
     </div>
     <div class="sidebar-brand-text mx-3" style="margin-right: 70px;">SERVICE KATALOG<sup></sup></div>
 </a>
-        <hr class="sidebar-divider my-0">
-        <li class="nav-item active">
-            <a class="nav-link" href="index.php">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Input Periode</span>
-            </a>
-        </li>
-    </ul>
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-            <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="admin.php">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+        
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>MASTER</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="master_ruangan.php">Master Ruangan</a>
+                        <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
+                        <a class="collapse-item" href="master_aplikasi.php">Master Aplikasi</a>
+                        <a class="collapse-item" href="master_topik.php">Master Topik</a>
+                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
+                        
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <hr class="sidebar-divider">
+
+<!-- Nav Item - Tampilkan Data -->
+<li class="nav-item">
+    <a class="nav-link" href="tabel.php">
+        <i class="fas fa-fw fa-table"></i>
+        <span>SERAH TERIMA BARANG</span>
+    </a>
+</li>
+
+<!-- Nav Item - Tampilkan Data -->
+<li class="nav-item">
+    <a class="nav-link" href="serah_pengajuan.php">
+        <i class="fas fa-fw fa-file-alt"></i> <!-- Ganti dengan ikon yang sesuai -->
+        <span>SERAH PENGAJUAN</span>
+    </a>
+</li>
+
+
+<hr class="sidebar-divider d-none d-md-block">
+
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                                <!-- Topbar -->
+                                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <div class="mb-3">
+                    <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Search data...">
+                </div>
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Topbar Links -->
@@ -111,9 +184,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                             </form>
                         </div>
-                    </li>
-                </ul>
-            </nav>
+
+                    
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-user-circle fa-2x"></i> <!-- Ganti gambar dengan ikon kepala polos -->
+    </a>
+    <!-- Dropdown - User Information -->
+    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            Logout
+        </a>
+    </div>
+</li>
+                    </ul>
+
+                </nav>
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
@@ -135,19 +223,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white footer-spacing">
+        </div>
+         <!-- Footer -->
+ <footer class="sticky-footer bg-white footer-spacing">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; MAGANG SYAMRABU 2024</span>
                     </div>
                 </div>
             </footer>
-
-        </div>
     </div>
 </div>
-
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

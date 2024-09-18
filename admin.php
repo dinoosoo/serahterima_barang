@@ -103,10 +103,11 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
     <a class="nav-link" href="serah_pengajuan.php">
-        <i class="fas fa-fw fa-table"></i>
+        <i class="fas fa-fw fa-file-alt"></i> <!-- Ganti dengan ikon yang sesuai -->
         <span>SERAH PENGAJUAN</span>
     </a>
 </li>
+
 
 <hr class="sidebar-divider d-none d-md-block">
 
@@ -225,6 +226,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
+                    <a class="nav-link" href="tabel.php">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Serah Terima Barang
                         </div>
@@ -232,6 +234,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                     <div class="col-auto">
                         <i class="fas fa-table fa-2x text-gray-300"></i>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -243,13 +246,15 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
+                    <a class="nav-link" href="serah_pengajuan.php">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Serah Terima Barang
+                            Serah Pengajuan
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-table fa-2x text-gray-300"></i>
+                    <i class="fas fa-fw fa-file-alt fa-2x text-gray-300"></i> <!-- Ganti dengan ikon yang sesuai -->
                     </div>
+                    </a>
                 </div>
             </div>
         </div>

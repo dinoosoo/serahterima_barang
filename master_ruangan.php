@@ -97,14 +97,14 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
         <span>SERAH TERIMA BARANG</span>
     </a>
 </li>
-            <!-- Nav Item - Utilities Collapse Menu -->
-        <!-- Nav Item - Tampilkan Data -->
+            <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
     <a class="nav-link" href="serah_pengajuan.php">
-        <i class="fas fa-fw fa-table"></i>
+        <i class="fas fa-fw fa-file-alt"></i> <!-- Ganti dengan ikon yang sesuai -->
         <span>SERAH PENGAJUAN</span>
     </a>
 </li>
+
 
             
 <hr class="sidebar-divider d-none d-md-block">
