@@ -11,6 +11,7 @@ $id = $_GET['id'];
 $tabel = $_GET['tabel'];
 $master = $_GET['master'];
 
+
 $sql = "DELETE FROM `$tabel` WHERE id=$id";
 
 if ($conn->query($sql) === TRUE) {
