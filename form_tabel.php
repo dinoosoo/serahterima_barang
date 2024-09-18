@@ -232,8 +232,6 @@ $conn->close();
                 while ($row = $result->fetch_assoc()) {
                     echo "<option value=\"" . $row["ruangan"] . "\">" . $row["ruangan"] . "</option>";
                 }
-            } else {
-                echo "<option value=''>No data available</option>";
             }
 
             $conn->close();
@@ -244,7 +242,7 @@ $conn->close();
 <div class="form-group">
     <label for="jenis">Jenis</label>
     <select class="form-control" id="jenis" name="jenis" required>
-        <option value="" disabled selected></option> <!-- Opsi default -->
+        <option value="" disabled selected></option> Opsi default
         <?php
             $conn = new mysqli("localhost", "root", "", "masterruangan");
 
@@ -259,10 +257,7 @@ $conn->close();
                 while ($row = $result->fetch_assoc()) {
                     echo "<option value=\"" . $row["jenis"] . "\">" . $row["jenis"] . "</option>";
                 }
-            } else {
-                echo "<option value=''>No data available</option>";
-            }
-
+            } 
             $conn->close();
         ?>
     </select>
