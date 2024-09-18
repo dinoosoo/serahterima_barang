@@ -155,6 +155,7 @@
                                     <th>Jumlah</th>
                                     <th>Keterangan</th>
                                     <th>Tanda Tangan</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -169,6 +170,7 @@
                                         echo "<td>" . $row['jumlah'] . "</td>";
                                         echo "<td>" . $row['keterangan'] . "</td>";
                                         echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan'></td>";
+                                        echo "<td><a href='edit_form_tabel.php?id={$row['id']}&lokasi={$_GET['id']}' class='btn btn-primary mr-2'>Edit</a></td>";
                                         echo "</tr>";
                                     }
                                 } else {
