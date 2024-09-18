@@ -104,6 +104,8 @@ $conn->close();
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="master_ruangan.php">Master Ruangan</a>
                         <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
+                        <a class="collapse-item" href="master_aplikasi.php">Master Aplikasi</a>
+                        <a class="collapse-item" href="master_topik.php">Master Topik</a>
                     </div>
                 </div>
             </li>
@@ -121,10 +123,11 @@ $conn->close();
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
     <a class="nav-link" href="serah_pengajuan.php">
-        <i class="fas fa-fw fa-table"></i>
+        <i class="fas fa-fw fa-file-alt"></i> <!-- Ganti dengan ikon yang sesuai -->
         <span>SERAH PENGAJUAN</span>
     </a>
 </li>
+
 
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -224,8 +227,8 @@ $conn->close();
                 } else {
                     echo '
                     <div class="d-flex justify-content-end mb-3">
-                        <a href="form_tabel.php?kembali=tabel.php" class="btn btn-danger">
-                            <i class=""></i> Back
+                        <a href="form_tabel.php?kembali=tabel.php" class="btn btn-success">
+                            <i class="fas fa-plus"></i> Tambah Data
                         </a>
                     </div>';
                 }

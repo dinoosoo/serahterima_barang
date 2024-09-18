@@ -284,7 +284,7 @@ $conn->close();
                 <canvas id="signatureCanvas" width="400" height="200"></canvas>
             </div>
         </div>
-        <button type="button" class="btn btn-primary" id="clearSignature">Clear</button>
+        <button type="button" class="btn btn-danger" id="clearSignature">Clear</button>
         <input type="hidden" id="signature" name="signature">
         <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
     </div>
