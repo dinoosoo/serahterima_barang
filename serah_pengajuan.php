@@ -220,17 +220,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-
                 <table class="table table-bordered table-striped" id="dataTable">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Keterangan</th>
-            <th>Status</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
         <?php
         // Koneksi ke database
         $conn = new mysqli("localhost", "root", "", "masterruangan");

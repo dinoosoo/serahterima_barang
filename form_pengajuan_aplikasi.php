@@ -232,7 +232,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                     <div class="form-group">
                         <label for="nama_aplikasi">Nama Aplikasi</label>
                         <select class="form-control" id="nama_aplikasi" name="nama_aplikasi" required>
-                        <option value="" disabled selected></option> Opsi default
+                            <option value="" disabled selected></option> 
                             <?php
                                 // Koneksi ke database master_aplikasi
                                 $conn = new mysqli("localhost", "root", "", "masterruangan");
