@@ -214,6 +214,7 @@
                       <div class="table-container">
                       <div class="form-group">
                         <form method="GET" action="tabeldetail.php">
+                            <input type="hidden" name="status" value="<?php echo $status = $_GET['status']; ?>">
                             <input type="hidden" name="id" value="<?php echo $id = $_GET['id']; ?>"> <!-- ID tetap dikirim -->
                             <input type="radio" id="barangBaru" name="jenis_berkas" value="Baru">
                             <label for="barangBaru">Barang Baru</label>
@@ -249,7 +250,9 @@
                                         echo "<td>" . $row['jumlah'] . "</td>";
                                         echo "<td>" . $row['keterangan'] . "</td>";
                                         echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan'></td>";
+                                        if ($status){
                                         echo "<td><a href='edit_form_tabel.php?id={$row['id']}&lokasi={$_GET['id']}' class='btn btn-primary mr-2'>Edit</a></td>";
+                                        }
                                         echo "</tr>";
                                     }
                                 } else {
