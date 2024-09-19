@@ -5,15 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tanda Serah Terima Barang</title>
     <style>
+         table {
+            width: 100%; /* Mengatur lebar tabel menjadi 100% dari kontainer */
+            border-collapse: collapse; /* Menghilangkan jarak antar border */
+        }
+        th, td {
+            border: 1px solid black; /* Menambahkan border pada sel */
+            padding: 8px; /* Menambahkan padding di dalam sel */
+            text-align: left; /* Mengatur teks rata kiri */
+        }
+        tbody tr:last-child {
+            height: 150px; /* Mengatur tinggi untuk baris terakhir (sesuaikan sesuai kebutuhan) */
+        }
+        .signature {
+            position: absolute; /* Mengatur posisi absolut */
+            bottom: 85px; /* Jarak dari bawah */
+            right: 160px; /* Jarak dari kanan */
+            height: 1150px; /* Tinggi area tanda tangan */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Mengatur agar elemen dalam flex berada di kanan */
+        }
+        .second-signature {
+        margin-top: 20px;
+        border-top: 1px solid black; /* Garis pemisah */
+        padding-top: 10px; /* Jarak antara teks dan garis */
+        }
+        .second-signature {
+        margin-top: 20px; /* Jarak atas */
+        text-align: right; /* Mengatur teks agar rata kanan */
+        }
+
+        .approval-table {
+            margin-top: 150px; /* Jarak antara NIP dan tabel persetujuan */
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             background-color: #f4f4f4;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            position: relative;
+            align-items: flex-start; /* Mengatur agar teks berada di atas */
+            height: 100vh; /* Membuat tinggi 100% dari viewport */
+        }
+        .floating-text {
+            text-align: center; /* Mengatur teks ke tengah */
+            position: absolute; /* Menggunakan posisi absolut */
+            top: 20px; /* Mengatur jarak dari atas */
+            left: 50%; /* Mengatur posisi kiri ke tengah */
+            transform: translateX(-50%); /* Memindahkan teks ke kiri setengah lebar teks */
         }
 
         .container {
@@ -26,29 +66,6 @@
             overflow: hidden;
         }
 
-        .data-table td:last-child {
-            width: 90px; /* Menentukan lebar kolom TTD sesuai kebutuhan */
-            text-align: left; /* Menyelaraskan teks ke kiri */
-            position: relative;
-            z-index: 10; /* Memastikan TTD berada di atas elemen lain jika ada tumpang tindih */
-            padding-top: 10px; /* Menambahkan jarak di atas TTD */
-        }
-
-        .data-table th:nth-child(2), 
-        .data-table td:nth-child(2) {
-            font-size: 17px;
-            padding: 5px;
-            white-space: nowrap;kolom tanggal
-            width: 80px; /* Sesuaikan lebar kolom */
-        }
-
-        .data-table th:nth-child(3), 
-.data-table td:nth-child(3) {
-    font-size: 17px;
-            padding: 5px;
-            white-space:
-    width: 80px; /* Lebar yang lebih besar untuk kolom Jenis */
-}
 
         .header-text h5 {
             margin: 0;
@@ -72,14 +89,6 @@
             width: calc(100% - 20mm);
             border-collapse: collapse; /* Menghilangkan jarak antar border */
             margin-top: 20px;
-        }
-
-        .data-table th, 
-        .data-table td {
-            border: 1px solid black !important; /* Border tabel hitam dengan !important */
-            padding: 8px;
-            text-align: center;
-            vertical-align: middle;
         }
 
         .header-text {
@@ -146,8 +155,6 @@
                 size: A4;
                 margin: 0;
             }
-        }.data-table img {
-            max-width: 50px;
         }
     </style>
 
@@ -158,67 +165,89 @@
         <button class="back-button" onclick="window.location.href='tabeldetail.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
 
     </div>
-    <?php
-// Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "masterruangan");
 
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
 
-// Menentukan teks judul berdasarkan parameter jenis_berkas
-$judul = "TANDA SERAH TERIMA BARANG RUSAK"; // Default title
-if (isset($_GET['jenis_berkas'])) {
-    $jenis_berkas = $_GET['jenis_berkas'];
-    if ($jenis_berkas == "Baru") {
-        $judul = "TANDA SERAH TERIMA BARANG BARU";
-    }
-}
-
-// Memeriksa apakah ID dan jenis_berkas ada di GET
-if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
-    $id = isset($_GET['id']) ? $_GET['id'] : null;
-    $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
-    $no = 1;
-    $sql = "SELECT * FROM form_serah_terima WHERE id_transaksi = '$id' AND jenis_berkas = '$jenis_berkas'";
-    $result = $conn->query($sql);
-} else {
-    echo "Tidak ada data";
-}
-?>
     <div class="container">
         <img src="img/logorsud.jpeg" alt="Logo RSUD" class="logo">
         
         <div class="header-text">
-            <h5 id="judul" class="bold"><?php echo $judul; ?></h5>
-            <h5>Instalasi Informasi & Teknologi</h5>
-            <h5>UOBK RSUD Syarifah Ambami Rato Ebu Bangkalan</h5>
+            <h5 id="judul" class="bold">asdsasd</h5>
         </div>
 
         <table class="data-table">
+        <table class="data-table" style="margin-left: auto; margin-right: auto;">
+
             <thead>
             </thead>
             <tbody>
-                <tr>
-                    <th>Unit / Ruangan</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <th>Unit / Ruangan</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <th>Unit / Ruangan</th>
-                    <th></th>
-                </tr>
-                <tr>
-                    <th>Unit / Ruangan</th>
-                    <th></th>
-                </tr>
+        <tr>
+            <th>Unit / Ruangan</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Unit / Ruangan</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>Unit / Ruangan</th>
+            <th>Instalasi IT</th>
+        </tr>
+        <tr>
+            <th>Unit / Ruangan</th>
+            <th></th>
+        </tr>
+        <tr>
+            <th colspan="2">Topik</th>
+        </tr>
+        <tr>
+            <th colspan="2">Rinciyan</th> <!-- Menggunakan colspan -->
+        </tr>
             </tbody>
         </table>
-    </div>
+        
+        </tr>
+
+        <div class="signature">
+            <p style="margin: 0;">Mengetahui</p>
+            <p style="margin: 0;">Kepala Unit/Ruangan</p>
+            <p style="margin: 0;">...............</p>
+            <p style="margin-top: 50px;">__________________</p>
+            <p style="margin: 0;">NIP. ............... ...............</p>
+        </div>
+
+    <div class="approval-table">
+    <table>
+        <caption></caption>
+        <tbody>
+            <tr>
+                <th colspan="2" style="border: ">PERTIMBANGAN PERSETUJUAN</th>
+            </tr>
+            <tr>
+                <td style="width: 50%; ">DISETUJUI</td>
+                <td style="width: 50%; ">TIDAK DISETUJUI</td>
+            </tr>
+            <tr>
+                <td style="width: 50%; ">1</td>
+                <td style="width: 50%; "></td>
+            </tr>
+            <tr>
+                <td  style="border: 1px solid white; border-right: 1px solid black;  background-color: white;"></td>
+                <td>Bangkalan</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid white; border-right: 1px solid black; background-color: white;"></td>
+                <td style="text-align: center;">
+                    <p style="margin: 0;">Tanda Tangan Kedua</p>
+                    <p>...............</p>
+                    <p>__________________</p>
+                    <p>NIP. ............... ...............</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
 
     <script>
         function changeTitle(title) {

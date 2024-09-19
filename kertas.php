@@ -25,15 +25,17 @@
             position: relative;
             overflow: hidden;
         }
-
-        .data-table td:last-child {
-            width: 90px; /* Menentukan lebar kolom TTD sesuai kebutuhan */
-            text-align: left; /* Menyelaraskan teks ke kiri */
-            position: relative;
-            z-index: 10; /* Memastikan TTD berada di atas elemen lain jika ada tumpang tindih */
-            padding-top: 10px; /* Menambahkan jarak di atas TTD */
-        }
-
+        .data-table th:nth-child(6), 
+.data-table td:nth-child(6), /* Kolom Keterangan */
+.data-table th:last-child, 
+.data-table td:last-child { /* Kolom TTD */
+    width: 110px; /* Menentukan lebar kolom TTD dan Keterangan sesuai kebutuhan */
+    min-width: 110px; /* Menjamin kolom tidak lebih kecil dari ukuran ini */
+    text-align: left; /* Menyelaraskan teks ke kiri */
+    box-sizing: border-box; /* Menghitung padding dan border dalam lebar elemen */
+    white-space: nowrap; /* Menghindari teks membungkus ke baris berikutnya */
+    padding: 10px; /* Tambahkan padding jika diperlukan */
+}
         .data-table th:nth-child(2), 
         .data-table td:nth-child(2) {
             font-size: 17px;
