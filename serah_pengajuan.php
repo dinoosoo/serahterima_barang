@@ -10,41 +10,47 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
     header("Location: admin.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
     exit;
 }
-$host = 'localhost';
-$db = 'masterruangan';
-$user = 'root';
-$pass = '';
+// Simpan data jika form disubmit
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nama = $_POST['nama'];
+    $nip = $_POST['nip'];
+    $ruangan = $_POST['ruangan'];
+    $nama_aplikasi = $_POST['nama_aplikasi'];
+    $kepada = $_POST['kepada'];
+    $tanggal = $_POST['tanggal'];
+    $topik = $_POST['topik'];
+    $rincian = $_POST['rincian'];
+    $signature = $_POST['signature'];
 
-// Membuat koneksi
-$conn = new mysqli($host, $user, $pass, $db);
+    // Koneksi ke database
+    $conn = new mysqli("localhost", "root", "", "masterruangan");
 
-// Mengecek koneksi
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+    // Cek koneksi
+    if ($conn->connect_error) {
+        die("Koneksi gagal: " . $conn->connect_error);
+    }
 
-// Mengambil data dari tabel 'priode'
-$sql = "SELECT * FROM priode";
-$result = $conn->query($sql);
-
-// Mengambil data dari tabel 'priode' yang tanggal keluarnya null atau tidak ada
-$sql = "SELECT * FROM priode WHERE tanggal_selesai IS NULL";
-$cektombol = $conn->query($sql)->fetch_assoc();
-
-// Jika tombol 'Tutup Transaksi' ditekan
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tutup_transaksi'])) {
-    // Query untuk meng-update kolom `tanggal_selesai` pada baris yang masih null
-    $sql = "UPDATE priode SET tanggal_selesai = NOW() WHERE tanggal_selesai IS NULL";
+    // Query untuk menyimpan data (tanpa status)
+    $sql = "INSERT INTO data_pengajuan (nama, nip, ruangan, nama_aplikasi, kepada, tanggal, topik, rincian, signature)
+            VALUES ('$nama', '$nip', '$ruangan', '$nama_aplikasi', '$kepada', '$tanggal', '$topik', '$rincian', '$signature')";
 
     if ($conn->query($sql) === TRUE) {
-        $msg = "<div class='alert alert-success'>Transaksi berhasil ditutup.</div>";
+        echo "Data berhasil disimpan!";
+    } 
+    // Perbarui status menjadi 'Sudah Terbuka'
+    $sql = "UPDATE data_pengajuan SET status='Sudah Terbuka' WHERE id='$id' AND status='Belum Terbuka'";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "Status berhasil diperbarui menjadi 'Sudah Terbuka'";
     } else {
-        $msg = "<div class='alert alert-danger'>Error: " . $conn->error . "</div>";
+        echo "Error: " . $conn->error;
     }
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
+
+    $conn->close();
 }
-$conn->close();
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -214,21 +220,56 @@ $conn->close();
                         </div>
                     </div>
                 </div>
-                                <table class="table table-bordered table-striped" id="dataTable">
-                                    <thead>
+
                 <table class="table table-bordered table-striped" id="dataTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Keterangan</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                </table>
-             </div>
-         </div>
-        <footer class="sticky-footer bg-white">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Keterangan</th>
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        // Koneksi ke database
+        $conn = new mysqli("localhost", "root", "", "masterruangan");
+
+        // Cek koneksi
+        if ($conn->connect_error) {
+            die("Koneksi gagal: " . $conn->connect_error);
+        }
+
+        // Query untuk mengambil data dari tabel data_pengajuan
+        $sql = "SELECT id, rincian, status FROM form_pengajuan";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $no = 1; // Inisialisasi nomor urut
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $no . "</td>";
+                echo "<td>" . $row['rincian'] . "</td>";
+                echo "<td>" . $row['status'] . "</td>"; // Tampilkan status
+                echo "<td>
+                        <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Buka</a>
+                        <button class='btn btn-danger btn-sm'>Delete</button>
+                      </td>";
+                echo "</tr>";
+                $no++;
+            }
+        } else {
+            echo "<tr><td colspan='4'>Tidak ada data</td></tr>";
+        }
+        
+
+        $conn->close();
+        ?>
+    </tbody>
+</table>
+    </div>
+</div>
+<footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; MAGANG SYAMRABU  2024</span>
@@ -238,9 +279,6 @@ $conn->close();
                     </div>
                 </div>
             </footer>
-    </div>
-</div>
-
 <!-- Logout Modal-->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
