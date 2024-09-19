@@ -259,7 +259,7 @@ $conn->close();
                                     <td>" . $row['tanggal_masuk'] . "</td>
                                     <td>" . ($isOpen ? 'Belum Selesai' : $row['tanggal_selesai']) . "</td>
                                     <td>
-                                        <a href='tabeldetail.php?id=" . $row['id'] . "' class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>";
+                                        <a href='tabeldetail.php?id=" . $row['id'] . "&status=" . $isOpen . "' class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>";
 
                                         if ($isOpen) {
                                             echo "
