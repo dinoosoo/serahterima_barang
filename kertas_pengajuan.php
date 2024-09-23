@@ -150,7 +150,7 @@
             .data-table {
                 width: 100%;
             }
-
+        
             @page {
                 size: A4;
                 margin: 0;
@@ -162,7 +162,7 @@
 <body>
     <div class="button-group">
         <button class="print-button" onclick="window.print()">Print</button>
-        <button class="back-button" onclick="window.location.href='tabeldetail.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
+        <button class="back-button" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
 
     </div>
 
@@ -170,9 +170,18 @@
     <div class="container">
         <img src="img/logorsud.jpeg" alt="Logo RSUD" class="logo">
         
-        <div class="header-text">
-            <h5 id="judul" class="bold">asdsasd</h5>
-        </div>
+        <style>
+    .underline {
+        border-bottom: 2px solid black; /* Menambahkan garis bawah */
+        display: inline-block; /* Mengatur elemen sebagai inline-block */
+        padding-bottom: 0; /* Menghilangkan padding bawah */
+    }
+</style>
+
+<div class="header-text">
+    <h5 id="judul" class="bold underline">FORM PENGAJUAN PERUBAHAN APLIKASI</h5>
+</div>
+
 
         <table class="data-table">
         <table class="data-table" style="margin-left: auto; margin-right: auto;">
@@ -182,38 +191,40 @@
             <tbody>
         <tr>
             <th>Unit / Ruangan</th>
+            <th></th>        
+        </tr>
+        <tr>
+            <th>Nama Aplikasi</th>
             <th></th>
         </tr>
         <tr>
-            <th>Unit / Ruangan</th>
-            <th></th>
-        </tr>
-        <tr>
-            <th>Unit / Ruangan</th>
+            <th>Kepada</th>
             <th>Instalasi IT</th>
         </tr>
         <tr>
-            <th>Unit / Ruangan</th>
+            <th>Tanggal</th>
             <th></th>
         </tr>
         <tr>
             <th colspan="2">Topik</th>
         </tr>
         <tr>
-            <th colspan="2">Rinciyan</th> <!-- Menggunakan colspan -->
+            <th colspan="2">Rincian:</th> <!-- Menggunakan colspan -->
         </tr>
             </tbody>
         </table>
         
         </tr>
 
-        <div class="signature">
-            <p style="margin: 0;">Mengetahui</p>
-            <p style="margin: 0;">Kepala Unit/Ruangan</p>
-            <p style="margin: 0;">...............</p>
-            <p style="margin-top: 50px;">__________________</p>
-            <p style="margin: 0;">NIP. ............... ...............</p>
-        </div>
+<div class="signature">
+    <td style="text-align: center;">
+    <p style="margin: 0;">Mengetahui</p>
+    <p>Kepala Unit/Ruangan</p>
+    <p>...............</p>
+    <p style="margin-top: 50px;">__________________</p>
+    <p style="margin: 0;">NIP. ............... ...............</p>
+</td>
+</div>
 
     <div class="approval-table">
     <table>
@@ -237,10 +248,11 @@
             <tr>
                 <td style="border: 1px solid white; border-right: 1px solid black; background-color: white;"></td>
                 <td style="text-align: center;">
-                    <p style="margin: 0;">Tanda Tangan Kedua</p>
+                    <p style="margin: 0;">Kepala</p>
+                    <p>Intalasi IT</p>
                     <p>...............</p>
-                    <p>__________________</p>
-                    <p>NIP. ............... ...............</p>
+                    <p>________________</P>
+                    <p>NIPPPK. 198305282023211008</p>
                 </td>
             </tr>
         </tbody>
