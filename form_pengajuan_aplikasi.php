@@ -132,6 +132,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                                         if (isset($_POST['signaturesubmit'])) {
                                             $nama = $_POST['nama'];
                                             $nip = $_POST['nip'];
+                                            $email = $_POST['email'];  // Add this line for email
                                             $unit = $_POST['ruangan'];
                                             $aplikasi = $_POST['nama_aplikasi'];
                                             $kepada = $_POST['kepada'];
@@ -161,8 +162,8 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                                                         $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan tanda tangan.</div>";
                                                     } else {
                                                         // Simpan data ke database
-                                                        $sql = "INSERT INTO form_pengajuan (nama, nip, ruangan, nama_aplikasi, kepada, tanggal, topik, rincian, tanda_tangan) VALUES ('$nama', '$nip', '$unit', '$aplikasi', '$kepada', '$tanggal', '$topik', '$rincian', '$file')";
-
+                                                        $sql = "INSERT INTO form_pengajuan (nama, nip, email, ruangan, nama_aplikasi, kepada, tanggal, topik, rincian, tanda_tangan) VALUES ('$nama', '$nip', '$email', '$unit', '$aplikasi', '$kepada', '$tanggal', '$topik', '$rincian', '$file')";
+    
                                                         if ($conn->query($sql) === TRUE) {
                                                             $msg = "<div class='alert alert-success' id='notification'>Data berhasil disimpan.</div>";
                                                         } else {
@@ -203,6 +204,13 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                     <label for="nip">NIP</label>
                     <input type="number" class="form-control" id="nip" name="nip" required>
                 </div>
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+
+
                         <!-- Unit/Ruangan -->
                         <div class="form-group">
                             <label for="unit">Unit/Ruangan</label>
