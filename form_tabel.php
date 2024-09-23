@@ -1,16 +1,3 @@
-<?php
-session_start();
-
-if(!isset($_SESSION["login"])){
-    header("Location: index.php");
-    exit;
-}
-// Pastikan pengguna adalah admin
-if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
-    header("Location: index.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
