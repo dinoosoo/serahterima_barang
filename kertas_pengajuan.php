@@ -1,3 +1,40 @@
+<?php
+$id = $_GET['id'];
+$conn = new mysqli("localhost", "root", "", "masterruangan");
+
+// Periksa koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Ambil data dari tabel
+$sql = "SELECT * FROM form_pengajuan WHERE id=$id";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $status = $row['status'];
+}
+
+$sql = "UPDATE form_pengajuan SET status='Sudah Terbuka' WHERE id=$id";
+if ($status == "Belum Terbuka"){
+    $conn->query($sql);
+}
+// Cek jika ada permintaan POST untuk memperbarui status
+if (isset($_POST['kirim'])) {
+    $status = "Sudah Terbalas";
+    $alasan = $_POST['alasan'];
+
+    $sql = "UPDATE form_pengajuan SET status='$status', alasan='$alasan' WHERE id=$id";
+    if ($conn->query($sql) === TRUE) {
+        header("Location: kirim.php?id=$id");
+    } else {
+        echo "Error: " . $conn->error;
+    }
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -189,7 +226,25 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%; /* Sesuaikan dengan kebutuhan */
+            max-width: 600px; /* Maksimal lebar */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px; /* Membuat sudut melengkung */
+        }
 
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px; /* Membuat sudut input melengkung */
+            box-sizing: border-box; /* Agar padding terhitung dalam lebar */
+        }
 
     </style>
 
@@ -198,12 +253,13 @@
 <body>
 <div class="button-group">
     <button class="print-button" onclick="window.print()">Print</button>
-    <button class="back-button" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
+    <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
     
 
     <button class="btn-success" onclick="terimaPengajuan()">Terima Pengajuan</button>
 
     <button class="btn-danger" onclick="tolakPengajuan();">Tolak</button>
+
 </div>
 
 
@@ -231,9 +287,9 @@
         if ($conn->connect_error) {
             die("Koneksi gagal: " . $conn->connect_error);
         }
-
+        
         // Query untuk mengambil data dari tabel data_pengajuan
-        $sql = "SELECT * FROM form_pengajuan WHERE id=2";
+        $sql = "SELECT * FROM form_pengajuan WHERE id=$id";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -318,10 +374,24 @@
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <p>Masukkan tanggal diterima:</p>
-        <input type="date" id="tanggalDiterima" class="form-control">
-        <button onclick="saveDate()">Simpan</button>
+        <form method="post">
+        <input name="alasan" type="date" id="tanggalDiterima" class="form-control">
+        <button name="kirim" type="submit" class="btn-success" onclick="saveDate()" style="margin-top: 10px;">Kirim</button>
+        </form>
     </div>
 </div>
+<!-- Modal untuk input alasan penolakan -->
+<div id="alasanModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeAlasanModal()">&times;</span>
+        <p>Masukkan alasan penolakan:</p>
+        <form method="post">
+        <input name="alasan" type="text" id="alasanPenolakan" class="form-control" placeholder="Masukkan alasan" style="width: 100%; padding: 10px; font-size: 16px;">
+        <button name="kirim" type="submit" class="btn-success" onclick="saveAlasan()" style="margin-top: 10px;">Kirim</button>
+        </form>
+    </div>
+</div>
+
 
     <script>
     function terimaPengajuan() {
@@ -335,6 +405,7 @@ function saveDate() {
     if (tanggal) {
         alert("Tanggal diterima: " + tanggal);
         // Tambahkan logika lain untuk menyimpan tanggal
+        
     } else {
         alert("Harap pilih tanggal.");
     }
@@ -348,16 +419,32 @@ function closeModal() {
 }
 
 
-    function tolakPengajuan() {
-        var alasan = prompt("Masukkan alasan penolakan:");
+function tolakPengajuan() {
+    // Buka modal untuk alasan penolakan
+    document.getElementById("alasanModal").style.display = "block";
+}
 
-        if (alasan !== null && alasan !== "") {
-            var id = "<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>";
-            var jenisBerkas = "<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>";
-            
-            window.location.href = 'serah_pengajuan.php?id=' + id + '&jenis_berkas=' + jenisBerkas + '&alasan=' + encodeURIComponent(alasan);
-        }
+function saveAlasan() {
+    var alasan = document.getElementById("alasanPenolakan").value;
+
+    if (alasan) {
+        var id = "<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>";
+        var jenisBerkas = "<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>";
+        
+        // Redirect dengan alasan penolakan
+        window.location.href = 'serah_pengajuan.php?id=' + id + '&jenis_berkas=' + jenisBerkas + '&alasan=' + encodeURIComponent(alasan);
+    } else {
+        alert("Harap masukkan alasan penolakan.");
     }
+
+    // Tutup modal setelah menyimpan alasan
+    closeAlasanModal();
+}
+
+function closeAlasanModal() {
+    document.getElementById("alasanModal").style.display = "none";
+}
+
 </script>
 
     <script>
