@@ -1,15 +1,29 @@
 <?php
 session_start();
 
+// Cek apakah pengguna telah login
 if (!isset($_SESSION["login"])) {
     header("Location: index.php");
     exit;
 }
-// Pastikan pengguna adalah admin
-if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
-    header("Location: admin.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
+
+// Pastikan pengguna adalah admin atau IT
+if ($_SESSION["role"] != "admin" && $_SESSION["role"] != "it") {
+    header("Location: admin.php"); // Arahkan ke halaman lain jika tidak punya akses
     exit;
 }
+
+// Koneksi ke database
+$conn = new mysqli("localhost", "root", "", "masterruangan");
+
+// Cek koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Debugging koneksi berhasil
+// echo "Koneksi berhasil!<br>";
+
 // Simpan data jika form disubmit
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama = $_POST['nama'];
@@ -22,35 +36,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rincian = $_POST['rincian'];
     $signature = $_POST['signature'];
 
-    // Koneksi ke database
-    $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-    // Cek koneksi
-    if ($conn->connect_error) {
-        die("Koneksi gagal: " . $conn->connect_error);
-    }
-
-    // Query untuk menyimpan data (tanpa status)
-    $sql = "INSERT INTO data_pengajuan (nama, nip, ruangan, nama_aplikasi, kepada, tanggal, topik, rincian, signature)
-            VALUES ('$nama', '$nip', '$ruangan', '$nama_aplikasi', '$kepada', '$tanggal', '$topik', '$rincian', '$signature')";
+    // Insert data pengajuan (tanpa status)
+    $sql = "INSERT INTO form_pengajuan (nama, nip, ruangan, nama_aplikasi, kepada, tanggal, topik, rincian, signature, status)
+            VALUES ('$nama', '$nip', '$ruangan', '$nama_aplikasi', '$kepada', '$tanggal', '$topik', '$rincian', '$signature', 'Belum Terbuka')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Data berhasil disimpan!";
-    } 
-    // Perbarui status menjadi 'Sudah Terbuka'
-    $sql = "UPDATE data_pengajuan SET status='Sudah Terbuka' WHERE id='$id' AND status='Belum Terbuka'";
+        $id = $conn->insert_id; // Mendapatkan ID data pengajuan yang baru disimpan
+        echo "Data berhasil disimpan dengan ID: $id<br>";
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Status berhasil diperbarui menjadi 'Sudah Terbuka'";
+        // Perbarui status menjadi 'Sudah Terbuka'
+        $update_sql = "UPDATE form_pengajuan SET status='Sudah Terbuka' WHERE id='$id' AND status='Belum Terbuka'";
+        echo "Menjalankan query: $update_sql<br>"; // Debugging
+
+        if ($conn->query($update_sql) === TRUE) {
+            echo "Status berhasil diperbarui menjadi 'Sudah Terbuka'.<br>";
+        } else {
+            echo "Gagal memperbarui status: " . $conn->error;
+        }
     } else {
         echo "Error: " . $conn->error;
     }
-
-    $conn->close();
 }
 
-
-
+$conn->close();
 ?>
 
 <!DOCTYPE html>

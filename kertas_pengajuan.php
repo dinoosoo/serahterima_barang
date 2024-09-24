@@ -164,14 +164,17 @@
         
 </head>
 <body>
-    <div class="button-group">
-        <button class="print-button" onclick="window.print()">Print</button>
-        <button class="back-button" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
+<div class="button-group">
+    <button class="print-button" onclick="window.print()">Print</button>
+    <button class="back-button" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
+    
+    <button class="btn-success btn" onclick="showDatePicker()">Terima</button>
+        <div class="date-container" id="date-container">
+            <input type="date" id="tanggalDiterima" class="form-control" onchange="saveDate()">
+        </div>
+    <button class="btn-danger" onclick="tolakPengajuan();">Tolak</button>
+</div>
 
-        <button class="btn-success" onclick="window.print()">Terima</button>
-        <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Tolak</button>
-
-    </div>
 
 
     <div class="container">
@@ -199,7 +202,7 @@
         }
 
         // Query untuk mengambil data dari tabel data_pengajuan
-        $sql = "SELECT * FROM form_pengajuan WHERE id=1";
+        $sql = "SELECT * FROM form_pengajuan WHERE id=5";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -278,9 +281,36 @@
             </tr>
         </tbody>
     </table>
+    
+    <script>
+    function showDatePicker() {
+        var dateContainer = document.getElementById("date-container");
+        var dateInput = document.getElementById("tanggalDiterima");
+        dateContainer.style.display = "inline-block"; // Tampilkan date picker
+        dateInput.focus(); // Fokus langsung ke date picker
+    }
 
+    function saveDate() {
+        var tanggalDiterima = document.getElementById("tanggalDiterima").value;
+        if (tanggalDiterima) {
+            alert("Tanggal diterima: " + tanggalDiterima);
+            // Tambahkan logika untuk menyimpan atau mengolah tanggal yang dipilih
+        }
+    }
 
+    function tolakPengajuan() {
+        var alasan = prompt("Masukkan alasan penolakan:");
 
+        if (alasan !== null && alasan !== "") {
+            var id = "<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>";
+            var jenisBerkas = "<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>";
+            
+            window.location.href = 'serah_pengajuan.php?id=' + id + '&jenis_berkas=' + jenisBerkas + '&alasan=' + encodeURIComponent(alasan);
+        } else {
+            alert("Penolakan dibatalkan, alasan harus diisi.");
+        }
+    }
+</script>
 
     <script>
         function changeTitle(title) {
