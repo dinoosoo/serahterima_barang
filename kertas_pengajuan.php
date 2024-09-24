@@ -157,6 +157,38 @@
         .btn-danger:hover {
             opacity: 0.8; /* Efek hover */
         }
+        /* Style untuk modal */
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
 
     </style>
@@ -168,10 +200,9 @@
     <button class="print-button" onclick="window.print()">Print</button>
     <button class="back-button" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
     
-    <button class="btn-success btn" onclick="showDatePicker()">Terima</button>
-        <div class="date-container" id="date-container">
-            <input type="date" id="tanggalDiterima" class="form-control" onchange="saveDate()">
-        </div>
+
+    <button class="btn-success" onclick="terimaPengajuan()">Terima Pengajuan</button>
+
     <button class="btn-danger" onclick="tolakPengajuan();">Tolak</button>
 </div>
 
@@ -202,7 +233,7 @@
         }
 
         // Query untuk mengambil data dari tabel data_pengajuan
-        $sql = "SELECT * FROM form_pengajuan WHERE id=5";
+        $sql = "SELECT * FROM form_pengajuan WHERE id=2";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
@@ -282,21 +313,40 @@
         </tbody>
     </table>
     
-    <script>
-    function showDatePicker() {
-        var dateContainer = document.getElementById("date-container");
-        var dateInput = document.getElementById("tanggalDiterima");
-        dateContainer.style.display = "inline-block"; // Tampilkan date picker
-        dateInput.focus(); // Fokus langsung ke date picker
-    }
+            <!-- Modal -->
+<div id="dateModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p>Masukkan tanggal diterima:</p>
+        <input type="date" id="tanggalDiterima" class="form-control">
+        <button onclick="saveDate()">Simpan</button>
+    </div>
+</div>
 
-    function saveDate() {
-        var tanggalDiterima = document.getElementById("tanggalDiterima").value;
-        if (tanggalDiterima) {
-            alert("Tanggal diterima: " + tanggalDiterima);
-            // Tambahkan logika untuk menyimpan atau mengolah tanggal yang dipilih
-        }
+    <script>
+    function terimaPengajuan() {
+    // Buka modal saat tombol ditekan
+    document.getElementById("dateModal").style.display = "block";
+}
+
+function saveDate() {
+    var tanggal = document.getElementById("tanggalDiterima").value;
+    
+    if (tanggal) {
+        alert("Tanggal diterima: " + tanggal);
+        // Tambahkan logika lain untuk menyimpan tanggal
+    } else {
+        alert("Harap pilih tanggal.");
     }
+    
+    // Tutup modal setelah simpan
+    closeModal();
+}
+
+function closeModal() {
+    document.getElementById("dateModal").style.display = "none";
+}
+
 
     function tolakPengajuan() {
         var alasan = prompt("Masukkan alasan penolakan:");
@@ -306,8 +356,6 @@
             var jenisBerkas = "<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>";
             
             window.location.href = 'serah_pengajuan.php?id=' + id + '&jenis_berkas=' + jenisBerkas + '&alasan=' + encodeURIComponent(alasan);
-        } else {
-            alert("Penolakan dibatalkan, alasan harus diisi.");
         }
     }
 </script>
