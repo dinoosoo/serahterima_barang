@@ -17,25 +17,6 @@
         tbody tr:last-child {
             height: 150px; /* Mengatur tinggi untuk baris terakhir (sesuaikan sesuai kebutuhan) */
         }
-        .signature {
-            position: absolute; /* Mengatur posisi absolut */
-            bottom: 85px; /* Jarak dari bawah */
-            right: 160px; /* Jarak dari kanan */
-            height: 1150px; /* Tinggi area tanda tangan */
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end; /* Mengatur agar elemen dalam flex berada di kanan */
-        }
-        .second-signature {
-        margin-top: 20px;
-        border-top: 1px solid black; /* Garis pemisah */
-        padding-top: 10px; /* Jarak antara teks dan garis */
-        }
-        .second-signature {
-        margin-top: 20px; /* Jarak atas */
-        text-align: right; /* Mengatur teks agar rata kanan */
-        }
-
         .approval-table {
             margin-top: 150px; /* Jarak antara NIP dan tabel persetujuan */
         }
@@ -78,7 +59,6 @@
         }
 
         .data-table {
-            width: calc(90% - 10mm);
             border-collapse: collapse;
             margin-top: 20px;
             margin-left: 10mm;
@@ -86,7 +66,6 @@
         }
 
         .data-table {
-            width: calc(100% - 20mm);
             border-collapse: collapse; /* Menghilangkan jarak antar border */
             margin-top: 20px;
         }
@@ -156,13 +135,41 @@
                 margin: 0;
             }
         }
+        .btn-success {
+            background-color: #28a745; /* Warna hijau */
+            color: white; /* Teks putih */
+            padding: 10px 20px; /* Padding untuk ukuran tombol */
+            border: none; /* Menghilangkan border */
+            border-radius: 5px; /* Membuat sudut tombol melengkung */
+            cursor: pointer; /* Menampilkan kursor pointer */
+        }
+
+        .btn-danger {
+            background-color: #dc3545; /* Warna merah */
+            color: white; /* Teks putih */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-success:hover,
+        .btn-danger:hover {
+            opacity: 0.8; /* Efek hover */
+        }
+
+
     </style>
 
+        
 </head>
 <body>
     <div class="button-group">
         <button class="print-button" onclick="window.print()">Print</button>
         <button class="back-button" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
+
+        <button class="btn-success" onclick="window.print()">Terima</button>
+        <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Tolak</button>
 
     </div>
 
@@ -182,20 +189,36 @@
     <h5 id="judul" class="bold underline">FORM PENGAJUAN PERUBAHAN APLIKASI</h5>
 </div>
 
+        <?php
+        // Koneksi ke database
+        $conn = new mysqli("localhost", "root", "", "masterruangan");
 
-        <table class="data-table">
+        // Cek koneksi
+        if ($conn->connect_error) {
+            die("Koneksi gagal: " . $conn->connect_error);
+        }
+
+        // Query untuk mengambil data dari tabel data_pengajuan
+        $sql = "SELECT * FROM form_pengajuan WHERE id=1";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+        }
+        ?>
+        
         <table class="data-table" style="margin-left: auto; margin-right: auto;">
 
             <thead>
             </thead>
             <tbody>
         <tr>
-            <th>Unit / Ruangan</th>
-            <th></th>        
+            <th style="width: 30%; ">Unit / Ruangan</th>
+            <th><?php echo $row['ruangan'];?></th>        
         </tr>
         <tr>
             <th>Nama Aplikasi</th>
-            <th></th>
+            <th><?php echo $row['nama_aplikasi'];?></th>
         </tr>
         <tr>
             <th>Kepada</th>
@@ -203,33 +226,31 @@
         </tr>
         <tr>
             <th>Tanggal</th>
-            <th></th>
+            <th><?php echo $row['tanggal'];?></th>
         </tr>
         <tr>
-            <th colspan="2">Topik</th>
+            <th>Topik</th>
+            <th><?php echo $row['topik'];?></th>
         </tr>
         <tr>
-            <th colspan="2">Rincian:</th> <!-- Menggunakan colspan -->
+            <th colspan="2" style="vertical-align: top;">Rincian: <?php echo $row['rincian'];?></th> <!-- Menggunakan colspan -->
         </tr>
             </tbody>
         </table>
-        
         </tr>
 
-<div class="signature">
-    <td style="text-align: center;">
-    <p style="margin: 0;">Mengetahui</p>
-    <p>Kepala Unit/Ruangan</p>
-    <p>...............</p>
-    <p style="margin-top: 50px;">__________________</p>
-    <p style="margin: 0;">NIP. ............... ...............</p>
-</td>
-</div>
-
-    <div class="approval-table">
     <table>
-        <caption></caption>
         <tbody>
+            <tr>
+                <td style="border: 1px solid white; border-bottom: 1px solid black;"></td>
+                <td style="text-align: center; border: 1px solid white; border-bottom: 1px solid black; text-align: right;">
+                    <p style="margin: 0px; margin-right: 10%;">Mengetahui</p>
+                    <p style="margin: 0px;">Kepala Unit/Ruangan</p>
+                    <img src=<?php echo $row['tanda_tangan'];?> style="margin: 0; width: 50%; height: auto;"></img>
+                    <p style="margin: 0;">__________________</p>
+                    <p style="margin: 0; margin-right: 30%;">NIP :<?php echo $row['nip'];?></p>
+                </td>
+            </tr>
             <tr>
                 <th colspan="2" style="border: ">PERTIMBANGAN PERSETUJUAN</th>
             </tr>
@@ -238,7 +259,7 @@
                 <td style="width: 50%; ">TIDAK DISETUJUI</td>
             </tr>
             <tr>
-                <td style="width: 50%; ">1</td>
+                <td style="width: 50%; ">.</td>
                 <td style="width: 50%; "></td>
             </tr>
             <tr>
@@ -257,7 +278,7 @@
             </tr>
         </tbody>
     </table>
-</div>
+
 
 
 
