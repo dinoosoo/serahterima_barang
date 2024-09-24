@@ -22,7 +22,7 @@ if ($conn->connect_error) {
 }
 
 // Debugging koneksi berhasil
-echo "Koneksi berhasil!<br>";
+// echo "Koneksi berhasil!<br>";
 
 // Simpan data jika form disubmit
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
