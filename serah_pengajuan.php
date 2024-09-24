@@ -22,7 +22,7 @@ if ($conn->connect_error) {
 }
 
 // Debugging koneksi berhasil
-// echo "Koneksi berhasil!<br>";
+echo "Koneksi berhasil!<br>";
 
 // Simpan data jika form disubmit
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Data berhasil disimpan dengan ID: $id<br>";
 
         // Perbarui status menjadi 'Sudah Terbuka'
-        $update_sql = "UPDATE form_pengajuan SET status='Sudah Terbuka' WHERE id='$id' AND status='Belum Terbuka'";
+        $update_sql = "UPDATE data_pengajuan SET status='Sudah Terbuka' WHERE id='$id' AND status='Belum Terbuka'";
         echo "Menjalankan query: $update_sql<br>"; // Debugging
 
         if ($conn->query($update_sql) === TRUE) {
