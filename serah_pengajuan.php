@@ -260,7 +260,7 @@ $conn->close();
                 echo "<td>" . $row['status'] . "</td>"; // Tampilkan status
                 echo "<td>
                         <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Buka</a>
-                        <button class='btn btn-danger btn-sm'>Delete</button>
+                        <button class='btn btn-danger btn-sm'>Hapus</button>
                       </td>";
                 echo "</tr>";
                 $no++;
