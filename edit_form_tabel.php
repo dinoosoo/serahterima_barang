@@ -101,7 +101,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="p-5">
-                                <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabeldetail.php?id=<?php echo $_GET['lokasi']; ?>'">Kembali</button>                                   
+                                <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabeldetail.php?id=<?php echo $_GET['lokasi'];  ?>'">Kembali</button>                                   
                                     <?php
                                         $conn = new mysqli("localhost", "root", "", "masterruangan");
 

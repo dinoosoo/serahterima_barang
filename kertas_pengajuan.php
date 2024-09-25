@@ -16,12 +16,13 @@ if ($result->num_rows > 0) {
 }
 
 $sql = "UPDATE form_pengajuan SET status='Sudah Terbuka' WHERE id=$id";
-if ($status == "Belum Terbuka"){
+if ($status == "Belum Terbuka") {
     $conn->query($sql);
 }
+
 // Cek jika ada permintaan POST untuk memperbarui status
 if (isset($_POST['kirim'])) {
-    $status = "Sudah Terbalas";
+    $status = $_POST['status'] == 'terima' ? "Sudah Diterima" : "Ditolak";
     $alasan = $_POST['alasan'];
 
     $sql = "UPDATE form_pengajuan SET status='$status', alasan='$alasan' WHERE id=$id";
@@ -30,11 +31,38 @@ if (isset($_POST['kirim'])) {
     } else {
         echo "Error: " . $conn->error;
     }
+
+    // Periksa apakah ID ada di URL
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $conn = new mysqli("localhost", "root", "", "masterruangan");
+
+    // Periksa koneksi
+    if ($conn->connect_error) {
+        die("Koneksi gagal: " . $conn->connect_error);
+    }
+
+    // Query untuk mendapatkan data berdasarkan ID
+    $sql = "SELECT * FROM form_pengajuan WHERE id=$id";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        // Tampilkan data pengajuan di sini
+        echo "<h1>Detail Pengajuan</h1>";
+        echo "<p>ID Pengajuan: " . $row['id'] . "</p>";
+        echo "<p>Alasan: " . $row['alasan'] . "</p>";
+        // Data lainnya
+    } else {
+        echo "Pengajuan dengan ID tersebut tidak ditemukan.";
+    }
+} else {
+    echo "ID tidak ditemukan.";
+}
 }
 
 $conn->close();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -252,18 +280,15 @@ $conn->close();
 </head>
 <body>
 <div class="button-group">
-    <button class="print-button" onclick="window.print()">Print</button>
+        <button class="print-button" onclick="window.print()">Print</button>
     <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
     
+    <?php if ($status != "") : ?>
+        <button style="background-color: silver; color: white;" onclick="terimaPengajuan()">Receive</button>
+        <button style="background-color: grey; color: white;" onclick="tolakPengajuan();">Reject</button>
 
-    <button class="btn-success" onclick="terimaPengajuan()">Terima Pengajuan</button>
-
-    <button class="btn-danger" onclick="tolakPengajuan();">Tolak</button>
-
+    <?php endif; ?>
 </div>
-
-
-
     <div class="container">
         <img src="img/logorsud.jpeg" alt="Logo RSUD" class="logo">
         
@@ -279,23 +304,6 @@ $conn->close();
     <h5 id="judul" class="bold underline">FORM PENGAJUAN PERUBAHAN APLIKASI</h5>
 </div>
 
-        <?php
-        // Koneksi ke database
-        $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-        // Cek koneksi
-        if ($conn->connect_error) {
-            die("Koneksi gagal: " . $conn->connect_error);
-        }
-        
-        // Query untuk mengambil data dari tabel data_pengajuan
-        $sql = "SELECT * FROM form_pengajuan WHERE id=$id";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-        }
-        ?>
         
         <table class="data-table" style="margin-left: auto; margin-right: auto;">
 
@@ -338,7 +346,7 @@ $conn->close();
                     <p style="margin: 0px;">Kepala Unit/Ruangan</p>
                     <img src=<?php echo $row['tanda_tangan'];?> style="margin: 0; width: 50%; height: auto;"></img>
                     <p style="margin: 0;">__________________</p>
-                    <p style="margin: 0; margin-right: 30%;">NIP :<?php echo $row['nip'];?></p>
+                    <p style="margin: 0; margin-right: 10%;">NIP :<?php echo $row['nip'];?></p>
                 </td>
             </tr>
             <tr>
@@ -357,15 +365,21 @@ $conn->close();
                 <td>Bangkalan</td>
             </tr>
             <tr>
-                <td style="border: 1px solid white; border-right: 1px solid black; background-color: white;"></td>
-                <td style="text-align: center;">
-                    <p style="margin: 0;">Kepala</p>
-                    <p>Intalasi IT</p>
-                    <p>...............</p>
-                    <p>________________</P>
-                    <p>NIPPPK. 198305282023211008</p>
-                </td>
-            </tr>
+            <td style="border: 1px solid white; border-right: 1px solid black; background-color: white;"></td>
+            <td style="text-align: center;">
+                <p style="margin: 0;">Kepala</p>
+                <p>Instalasi IT</p>
+                <!-- Tanda tangan otomatis ditempatkan lebih mepet -->
+                <img src="img/ttd baru.webp" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -15px;"> <!-- Menempatkan gambar lebih dekat ke nama -->
+                
+                <!-- Nama dengan jarak dekat ke garis -->
+                <p style="margin: 0;">Djamal Abdul Nasir, S.Kom</p>
+
+                <!-- Garis dan NIP -->
+                <p style="margin-top: -8px;">_______________</p> <!-- Mengurangi jarak ke garis -->
+                <p>NIPPPK. 198305282023211008</p>
+            </td>
+        </tr>
         </tbody>
     </table>
     

@@ -21,11 +21,8 @@ if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
-// Debugging koneksi berhasil
-// echo "Koneksi berhasil!<br>";
-
 // Simpan data jika form disubmit
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_form'])) {
     $nama = $_POST['nama'];
     $nip = $_POST['nip'];
     $ruangan = $_POST['ruangan'];
@@ -42,19 +39,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($conn->query($sql) === TRUE) {
         $id = $conn->insert_id; // Mendapatkan ID data pengajuan yang baru disimpan
-        echo "Data berhasil disimpan dengan ID: $id<br>";
 
         // Perbarui status menjadi 'Sudah Terbuka'
-        $update_sql = "UPDATE data_pengajuan SET status='Sudah Terbuka' WHERE id='$id' AND status='Belum Terbuka'";
-        echo "Menjalankan query: $update_sql<br>"; // Debugging
-
-        if ($conn->query($update_sql) === TRUE) {
-            echo "Status berhasil diperbarui menjadi 'Sudah Terbuka'.<br>";
-        } else {
-            echo "Gagal memperbarui status: " . $conn->error;
-        }
+        $update_sql = "UPDATE form_pengajuan SET status='Sudah Terbuka' WHERE id='$id' AND status='Belum Terbuka'";
+        $conn->query($update_sql);
     } else {
         echo "Error: " . $conn->error;
+    }
+}
+
+// Hapus data pengajuan jika aksi hapus dilakukan
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+    $delete_sql = "DELETE FROM form_pengajuan WHERE id='$delete_id'";
+
+    if ($conn->query($delete_sql) === TRUE) {
+        header("Location: serah_pengajuan.php"); // Refresh page after delete
+        exit;
+    } else {
+        echo "Gagal menghapus data: " . $conn->error;
     }
 }
 
@@ -247,31 +250,30 @@ $conn->close();
             die("Koneksi gagal: " . $conn->connect_error);
         }
 
-        // Query untuk mengambil data dari tabel data_pengajuan
-        $sql = "SELECT id, rincian, status FROM form_pengajuan";
-        $result = $conn->query($sql);
+       // Query untuk mengambil data dari tabel data_pengajuan
+       $sql = "SELECT id, rincian, status FROM form_pengajuan";
+       $result = $conn->query($sql);
 
-        if ($result->num_rows > 0) {
-            $no = 1; // Inisialisasi nomor urut
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $no . "</td>";
-                echo "<td>" . $row['rincian'] . "</td>";
-                echo "<td>" . $row['status'] . "</td>"; // Tampilkan status
-                echo "<td>
-                        <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Buka</a>
-                        <button class='btn btn-danger btn-sm'>Hapus</button>
-                      </td>";
-                echo "</tr>";
-                $no++;
-            }
-        } else {
-            echo "<tr><td colspan='4'>Tidak ada data</td></tr>";
-        }
-        
+       if ($result->num_rows > 0) {
+           $no = 1; // Inisialisasi nomor urut
+           while ($row = $result->fetch_assoc()) {
+               echo "<tr>";
+               echo "<td>" . $no . "</td>";
+               echo "<td>" . $row['rincian'] . "</td>";
+               echo "<td>" . $row['status'] . "</td>";
+               echo "<td>
+                       <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Open</a>
+                       <a href='serah_pengajuan.php?delete_id=" . $row['id'] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>Delete</a>
+                     </td>";
+               echo "</tr>";
+               $no++;
+           }
+       } else {
+           echo "<tr><td colspan='4'>Tidak ada data</td></tr>";
+       }
 
-        $conn->close();
-        ?>
+       $conn->close();
+       ?>
     </tbody>
 </table>
     </div>

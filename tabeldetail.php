@@ -1,3 +1,25 @@
+<?php
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+    // Koneksi ke database
+$conn = new mysqli("localhost", "root", "", "masterruangan");
+
+// Periksa koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Memeriksa apakah ID dan jenis_berkas ada di GET
+if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
+    $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
+    $no =1;
+    $sql = "SELECT * FROM form_serah_terima WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
+    $result = $conn->query($sql);
+}
+
+$sql = "SELECT * FROM priode WHERE tanggal_selesai IS NULL AND id=$id";
+$cektombol = $conn->query($sql)->fetch_assoc();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -178,10 +200,11 @@
       </a>
       
       <!-- Tombol Plus -->
+      <?php if ($cektombol != null) : ?>
       <a href="form_tabel.php?kembali=tabel.php" class="btn btn-success">
         <i class="fas fa-plus"></i> Plus
       </a>
-      
+       <?php endif; ?>
       <!-- Tombol Print -->
       <a href="kertas.php?id=<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>&jenis_berkas=<?php echo isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''; ?>" class="btn btn-primary ms-2">
         <i class="fas fa-print"></i> Print
@@ -189,27 +212,6 @@
     </div>
   </div>
 </div>
-
-                        <?php
-                            // Koneksi ke database
-                        $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-                        // Periksa koneksi
-                        if ($conn->connect_error) {
-                            die("Koneksi gagal: " . $conn->connect_error);
-                        }
-
-                        // Memeriksa apakah ID dan jenis_berkas ada di GET
-                        if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
-                            $id = isset($_GET['id']) ? $_GET['id'] : null;
-                            $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
-                            $no =1;
-                            $sql = "SELECT * FROM form_serah_terima WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
-                            $result = $conn->query($sql);
-                        } else {
-                            echo "Pilih Jenis Berkas";
-                        }
-                        ?>
 
                       <div class="table-container">
                       <div class="form-group">
@@ -220,7 +222,7 @@
                             <label for="barangBaru">Barang Baru</label>
                             <input type="radio" id="barangRusak" name="jenis_berkas" value="Rusak">
                             <label for="barangRusak">Barang Rusak</label>
-                            <button type="submit" class="btn btn-primary">Tampilkan</button>
+                            <button type="submit" class="btn btn-primary">Show</button>
                         </form>
                     </div>
 

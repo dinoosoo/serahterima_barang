@@ -228,8 +228,8 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                                     <td>" . $row["jenis"] . "</td>
                                     <td>
                                         <div class='d-flex justify-content-center'>
-                                        <a href='master_jenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Edit</a>
-                                        <a href='crud/hapus.php?id={$row['id']}&tabel=master_jenis&master=master_jenis.php' class='btn btn-danger'>Hapus</a>
+                                        <a href='master_jenis.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Change</a>
+                                        <a href='crud/hapus.php?id={$row['id']}&tabel=master_jenis&master=master_jenis.php' class='btn btn-danger'>Wipe</a>
 
                                         </div>
                                     </td>
@@ -282,8 +282,8 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                             <input type="text" class="form-control" id="jenis" name="isi" required
                             <?php echo $edit > 0 ? 'value="' . htmlspecialchars($row['jenis']) . '"' : 'placeholder=""'; ?>>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block"><?php echo $edit == 0 ? 'Tambah' : 'Update'; ?></button>
-                        <button type="button" class="btn btn-danger btn-block" onclick="clearForm()">Bersihkan</button>
+                        <button type="submit" class="btn btn-primary btn-block"><?php echo $edit == 0 ? 'Add' : 'Update'; ?></button>
+                        <button type="button" class="btn btn-danger btn-block" onclick="clearForm()">Clean Up</button>
                     </form>
                     </div>
                   </div>

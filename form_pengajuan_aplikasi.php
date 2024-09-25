@@ -100,7 +100,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="p-5">
-                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='index.php'">Kembali</button>
+                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='index.php'">Back</button>
 
                                     <!-- Heading -->
                                     <div class="border p-2 rounded mb-4 text-center" style="background-color: #e0e7ff; border-color: #b0c4de;">
