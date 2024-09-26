@@ -1,16 +1,3 @@
-<?php
-session_start();
-
-if(!isset($_SESSION["login"])){
-    header("Location: index.php");
-    exit;
-}
-// Pastikan pengguna adalah admin
-if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
-    header("Location: index.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
-    exit;
-} 
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -114,7 +101,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="p-5">
-                                <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabeldetail.php?id=<?php echo $_GET['lokasi']; ?>'">Kembali</button>                                   
+                                <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabeldetail.php?id=<?php echo $_GET['lokasi'];  ?>'">Kembali</button>                                   
                                     <?php
                                         $conn = new mysqli("localhost", "root", "", "masterruangan");
 

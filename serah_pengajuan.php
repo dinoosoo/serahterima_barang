@@ -1,17 +1,28 @@
 <?php
 session_start();
 
+// Cek apakah pengguna telah login
 if (!isset($_SESSION["login"])) {
     header("Location: index.php");
     exit;
 }
-// Pastikan pengguna adalah admin
-if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
-    header("Location: admin.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
+
+// Pastikan pengguna adalah admin atau IT
+if ($_SESSION["role"] != "admin" && $_SESSION["role"] != "it") {
+    header("Location: admin.php"); // Arahkan ke halaman lain jika tidak punya akses
     exit;
 }
+
+// Koneksi ke database
+$conn = new mysqli("localhost", "root", "", "masterruangan");
+
+// Cek koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
 // Simpan data jika form disubmit
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_form'])) {
     $nama = $_POST['nama'];
     $nip = $_POST['nip'];
     $ruangan = $_POST['ruangan'];
@@ -22,35 +33,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $rincian = $_POST['rincian'];
     $signature = $_POST['signature'];
 
-    // Koneksi ke database
-    $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-    // Cek koneksi
-    if ($conn->connect_error) {
-        die("Koneksi gagal: " . $conn->connect_error);
-    }
-
-    // Query untuk menyimpan data (tanpa status)
-    $sql = "INSERT INTO data_pengajuan (nama, nip, ruangan, nama_aplikasi, kepada, tanggal, topik, rincian, signature)
-            VALUES ('$nama', '$nip', '$ruangan', '$nama_aplikasi', '$kepada', '$tanggal', '$topik', '$rincian', '$signature')";
+    // Insert data pengajuan (tanpa status)
+    $sql = "INSERT INTO form_pengajuan (nama, nip, ruangan, nama_aplikasi, kepada, tanggal, topik, rincian, signature, status)
+            VALUES ('$nama', '$nip', '$ruangan', '$nama_aplikasi', '$kepada', '$tanggal', '$topik', '$rincian', '$signature', 'Belum Terbuka')";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Data berhasil disimpan!";
-    } 
-    // Perbarui status menjadi 'Sudah Terbuka'
-    $sql = "UPDATE data_pengajuan SET status='Sudah Terbuka' WHERE id='$id' AND status='Belum Terbuka'";
+        $id = $conn->insert_id; // Mendapatkan ID data pengajuan yang baru disimpan
 
-    if ($conn->query($sql) === TRUE) {
-        echo "Status berhasil diperbarui menjadi 'Sudah Terbuka'";
+        // Perbarui status menjadi 'Sudah Terbuka'
+        $update_sql = "UPDATE form_pengajuan SET status='Sudah Terbuka' WHERE id='$id' AND status='Belum Terbuka'";
+        $conn->query($update_sql);
     } else {
         echo "Error: " . $conn->error;
     }
-
-    $conn->close();
 }
 
+// Hapus data pengajuan jika aksi hapus dilakukan
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+    $delete_sql = "DELETE FROM form_pengajuan WHERE id='$delete_id'";
 
+    if ($conn->query($delete_sql) === TRUE) {
+        header("Location: serah_pengajuan.php"); // Refresh page after delete
+        exit;
+    } else {
+        echo "Gagal menghapus data: " . $conn->error;
+    }
+}
 
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -239,31 +250,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Koneksi gagal: " . $conn->connect_error);
         }
 
-        // Query untuk mengambil data dari tabel data_pengajuan
-        $sql = "SELECT id, rincian, status FROM form_pengajuan";
-        $result = $conn->query($sql);
+       // Query untuk mengambil data dari tabel data_pengajuan
+       $sql = "SELECT id, rincian, status FROM form_pengajuan";
+       $result = $conn->query($sql);
 
-        if ($result->num_rows > 0) {
-            $no = 1; // Inisialisasi nomor urut
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $no . "</td>";
-                echo "<td>" . $row['rincian'] . "</td>";
-                echo "<td>" . $row['status'] . "</td>"; // Tampilkan status
-                echo "<td>
-                        <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Buka</a>
-                        <button class='btn btn-danger btn-sm'>Delete</button>
-                      </td>";
-                echo "</tr>";
-                $no++;
-            }
-        } else {
-            echo "<tr><td colspan='4'>Tidak ada data</td></tr>";
-        }
-        
+       if ($result->num_rows > 0) {
+           $no = 1; // Inisialisasi nomor urut
+           while ($row = $result->fetch_assoc()) {
+               echo "<tr>";
+               echo "<td>" . $no . "</td>";
+               echo "<td>" . $row['rincian'] . "</td>";
+               echo "<td>" . $row['status'] . "</td>";
+               echo "<td>
+                       <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Open</a>
+                       <a href='serah_pengajuan.php?delete_id=" . $row['id'] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>Delete</a>
+                     </td>";
+               echo "</tr>";
+               $no++;
+           }
+       } else {
+           echo "<tr><td colspan='4'>Tidak ada data</td></tr>";
+       }
 
-        $conn->close();
-        ?>
+       $conn->close();
+       ?>
     </tbody>
 </table>
     </div>

@@ -1,16 +1,3 @@
-<?php
-session_start();
-
-if(!isset($_SESSION["login"])){
-    header("Location: index.php");
-    exit;
-}
-// Pastikan pengguna adalah admin
-if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
-    header("Location: index.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -113,7 +100,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="p-5">
-                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='index.php'">Kembali</button>
+                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='index.php'">Back</button>
 
                                     <!-- Heading -->
                                     <div class="border p-2 rounded mb-4 text-center" style="background-color: #e0e7ff; border-color: #b0c4de;">
@@ -132,6 +119,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                                         if (isset($_POST['signaturesubmit'])) {
                                             $nama = $_POST['nama'];
                                             $nip = $_POST['nip'];
+                                            $email = $_POST['email'];  // Add this line for email
                                             $unit = $_POST['ruangan'];
                                             $aplikasi = $_POST['nama_aplikasi'];
                                             $kepada = $_POST['kepada'];
@@ -161,8 +149,8 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                                                         $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan tanda tangan.</div>";
                                                     } else {
                                                         // Simpan data ke database
-                                                        $sql = "INSERT INTO form_pengajuan (nama, nip, ruangan, nama_aplikasi, kepada, tanggal, topik, rincian, tanda_tangan) VALUES ('$nama', '$nip', '$unit', '$aplikasi', '$kepada', '$tanggal', '$topik', '$rincian', '$file')";
-
+                                                        $sql = "INSERT INTO form_pengajuan (nama, nip, email, ruangan, nama_aplikasi, kepada, tanggal, topik, rincian, tanda_tangan) VALUES ('$nama', '$nip', '$email', '$unit', '$aplikasi', '$kepada', '$tanggal', '$topik', '$rincian', '$file')";
+    
                                                         if ($conn->query($sql) === TRUE) {
                                                             $msg = "<div class='alert alert-success' id='notification'>Data berhasil disimpan.</div>";
                                                         } else {
@@ -203,6 +191,13 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                     <label for="nip">NIP</label>
                     <input type="number" class="form-control" id="nip" name="nip" required>
                 </div>
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+
+
                         <!-- Unit/Ruangan -->
                         <div class="form-group">
                             <label for="unit">Unit/Ruangan</label>
