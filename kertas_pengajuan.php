@@ -303,8 +303,8 @@ $conn->close();
     <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
     
     <?php if ($status != "") : ?>
-        <button style="background-color: silver; color: white;" onclick="terimaPengajuan()">Receive</button>
-        <button style="background-color: grey; color: white;" onclick="tolakPengajuan();">Reject</button>
+        <button class="btn-success"style="background-color: silver; color: white;" onclick="terimaPengajuan()">Receive</button>
+        <button class="btn-danger"style="background-color: grey; color: white;" onclick="tolakPengajuan();">Reject</button>
 
     <?php endif; ?>
 </div>
