@@ -21,7 +21,7 @@
             position: absolute; /* Mengatur posisi absolut */
             bottom: 85px; /* Jarak dari bawah */
             right: 160px; /* Jarak dari kanan */
-            height: 1150px; /* Tinggi area tanda tangan */
+            height: 1050px; /* Tinggi area tanda tangan */
             display: flex;
             flex-direction: column;
             align-items: flex-end; /* Mengatur agar elemen dalam flex berada di kanan */
@@ -37,7 +37,7 @@
         }
 
         .approval-table {
-            margin-top: 150px; /* Jarak antara NIP dan tabel persetujuan */
+            margin-top: 250px; /* Jarak antara NIP dan tabel persetujuan */
         }
         body {
             font-family: Arial, sans-serif;
@@ -181,9 +181,7 @@
 <div class="header-text">
     <h5 id="judul" class="bold underline">FORM PENGAJUAN PERUBAHAN APLIKASI</h5>
 </div>
-
-
-        <table class="data-table">
+<table class="data-table">
         <table class="data-table" style="margin-left: auto; margin-right: auto;">
 
             <thead>

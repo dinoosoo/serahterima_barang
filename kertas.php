@@ -25,17 +25,19 @@
             position: relative;
             overflow: hidden;
         }
-        .data-table th:nth-child(6), 
-.data-table td:nth-child(6), /* Kolom Keterangan */
+
+.data-table th:nth-child(4), 
+.data-table td:nth-child(4) { /* Kolom Keterangan */
+    width: 200px; /* Tentukan lebar kolom Keterangan */
+    min-width: 200px; /* Pastikan kolom tidak lebih kecil dari ukuran ini */
+}
+
 .data-table th:last-child, 
 .data-table td:last-child { /* Kolom TTD */
-    width: 110px; /* Menentukan lebar kolom TTD dan Keterangan sesuai kebutuhan */
-    min-width: 110px; /* Menjamin kolom tidak lebih kecil dari ukuran ini */
-    text-align: left; /* Menyelaraskan teks ke kiri */
-    box-sizing: border-box; /* Menghitung padding dan border dalam lebar elemen */
-    white-space: nowrap; /* Menghindari teks membungkus ke baris berikutnya */
-    padding: 10px; /* Tambahkan padding jika diperlukan */
+    width: 120px; /* Tentukan lebar kolom TTD */
+    min-width: 120px; /* Pastikan kolom tidak lebih kecil dari ukuran ini */
 }
+
         .data-table th:nth-child(2), 
         .data-table td:nth-child(2) {
             font-size: 17px;
@@ -186,7 +188,7 @@ if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
     $sql = "SELECT * FROM form_serah_terima WHERE id_transaksi = '$id' AND jenis_berkas = '$jenis_berkas'";
     $result = $conn->query($sql);
 } else {
-    echo "Tidak ada data";
+    echo "";
 }
 ?>
     <div class="container">
@@ -229,8 +231,9 @@ if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
                                 echo "</tr>";
                             }
                         } else {
+                           
                             echo "<tr><td colspan='7'>Tidak ada data.</td></tr>";
-                        }
+                        } 
                 ?>
             </tbody>
         </table>
