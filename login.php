@@ -6,6 +6,8 @@ if(isset($_SESSION["login"])){
         header("Location: admin.php");
     } elseif($_SESSION["role"] == "it"){
         header("Location: admin.php");
+    } elseif($_SESSION["role"] == "kabag"){
+        header("Location: admin.php");
     }
     exit;
 }
@@ -30,6 +32,8 @@ if( isset($_POST["login"])) {
             if($row["role"] == "admin") {
                 header("Location: admin.php");
             } elseif($row["role"] == "it") {
+                header("Location: admin.php");
+            } elseif($row["role"] == "kabag") {
                 header("Location: admin.php");
             }
             exit;

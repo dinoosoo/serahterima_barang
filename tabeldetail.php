@@ -1,4 +1,5 @@
 <?php
+session_start();
 $id = isset($_GET['id']) ? $_GET['id'] : null;
     // Koneksi ke database
 $conn = new mysqli("localhost", "root", "", "masterruangan");
@@ -79,6 +80,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
         
 
             <!-- Nav Item - Pages Collapse Menu -->
+            <?php if ($_SESSION["role"] == "admin") :?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -91,15 +93,15 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                         <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
                         <a class="collapse-item" href="master_aplikasi.php">Master Aplikasi</a>
                         <a class="collapse-item" href="master_topik.php">Master Topik</a>
-                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
-                        
+                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->  
                     </div>
                 </div>
             </li>
-
             <!-- Nav Item - Utilities Collapse Menu -->
             <hr class="sidebar-divider">
+            <?php endif; ?>
 
+<?php if ($_SESSION["role"] != "kabag" ) :?>
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
     <a class="nav-link" href="tabel.php">
@@ -107,6 +109,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
         <span>SERAH TERIMA BARANG</span>
     </a>
 </li>
+<?php endif; ?>
 
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">

@@ -72,6 +72,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
         
 
             <!-- Nav Item - Pages Collapse Menu -->
+            <?php if ($_SESSION["role"] == "admin") :?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -84,19 +85,23 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                         <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
                         <a class="collapse-item" href="master_aplikasi.php">Master Aplikasi</a>
                         <a class="collapse-item" href="master_topik.php">Master Topik</a>
-                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
-                        
+                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->  
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <hr class="sidebar-divider">
+            <?php endif; ?>
 
-    <a class="nav-link" href="index.php">
+<?php if ($_SESSION["role"] != "kabag" ) :?>
+<!-- Nav Item - Tampilkan Data -->
+<li class="nav-item">
     <a class="nav-link" href="tabel.php">
         <i class="fas fa-fw fa-table"></i>
         <span>SERAH TERIMA BARANG</span>
     </a>
 </li>
+<?php endif; ?>
            <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
     <a class="nav-link" href="serah_pengajuan.php">

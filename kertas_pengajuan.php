@@ -320,12 +320,12 @@ $conn->close();
 </head>
 <body>
 <div class="button-group">
-        <button class="print-button" onclick="window.print()">Print</button>
+    <button class="print-button" onclick="window.print()">Print</button>
     <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
-    
+    <hr style="color: black; length: 40px; margin: 10px 0;">
     <?php if ($status != "") : ?>
-        <button class="btn-success"style="background-color: silver; color: white;" onclick="terimaPengajuan()">Receive</button>
-        <button class="btn-danger"style="background-color: grey; color: white;" onclick="tolakPengajuan();">Reject</button>
+        <button class="btn-success" onclick="terimaPengajuan()">Receive</button>
+        <button class="btn-danger" onclick="tolakPengajuan();">Reject</button>
 
     <?php endif; ?>
 </div>

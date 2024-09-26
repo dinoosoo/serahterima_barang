@@ -8,7 +8,7 @@ if (!isset($_SESSION["login"])) {
 }
 
 // Pastikan pengguna adalah admin atau IT
-if ($_SESSION["role"] != "admin" && $_SESSION["role"] != "it") {
+if ($_SESSION["role"] == "") {
     header("Location: admin.php"); // Arahkan ke halaman lain jika tidak punya akses
     exit;
 }
@@ -110,33 +110,37 @@ $conn->close();
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Nav Item - Master Collapse Menu -->
+            <!-- Nav Item - Pages Collapse Menu -->
+            <?php if ($_SESSION["role"] == "admin") :?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaster"
-                    aria-expanded="true" aria-controls="collapseMaster">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>MASTER</span>
                 </a>
-                <div id="collapseMaster" class="collapse" aria-labelledby="headingMaster" data-parent="#accordionSidebar">
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="master_ruangan.php">Master Ruangan</a>
                         <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
                         <a class="collapse-item" href="master_aplikasi.php">Master Aplikasi</a>
                         <a class="collapse-item" href="master_topik.php">Master Topik</a>
+                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->  
                     </div>
                 </div>
             </li>
-
             <!-- Nav Item - Utilities Collapse Menu -->
             <hr class="sidebar-divider">
+            <?php endif; ?>
 
-            <!-- Nav Item - Tampilkan Data -->
-            <li class="nav-item">
-                <a class="nav-link" href="tabel.php">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>SERAH TERIMA BARANG</span>
-                </a>
-            </li>
+<?php if ($_SESSION["role"] != "kabag" ) :?>
+<!-- Nav Item - Tampilkan Data -->
+<li class="nav-item">
+    <a class="nav-link" href="tabel.php">
+        <i class="fas fa-fw fa-table"></i>
+        <span>SERAH TERIMA BARANG</span>
+    </a>
+</li>
+<?php endif; ?>
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
     <a class="nav-link" href="serah_pengajuan.php">

@@ -102,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
 
             <!-- Nav Item - Pages Collapse Menu -->
+            <?php if ($_SESSION["role"] == "admin") :?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -114,15 +115,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
                         <a class="collapse-item" href="master_aplikasi.php">Master Aplikasi</a>
                         <a class="collapse-item" href="master_topik.php">Master Topik</a>
-                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
-                        
+                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->  
                     </div>
                 </div>
             </li>
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <hr class="sidebar-divider">
+            <?php endif; ?>
+
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <hr class="sidebar-divider">
 
+<?php if ($_SESSION["role"] != "kabag" ) :?>
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
     <a class="nav-link" href="tabel.php">
@@ -130,6 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <span>SERAH TERIMA BARANG</span>
     </a>
 </li>
+<?php endif; ?>
 
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">

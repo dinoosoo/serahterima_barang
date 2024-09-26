@@ -5,11 +5,7 @@ if(!isset($_SESSION["login"])){
     header("Location: index.php");
     exit;
 }
-// Pastikan pengguna adalah admin
-if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
-    header("Location: index.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
-    exit;
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +67,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
         
 
             <!-- Nav Item - Pages Collapse Menu -->
+            <?php if ($_SESSION["role"] == "admin") :?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -83,15 +80,15 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                         <a class="collapse-item" href="master_jenis.php">Master Jenis</a>
                         <a class="collapse-item" href="master_aplikasi.php">Master Aplikasi</a>
                         <a class="collapse-item" href="master_topik.php">Master Topik</a>
-                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->
-                        
+                        <!-- <a class="collapse-item" href="tampilan data.php">Tampilkan Data</a> -->  
                     </div>
                 </div>
             </li>
-
             <!-- Nav Item - Utilities Collapse Menu -->
             <hr class="sidebar-divider">
+            <?php endif; ?>
 
+<?php if ($_SESSION["role"] != "kabag" ) :?>
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
     <a class="nav-link" href="tabel.php">
@@ -99,7 +96,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
         <span>SERAH TERIMA BARANG</span>
     </a>
 </li>
-
+<?php endif; ?>
 <!-- Nav Item - Tampilkan Data -->
 <li class="nav-item">
     <a class="nav-link" href="serah_pengajuan.php">
@@ -180,6 +177,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
 <h1 class="h3 mb-4 text-gray-800">SELAMAT DATANG</h1>
 <h5>SERVICE KATALOG | INSTALASI IT</h5>
 
+<?php if ($_SESSION["role"] == "admin") :?>
 <!-- Cards Row -->
 <div class="row">
     <!-- Master Ruangan Card Example -->
@@ -188,6 +186,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
+                    <a class="nav-link" href="master_ruangan.php">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Master Ruangan
                         </div>
@@ -195,6 +194,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                     <div class="col-auto">
                         <i class="fas fa-building fa-2x text-gray-300"></i>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -206,6 +206,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
+                    <a class="nav-link" href="master_jenis.php">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Master Jenis
                         </div>
@@ -213,6 +214,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                     <div class="col-auto">
                         <i class="fas fa-box fa-2x text-gray-300"></i>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -220,6 +222,50 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
 </div>
 
 <div class="row">
+    <!-- Master Jenis Card Example -->
+    <div class="col-xl-6 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                    <a class="nav-link" href="master_aplikasi.php">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Master Aplikasi
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-box fa-2x text-gray-300"></i>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Master Jenis Card Example -->
+    <div class="col-xl-6 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                    <a class="nav-link" href="master_topik.php">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Master Topik
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-box fa-2x text-gray-300"></i>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+<div class="row">
+<?php if ($_SESSION["role"] != "kabag" ) :?>
     <!-- Serah Terima Barang Card Example -->
     <div class="col-xl-6 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
@@ -239,7 +285,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
             </div>
         </div>
     </div>
-
+<?php endif; ?>
     <!-- Serah Terima Barang Card Example -->
     <div class="col-xl-6 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
