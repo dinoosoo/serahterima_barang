@@ -13,6 +13,27 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $status = $row['status'];
+    $id_ruangan = $row['ruangan'];
+    $id_aplikasi = $row['nama_aplikasi'];
+    $id_topik = $row['topik'];
+}
+
+$sql = "SELECT ruangan FROM master_ruangan WHERE id=$id_ruangan";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    $ruangan = $result->fetch_assoc();
+}
+
+$sql = "SELECT aplikasi FROM master_aplikasi WHERE id=$id_aplikasi";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    $aplikasi = $result->fetch_assoc();
+}
+
+$sql = "SELECT topik FROM master_topik WHERE id=$id_topik";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    $topik = $result->fetch_assoc();
 }
 
 $sql = "UPDATE form_pengajuan SET status='Sudah Terbuka' WHERE id=$id";
@@ -332,11 +353,11 @@ $conn->close();
             <tbody>
         <tr>
             <th style="width: 30%; ">Unit / Ruangan</th>
-            <th><?php echo $row['ruangan'];?></th>        
+            <th><?php echo $ruangan['ruangan'];?></th>        
         </tr>
         <tr>
             <th>Nama Aplikasi</th>
-            <th><?php echo $row['nama_aplikasi'];?></th>
+            <th><?php echo $aplikasi['aplikasi'];?></th>
         </tr>
         <tr>
             <th>Kepada</th>
@@ -348,7 +369,7 @@ $conn->close();
         </tr>
         <tr>
             <th>Topik</th>
-            <th><?php echo $row['topik'];?></th>
+            <th><?php echo $topik['topik'];?></th>
         </tr>
         <tr>
             <th colspan="2" style="vertical-align: top;">Rincian: <?php echo $row['rincian'];?></th> <!-- Menggunakan colspan -->

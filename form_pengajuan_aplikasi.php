@@ -202,7 +202,7 @@
                         <div class="form-group">
                             <label for="unit">Unit/Ruangan</label>
                             <select class="form-control" id="ruangan" name="ruangan" required>
-                                <option value="" disabled selected></option> Opsi default
+                                <option value="" disabled selected>Pilih Ruangan</option> Opsi default
                                 <?php
                                     $conn = new mysqli("localhost", "root", "", "masterruangan");
 
@@ -215,7 +215,7 @@
 
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {
-                                            echo "<option value=\"" . $row["ruangan"] . "\">" . $row["ruangan"] . "</option>";
+                                            echo "<option value=\"" . $row["id"] . "\">" . $row["ruangan"] . "</option>";
                                         }
                                     }
 
@@ -227,7 +227,7 @@
                     <div class="form-group">
                         <label for="nama_aplikasi">Nama Aplikasi</label>
                         <select class="form-control" id="nama_aplikasi" name="nama_aplikasi" required>
-                            <option value="" disabled selected></option> 
+                        <option value="" disabled selected>Pilih Aplikasi</option> Opsi default
                             <?php
                                 // Koneksi ke database master_aplikasi
                                 $conn = new mysqli("localhost", "root", "", "masterruangan");
@@ -244,7 +244,7 @@
                                 // Jika ada data, tampilkan dalam dropdown
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
-                                        echo "<option value=\"" . $row["aplikasi"] . "\">" . $row["aplikasi"] . "</option>";
+                                        echo "<option value=\"" . $row["id"] . "\">" . $row["aplikasi"] . "</option>";
                                     }
                                 } 
 
@@ -269,7 +269,7 @@
                         <div class="form-group">
                             <label for="topik">Topik</label>
                             <select class="form-control" id="topik" name="topik" required>
-                            <option value="" disabled selected></option> Opsi default
+                            <option value="" disabled selected>Pilih Topik</option> Opsi default
                                 <?php
                                     // Ambil data dari tabel master_topik
                                     $conn = new mysqli("localhost", "root", "", "masterruangan");
@@ -283,7 +283,7 @@
 
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {
-                                            echo "<option value=\"" . $row["topik"] . "\">" . $row["topik"] . "</option>";
+                                            echo "<option value=\"" . $row["id"] . "\">" . $row["topik"] . "</option>";
                                         }
                                     }
 

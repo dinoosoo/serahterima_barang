@@ -124,7 +124,7 @@ $conn->close();
 <li class="nav-item">
     <a class="nav-link" href="serah_pengajuan.php">
         <i class="fas fa-fw fa-file-alt"></i> <!-- Ganti dengan ikon yang sesuai -->
-        <span>SERAH PENGAJUAN</span>
+        <span>FORM PENGAJUAN</span>
     </a>
 </li>
 

@@ -141,7 +141,7 @@ $conn->close();
 <li class="nav-item">
     <a class="nav-link" href="serah_pengajuan.php">
         <i class="fas fa-fw fa-file-alt"></i> <!-- Ganti dengan ikon yang sesuai -->
-        <span>SERAH PENGAJUAN</span>
+        <span>FORM PENGAJUAN</span>
     </a>
 </li>
 
@@ -222,25 +222,28 @@ $conn->close();
                 </div> -->
 
                 <!-- Heading Data Barang -->
-                <div class="content-header">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
-                                <h1 class="m-0 text-dark" style="margin-bottom: 40px;">Data Serah Pengajuan</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <table class="table table-bordered table-striped" id="dataTable">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Keterangan</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
+<!-- Heading Data Barang -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark" style="margin-bottom: 40px;">Data Serah Pengajuan</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-bordered table-striped" id="dataTable">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Nama</th>  <!-- Ubah Keterangan menjadi Nama -->
+            <th>Ruangan</th> <!-- Tambahkan kolom Ruangan -->
+            <th>Status</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
         <?php
         // Koneksi ke database
         $conn = new mysqli("localhost", "root", "", "masterruangan");
@@ -250,32 +253,37 @@ $conn->close();
             die("Koneksi gagal: " . $conn->connect_error);
         }
 
-       // Query untuk mengambil data dari tabel data_pengajuan
-       $sql = "SELECT id, rincian, status FROM form_pengajuan";
-       $result = $conn->query($sql);
+        // Query dengan JOIN ke tabel master_ruangan untuk mengambil nama ruangan
+        $sql = "SELECT fp.id, fp.nama, mr.ruangan AS nama_ruangan, fp.status
+                FROM form_pengajuan fp
+                JOIN master_ruangan mr ON fp.ruangan = mr.id";  // JOIN antara form_pengajuan dan master_ruangan
 
-       if ($result->num_rows > 0) {
-           $no = 1; // Inisialisasi nomor urut
-           while ($row = $result->fetch_assoc()) {
-               echo "<tr>";
-               echo "<td>" . $no . "</td>";
-               echo "<td>" . $row['rincian'] . "</td>";
-               echo "<td>" . $row['status'] . "</td>";
-               echo "<td>
-                       <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Open</a>
-                       <a href='serah_pengajuan.php?delete_id=" . $row['id'] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>Delete</a>
-                     </td>";
-               echo "</tr>";
-               $no++;
-           }
-       } else {
-           echo "<tr><td colspan='4'>Tidak ada data</td></tr>";
-       }
+        $result = $conn->query($sql);
 
-       $conn->close();
-       ?>
+        if ($result->num_rows > 0) {
+            $no = 1; // Inisialisasi nomor urut
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $no . "</td>";
+                echo "<td>" . $row['nama'] . "</td>";  // Tampilkan Nama
+                echo "<td>" . $row['nama_ruangan'] . "</td>"; // Tampilkan Nama Ruangan
+                echo "<td>" . $row['status'] . "</td>";
+                echo "<td>
+                        <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Open</a>
+                        <a href='serah_pengajuan.php?delete_id=" . $row['id'] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>Delete</a>
+                      </td>";
+                echo "</tr>";
+                $no++;
+            }
+        } else {
+            echo "<tr><td colspan='5'>Tidak ada data</td></tr>";  // Update colspan agar mencakup semua kolom
+        }
+
+        $conn->close();
+        ?>
     </tbody>
 </table>
+
     </div>
 </div>
 <footer class="sticky-footer bg-white">
