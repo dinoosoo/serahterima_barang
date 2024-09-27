@@ -42,45 +42,30 @@ if ($status == "Belum Terbuka") {
 }
 
 // Cek jika ada permintaan POST untuk memperbarui status
-if (isset($_POST['kirim'])) {
-    $status = $_POST['status'] == 'terima' ? "Sudah Diterima" : "Ditolak";
+if (isset($_POST['simpan'])) {
+    $status = $_POST['status'];
+    $deadline = $_POST['deadline'];
     $alasan = $_POST['alasan'];
 
-    $sql = "UPDATE form_pengajuan SET status='$status', alasan='$alasan' WHERE id=$id";
+    $sql = "UPDATE form_pengajuan SET status='$status', deadline='$deadline', alasan='$alasan' WHERE id=$id";
+    if ($conn->query($sql) === TRUE) {
+        header("Location: kertas_pengajuan.php?id=$id");
+    } else {
+        echo "Error: " . $conn->error;
+    }
+}
+
+if (isset($_POST['kirim'])) {
+    $tanda_tangan_persetujuan = $_POST['tanda_tangan_persetujuan'];
+
+    $sql = "UPDATE form_pengajuan SET tanda_tangan_persetujuan='$tanda_tangan_persetujuan' WHERE id=$id";
     if ($conn->query($sql) === TRUE) {
         header("Location: kirim.php?id=$id");
     } else {
         echo "Error: " . $conn->error;
     }
-
-    // Periksa apakah ID ada di URL
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-    // Periksa koneksi
-    if ($conn->connect_error) {
-        die("Koneksi gagal: " . $conn->connect_error);
-    }
-
-    // Query untuk mendapatkan data berdasarkan ID
-    $sql = "SELECT * FROM form_pengajuan WHERE id=$id";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        // Tampilkan data pengajuan di sini
-        echo "<h1>Detail Pengajuan</h1>";
-        echo "<p>ID Pengajuan: " . $row['id'] . "</p>";
-        echo "<p>Alasan: " . $row['alasan'] . "</p>";
-        // Data lainnya
-    } else {
-        echo "Pengajuan dengan ID tersebut tidak ditemukan.";
-    }
-} else {
-    echo "ID tidak ditemukan.";
 }
-}
+
 
 $conn->close();
 ?>
@@ -117,11 +102,6 @@ $conn->close();
         border-top: 1px solid black; /* Garis pemisah */
         padding-top: 10px; /* Jarak antara teks dan garis */
         }
-        .second-signature {
-        margin-top: 20px; /* Jarak atas */
-        text-align: right; /* Mengatur teks agar rata kanan */
-        }
-
         .approval-table {
             margin-top: 250px; /* Jarak antara NIP dan tabel persetujuan */
         }
@@ -144,54 +124,21 @@ $conn->close();
 
         .container {
             width: 210mm; /* Lebar kertas A4 */
-            height: 420mm; /* Tinggi kertas A4 */
+            height: 275mm; /* Tinggi kertas A4 */
             padding: 20mm;
+            padding-top: 0;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
             position: relative;
             overflow: hidden;
         }
 
-
-        .header-text h5 {
-            margin: 0;
-            line-height: 1.4;
-            font-weight: normal;
-        }
-
-        .header-text h5.bold {
-            font-weight: bold; /* Membuat teks tebal untuk class 'bold' */
-        }
-
-        .data-table {
-            border-collapse: collapse;
-            margin-top: 20px;
-            margin-left: 10mm;
-            margin-right:10mm;
-        }
-
-        .data-table {
-            border-collapse: collapse; /* Menghilangkan jarak antar border */
-            margin-top: 20px;
-        }
-
-        .header-text {
-            text-align: center;
-            margin-top: 125px;
-            position: relative;
-                z-index: 2; /* Menempatkan teks di atas logo jika dibutuhkan */
-            }
-
         .logo {
             display: block;
+            margin-left: auto;
+            margin-right: auto;
             width: 100%;
-            max-width: 790px;
-            height: auto;
-            margin: 0 auto;
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+
         }
 
         .button-group {
@@ -315,64 +262,52 @@ $conn->close();
         }
 
     </style>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-        
 </head>
 <body>
 <div class="button-group">
     <button class="print-button" onclick="window.print()">Print</button>
     <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
     <hr style="color: black; length: 40px; margin: 10px 0;">
-    <?php if ($status != "") : ?>
+    <?php if ($status != "Disetujui" && $status != "Tidak Disetujui") : ?>
         <button class="btn-success" onclick="terimaPengajuan()">Receive</button>
         <button class="btn-danger" onclick="tolakPengajuan();">Reject</button>
-
     <?php endif; ?>
 </div>
     <div class="container">
         <img src="img/logorsud.jpeg" alt="Logo RSUD" class="logo">
-        
-        <style>
-    .underline {
-        border-bottom: 2px solid black; /* Menambahkan garis bawah */
-        display: inline-block; /* Mengatur elemen sebagai inline-block */
-        padding-bottom: 0; /* Menghilangkan padding bawah */
-    }
-</style>
-
-<div class="header-text">
-    <h5 id="judul" class="bold underline">FORM PENGAJUAN PERUBAHAN APLIKASI</h5>
-</div>
-
-
+        <h4 id="judul" style="text-align: center; text-decoration: underline 2px; text-weight: bold; margin-top: 0;">FORM PENGAJUAN</h4>
         <table class="data-table">
-        <table class="data-table" style="margin-left: auto; margin-right: auto;">
+        <table style="margin-left: auto; margin-right: auto;">
 
             <thead>
             </thead>
             <tbody>
         <tr>
-            <th style="width: 30%; ">Unit / Ruangan</th>
-            <th><?php echo $ruangan['ruangan'];?></th>        
+            <th style="width: 30%; font-weight: normal;">Unit / Ruangan</th>
+            <th style="font-weight: normal;" ><?php echo $ruangan['ruangan'];?></th>        
         </tr>
         <tr>
-            <th>Nama Aplikasi</th>
-            <th><?php echo $aplikasi['aplikasi'];?></th>
+            <th style="font-weight: normal;">Nama Aplikasi</th>
+            <th style="font-weight: normal;"><?php echo $aplikasi['aplikasi'];?></th>
         </tr>
         <tr>
-            <th>Kepada</th>
-            <th>Instalasi IT</th>
+            <th style="font-weight: normal;">Kepada</th>
+            <th style="font-weight: normal;"><?php echo $row['kepada'];?></th>
         </tr>
         <tr>
-            <th>Tanggal</th>
-            <th><?php echo $row['tanggal'];?></th>
+            <th style="font-weight: normal;">Tanggal</th>
+            <th style="font-weight: normal;"><?php echo $row['tanggal'];?></th>
         </tr>
         <tr>
-            <th>Topik</th>
-            <th><?php echo $topik['topik'];?></th>
+            <th style="font-weight: normal;">Topik</th>
+            <th style="font-weight: normal;"><?php echo $topik['topik'];?></th>
         </tr>
         <tr>
-            <th colspan="2" style="vertical-align: top;">Rincian: <?php echo $row['rincian'];?></th> <!-- Menggunakan colspan -->
+            <th colspan="2" style="vertical-align: top; font-weight: normal;">Rincian:
+            <p ><?php echo $row['rincian'];?></p>
+            </th> <!-- Menggunakan colspan -->
         </tr>
             </tbody>
         </table>
@@ -381,45 +316,77 @@ $conn->close();
     <table>
         <tbody>
             <tr>
-                <td style="border: 1px solid white; border-bottom: 1px solid black;"></td>
-                <td style="text-align: center; border: 1px solid white; border-bottom: 1px solid black; text-align: right;">
-                    <p style="margin: 0px; margin-right: 10%;">Mengetahui</p>
-                    <p style="margin: 0px;">Kepala Unit/Ruangan</p>
-                    <img src=<?php echo $row['tanda_tangan'];?> style="margin: 0; width: 50%; height: auto;"></img>
-                    <p style="margin: 0;">__________________</p>
-                    <p style="margin: 0; margin-right: 10%;">NIP :<?php echo $row['nip'];?></p>
+                <td style="border: 1px solid white;"></td>
+                <td style="border: 1px solid white;"></td>
+                <td style= "widht: 30%; text-align: center; font-weight: bold; border: 1px solid white;">
+                    <p style="margin: 0px;">Mengetahui</p>
+                    <h4 style="margin: 0px;">Kepala Unit/Ruangan</h4>
+                    <img src=<?php echo $row['tanda_tangan'];?> style="width: 160px; height: auto; margin-bottom: -15px;"></img>
+                    <p style="margin: 0; text-decoration: underline 2px;"><?php echo $row['nama'];?></p>
+                    <p style="margin: 0; text-align: left;">NIP :<?php if ($row['nip']) { echo $row['nip'];} else {echo "-";}?></p>
                 </td>
             </tr>
             <tr>
-                <th colspan="2" style="border: ">PERTIMBANGAN PERSETUJUAN</th>
+                <td style="border: 1px solid white;" colspan="3">
+                    <hr style="border: none; border-top: 1px dashed black; width: 100%;">
+                </td>
             </tr>
             <tr>
-                <td style="width: 50%; ">DISETUJUI</td>
-                <td style="width: 50%; ">TIDAK DISETUJUI</td>
+                <td style="border: 1px solid white;"></td>
+                <td colspan="2" style="border: 1px solid white; border-bottom: 1px solid black;"></td>
             </tr>
             <tr>
-                <td style="width: 50%; ">.</td>
-                <td style="width: 50%; "></td>
+                <td style="width: 50%; border: 1px solid white; border-right: 1px solid black;"></td>
+                <th colspan="2" style=" text-align: center">PERTIMBANGAN PERSETUJUAN</th>
             </tr>
             <tr>
-                <td  style="border: 1px solid white; border-right: 1px solid black;  background-color: white;"></td>
-                <td>Bangkalan</td>
+                <td style="width: 50%;border: 1px solid white; border-right: 1px solid black;"></td>
+                <td style="width: 25%; text-align: center">DISETUJUI 
+                    <?php if ($row['status'] == "Disetujui") { echo "<i class='fas fa-check'></i>"; }; ?>
+                </td>
+                <td style="width: 25%; text-align: center">TIDAK DISETUJUI 
+                    <?php if ($row['status'] == "Tidak Disetujui") { echo "<i class='fas fa-check'></i>"; }; ?>
+                </td>
             </tr>
             <tr>
-            <td style="border: 1px solid white; border-right: 1px solid black; background-color: white;"></td>
-            <td style="text-align: center;">
-                <p style="margin: 0;">Kepala</p>
-                <p>Instalasi IT</p>
-                <!-- Tanda tangan otomatis ditempatkan lebih mepet -->
-                <img src="img/ttd baru.webp" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -15px;"> <!-- Menempatkan gambar lebih dekat ke nama -->
-                
-                <!-- Nama dengan jarak dekat ke garis -->
-                <p style="margin: 0;">Djamal Abdul Nasir, S.Kom</p>
+                <td style="width: 50%; border: 1px solid white; border-right: 1px solid black;"></td>
+                <td style="width: 50%;" colspan="2">
+                    <?php 
+                        if (!empty($row['alasan'])) {
+                            echo htmlspecialchars($row['alasan']) . ', ' . htmlspecialchars($row['deadline']);
+                        } else {
+                            echo ".";
+                        }
+                    ?>
+                </td>
 
-                <!-- Garis dan NIP -->
-                <p style="margin-top: -8px;">_______________</p> <!-- Mengurangi jarak ke garis -->
-                <p>NIPPPK. 198305282023211008</p>
-            </td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid white; border-right: 1px solid black; text-align: center; font-weight: bold;">
+                <p style="margin: 0; font-weight: normal">Mengetahui</p>
+                <p style="margin: 0; position: relative; z-index: 1;">Plt. kabag. Perencanaan dan Evaluasi</p>
+                <p style="margin: 0; position: relative; z-index: 1;">Instalasi IT</p>
+                    <!-- Tanda tangan otomatis ditempatkan lebih mepet -->
+                    <img src="img/ttd baru.webp" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -30px; margin-top: -30px; position: relative; z-index: 0;">
+                    
+                    <!-- Nama dengan jarak dekat ke garis -->
+                    <p  style="margin: 0; text-decoration: underline 2px; position: relative; z-index: 1;">Djamal Abdul Nasir, S.Kom</p>
+
+                    <!-- Garis dan NIP -->
+                    <p style="margin: 0; position: relative; z-index: 1;">NIPPPK. 198305282023211008</p>
+                </td>
+                <td style="text-align: center; font-weight: bold;" colspan="2">
+                    <p style="margin: 0; font-weight: normal">Bangkalan, <?php echo $row['tanggal'];?></p>
+                    <p style="margin: 0; position: relative; z-index: 1;">Kepala</p>
+                    <p style="margin: 0; position: relative; z-index: 1;">Instalasi IT</p>
+                    <img src="img/ttd baru.webp" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -30px; margin-top: -30px; position: relative; z-index: 0;">
+
+                    <!-- Nama dengan jarak dekat ke garis -->
+                    <p  style="margin: 0; text-decoration: underline 2px; position: relative; z-index: 1;">Djamal Abdul Nasir, S.Kom</p>
+
+                    <!-- Garis dan NIP -->
+                    <p style="margin: 0; position: relative; z-index: 1;">NIPPPK. 198305282023211008</p>
+                </td>
         </tr>
         </tbody>
     </table>
@@ -428,10 +395,13 @@ $conn->close();
 <div id="dateModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <p>Masukkan tanggal diterima:</p>
         <form method="post">
-        <input name="alasan" type="date" id="tanggalDiterima" class="form-control">
-        <button name="kirim" type="submit" class="btn-success" onclick="saveDate()" style="margin-top: 10px;">Kirim</button>
+        <label for="deadline" style="color: black;">Deadline Pengerjaan</label>
+        <input name="deadline" type="date" id="tanggalDiterima" class="form-control" style="margin-bottom: 10px;>
+        <label for="alasan" style="color: black;">Catatan</label>
+        <input name="alasan" type="text" id="alasanPenolakan" class="form-control" placeholder="Masukkan alasan" style="width: 100%; padding: 10px; font-size: 16px;">
+        <input type="hidden" name="status" value="Disetujui">
+        <button name="simpan" type="submit" class="btn-success" onclick="saveDate()" style="margin-top: 10px;">Simpan</button>
         </form>
     </div>
 </div>
@@ -439,10 +409,11 @@ $conn->close();
 <div id="alasanModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeAlasanModal()">&times;</span>
-        <p>Masukkan alasan penolakan:</p>
         <form method="post">
+        <label for="alasan" style="color: black;">Alasan</label>
         <input name="alasan" type="text" id="alasanPenolakan" class="form-control" placeholder="Masukkan alasan" style="width: 100%; padding: 10px; font-size: 16px;">
-        <button name="kirim" type="submit" class="btn-success" onclick="saveAlasan()" style="margin-top: 10px;">Kirim</button>
+        <input type="hidden" name="status" value="Tidak Disetujui">
+        <button name="simpan" type="submit" class="btn-success" onclick="saveAlasan()" style="margin-top: 10px;">Simpan</button>
         </form>
     </div>
 </div>
