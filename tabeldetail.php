@@ -245,6 +245,11 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                             </thead>
                             <tbody>
                             <?php
+                            // Query dengan JOIN ke tabel master_ruangan untuk mengambil nama ruangan
+                                $sql = "SELECT fp.id, fp.nama, mr.ruangan, mj.jenis AS nama_ruangan, fp.status
+                                        FROM form_serah_terima fp
+                                        JOIN master_ruangan mr ON fp.ruangan = mr.id
+                                        JOIN master_jenis mr ON fp.jenis = mj.id";  // JOIN antara form_pengajuan dan master_ruangan
                                 if (isset($result) && $result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr>";

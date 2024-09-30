@@ -256,11 +256,19 @@ $conn->close();
         if ($conn->connect_error) {
             die("Koneksi gagal: " . $conn->connect_error);
         }
-        
-        // Query dengan JOIN ke tabel master_ruangan untuk mengambil nama ruangan
-        $sql = "SELECT fp.id, fp.nama, mr.ruangan AS nama_ruangan, fp.status
+        if ($_SESSION["role"] == "kabag") {
+            // Query dengan JOIN ke tabel master_ruangan untuk mengambil nama ruangan
+            $sql = "SELECT fp.id, fp.nama, mr.ruangan AS nama_ruangan, fp.status
+                FROM form_pengajuan fp
+                JOIN master_ruangan mr ON fp.ruangan = mr.id
+                WHERE status='Disetujui' or status='Tidak Disetujui'";  // JOIN antara form_pengajuan dan master_ruangan
+        } else {
+            // Query dengan JOIN ke tabel master_ruangan untuk mengambil nama ruangan
+            $sql = "SELECT fp.id, fp.nama, mr.ruangan AS nama_ruangan, fp.status
                 FROM form_pengajuan fp
                 JOIN master_ruangan mr ON fp.ruangan = mr.id";  // JOIN antara form_pengajuan dan master_ruangan
+        }
+        
 
         $result = $conn->query($sql);
 

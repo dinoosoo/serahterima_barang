@@ -57,16 +57,40 @@ if (isset($_POST['simpan'])) {
 }
 
 if (isset($_POST['kirim'])) {
-    $tanda_tangan_persetujuan = $_POST['tanda_tangan_persetujuan'];
+    $signature = $_POST['signature'];
 
-    $sql = "UPDATE form_pengajuan SET tanda_tangan_persetujuan='$tanda_tangan_persetujuan' WHERE id=$id";
-    if ($conn->query($sql) === TRUE) {
-        header("Location: kirim.php?id=$id");
+    if (empty($signature)) {
+        $msg = "<div class='alert alert-danger' id='notification'>Tidak ada data tanda tangan yang diterima.</div>";
     } else {
-        echo "Error: " . $conn->error;
+        $signatureFileName = uniqid() . '.png';
+        $signature = str_replace('data:image/png;base64,', '', $signature);
+        $signature = str_replace(' ', '+', $signature);
+        $data = base64_decode($signature);
+
+        if ($data === false) {
+            $msg = "<div class='alert alert-danger' id='notification'>Gagal mendekode tanda tangan.</div>";
+        } else {
+            $dir = 'signatures';
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+            }
+
+            $file = $dir . '/' . $signatureFileName;
+            if (file_put_contents($file, $data) === false) {
+                $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan tanda tangan.</div>";
+            } else {
+                // Simpan data ke database
+                $sql = "UPDATE form_pengajuan SET tanda_tangan_persetujuan='$file' WHERE id=$id"; // Simpan nama file, bukan data base64
+                if ($conn->query($sql) === TRUE) {
+                    header("Location: kirim.php?id=$id");
+                    exit;
+                } else {
+                    echo "Error: " . $conn->error;
+                }
+            }
+        }
     }
 }
-
 
 $conn->close();
 ?>
@@ -397,14 +421,24 @@ $conn->close();
 
     
 <div id="tandatangan" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close" onclick="tutupmodal()">&times;</span>
-        <form method="post">
+    <div class="modal-content" style="background-color: white; padding: 20px;">
+        <span class="close" onclick="tutupmodal()" style="cursor: pointer;">&times;</span>
+        <h3>Tanda Tangan</h3>
         
-        <button name="kirim" type="submit" class="btn-success" onclick="tutupmodal()" style="margin-top: 10px;">Send</button>
+        <!-- Tanda Tangan -->
+        <form id="signatureForm" method="post">
+            <div class="form-group">
+                <div id="canvasDiv" style="display: flex; justify-content: center;">
+                    <canvas id="signatureCanvas" width="400" height="200" style="border: 2px dashed black;"></canvas>
+                </div>
+            </div>
+            <button type="button" class="btn-danger" id="clearSignature">Clear</button>
+            <input type="hidden" id="signature" name="signature">
+            <button name="kirim" type="submit" class="btn-success" style="margin-top: 10px;">Send</button>
         </form>
     </div>
-</div>    
+</div>
+   
             <!-- Modal -->
 <div id="dateModal" class="modal" style="display: none;">
     <div class="modal-content">
@@ -433,13 +467,18 @@ $conn->close();
 </div>
 
 
+    <!-- JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
     <script>
 function tandatangan() {
     // Buka modal saat tombol ditekan
     document.getElementById("tandatangan").style.display = "block";
 }
 
-function tututpmodal() {
+function tutupmodal() {
     document.getElementById("tandatangan").style.display = "none";
 }
 
@@ -488,6 +527,59 @@ function closeAlasanModal() {
         function changeTitle(title) {
             document.getElementById('serah-terima-title').innerText = title;
         }
+    </script>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var canvas = document.getElementById('signatureCanvas');
+            var ctx = canvas.getContext('2d');
+            var drawing = false;
+            var mousePos = { x: 0, y: 0 };
+            var lastPos = mousePos;
+
+            canvas.addEventListener('mousedown', function (e) {
+                drawing = true;
+                lastPos = getMousePos(canvas, e);
+            }, false);
+
+            canvas.addEventListener('mouseup', function (e) {
+                drawing = false;
+            }, false);
+
+            canvas.addEventListener('mousemove', function (e) {
+                mousePos = getMousePos(canvas, e);
+                renderCanvas();
+            }, false);
+
+            // Fungsi untuk mendapatkan posisi mouse
+            function getMousePos(canvasDom, mouseEvent) {
+                var rect = canvasDom.getBoundingClientRect();
+                return {
+                    x: mouseEvent.clientX - rect.left,
+                    y: mouseEvent.clientY - rect.top
+                };
+            }
+
+            function renderCanvas() {
+                if (drawing) {
+                    ctx.moveTo(lastPos.x, lastPos.y);
+                    ctx.lineTo(mousePos.x, mousePos.y);
+                    ctx.stroke();
+                    lastPos = mousePos;
+                }
+            }
+
+            document.getElementById('clearSignature').addEventListener('click', function () {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath(); // Mulai path baru setelah kanvas dihapus
+                document.getElementById('signature').value = ''; // Hapus nilai tanda tangan
+            });
+
+            document.getElementById('signatureForm').addEventListener('submit', function (e) {
+                var dataUrl = canvas.toDataURL();
+                document.getElementById('signature').value = dataUrl; // Simpan data URL ke input hidden
+            });
+        });
     </script>
 </body>
 </html>

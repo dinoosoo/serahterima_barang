@@ -262,7 +262,7 @@ $conn->close();
         <!-- Tanda Tangan -->
         <div class="form-group">
             <label for="signature">Tanda Tangan</label>
-            <div id="canvasDiv">
+            <div id="canvasDiv" style="display: flex; justify-content: center;">
                 <canvas id="signatureCanvas" width="400" height="200"></canvas>
             </div>
         </div>
