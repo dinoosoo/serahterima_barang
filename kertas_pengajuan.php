@@ -396,10 +396,123 @@ $conn->close();
     </table>
 
     
-<div id="tandatangan" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close" onclick="tutupmodal()">&times;</span>
-        <form method="post">
+    <div id="tandatangan" class="modal" style="display: block; padding: 20px; background-color: rgba(0,0,0,0.8);">
+    <div class="modal-content" style="background-color: white; padding: 20px;">
+        <span class="close" onclick="tutupModal()" style="cursor: pointer;">&times;</span>
+        <h3>Tambahkan Tanda Tangan</h3>
+        
+        <!-- Tempat Kanvas Tanda Tangan -->
+        <div id="canvasDiv" style="border: 1px solid black; width: 100%; height: 300px; background-color: white;">
+            <canvas id="canvas" style="border: 1px solid grey;"></canvas>
+        </div>
+        <br>
+
+        <!-- Tombol untuk Hapus dan Simpan -->
+        <button type="button" class="btn btn-danger" id="reset-btn">Hapus</button>
+        <button type="button" class="btn btn-success" id="btn-save">Simpan Tanda Tangan</button>
+
+        <!-- Form tersembunyi untuk kirim data tanda tangan -->
+        <form id="signatureform" action="" method="post" style="display:none;">
+            <input type="hidden" id="signature" name="signature">
+            <input type="hidden" name="signaturesubmit" value="1">
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+<script>
+    $(document).ready(() => {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext("2d");
+
+        // Mengatur dimensi kanvas
+        canvas.width = document.getElementById('canvasDiv').clientWidth;
+        canvas.height = 300;
+
+        var clickX = [];
+        var clickY = [];
+        var clickDrag = [];
+        var paint = false;
+
+        // Lacak klik mouse
+        $('#canvas').mousedown(function(e) {
+            paint = true;
+            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+            redraw();
+        });
+
+        // Lacak gerakan mouse
+        $('#canvas').mousemove(function(e) {
+            if (paint) {
+                addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                redraw();
+            }
+        });
+
+        // Berhenti menggambar saat mouse dilepas
+        $('#canvas').mouseup(function() {
+            paint = false;
+        });
+
+        // Berhenti menggambar saat mouse keluar dari area kanvas
+        $('#canvas').mouseleave(function() {
+            paint = false;
+        });
+
+        // Simpan koordinat klik dan gerakan
+        function addClick(x, y, dragging) {
+            clickX.push(x);
+            clickY.push(y);
+            clickDrag.push(dragging);
+        }
+
+        // Gambar ulang kanvas
+        function redraw() {
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Bersihkan kanvas
+            context.strokeStyle = "#000";
+            context.lineJoin = "round";
+            context.lineWidth = 2;
+
+            for (var i = 0; i < clickX.length; i++) {
+                context.beginPath();
+                if (clickDrag[i] && i) {
+                    context.moveTo(clickX[i - 1], clickY[i - 1]);
+                } else {
+                    context.moveTo(clickX[i] - 1, clickY[i]);
+                }
+                context.lineTo(clickX[i], clickY[i]);
+                context.closePath();
+                context.stroke();
+            }
+        }
+
+        // Fungsi tombol hapus
+        $("#reset-btn").click(function() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            clickX = [];
+            clickY = [];
+            clickDrag = [];
+        });
+
+        // Simpan tanda tangan sebagai gambar
+        $("#btn-save").click(function() {
+            var img = canvas.toDataURL("image/png");
+            $("#signature").val(img);
+            $("#signatureform").submit(); // Kirim form tersembunyi dengan tanda tangan
+        });
+
+    });
+
+    function bukaModal() {
+        document.getElementById('tandatangan').style.display = 'block';
+    }
+
+    function tutupModal() {
+        document.getElementById('tandatangan').style.display = 'none';
+    }
+</script>
+
         
         <button name="kirim" type="submit" class="btn-success" onclick="tutupmodal()" style="margin-top: 10px;">Send</button>
         </form>
