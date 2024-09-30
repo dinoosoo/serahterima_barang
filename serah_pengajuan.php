@@ -256,7 +256,7 @@ $conn->close();
         if ($conn->connect_error) {
             die("Koneksi gagal: " . $conn->connect_error);
         }
-
+        
         // Query dengan JOIN ke tabel master_ruangan untuk mengambil nama ruangan
         $sql = "SELECT fp.id, fp.nama, mr.ruangan AS nama_ruangan, fp.status
                 FROM form_pengajuan fp

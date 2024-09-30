@@ -1,4 +1,5 @@
 <?php
+session_start();
 $id = $_GET['id'];
 $conn = new mysqli("localhost", "root", "", "masterruangan");
 
@@ -270,10 +271,13 @@ $conn->close();
     <button class="print-button" onclick="window.print()">Print</button>
     <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
     <hr style="color: black; length: 40px; margin: 10px 0;">
-    <?php if ($status != "Disetujui" && $status != "Tidak Disetujui") : ?>
-        <button class="btn-success" onclick="terimaPengajuan()">Receive</button>
-        <button class="btn-danger" onclick="tolakPengajuan();">Reject</button>
-    <?php endif; ?>
+    <?php if ($_SESSION["role"] == "kabag") : ?>
+    <button class="btn-success" onclick="tandatangan()">Signature</button>
+<?php elseif ($status != "Disetujui" && $status != "Tidak Disetujui") : ?>
+    <button class="btn-success" onclick="terimaPengajuan()">Receive</button>
+    <button class="btn-danger" onclick="tolakPengajuan()">Reject</button>
+<?php endif; ?>
+
 </div>
     <div class="container">
         <img src="img/logorsud.jpeg" alt="Logo RSUD" class="logo">
@@ -367,7 +371,7 @@ $conn->close();
                 <p style="margin: 0; position: relative; z-index: 1;">Plt. kabag. Perencanaan dan Evaluasi</p>
                 <p style="margin: 0; position: relative; z-index: 1;">Instalasi IT</p>
                     <!-- Tanda tangan otomatis ditempatkan lebih mepet -->
-                    <img src="img/ttd baru.webp" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -30px; margin-top: -30px; position: relative; z-index: 0;">
+                    <img src="<?php echo $row['tanda_tangan_persetujuan']; ?>" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -30px; margin-top: -30px; position: relative; z-index: 0;">
                     
                     <!-- Nama dengan jarak dekat ke garis -->
                     <p  style="margin: 0; text-decoration: underline 2px; position: relative; z-index: 1;">Djamal Abdul Nasir, S.Kom</p>
@@ -390,18 +394,28 @@ $conn->close();
         </tr>
         </tbody>
     </table>
+
     
+<div id="tandatangan" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="tutupmodal()">&times;</span>
+        <form method="post">
+        
+        <button name="kirim" type="submit" class="btn-success" onclick="tutupmodal()" style="margin-top: 10px;">Send</button>
+        </form>
+    </div>
+</div>    
             <!-- Modal -->
 <div id="dateModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <form method="post">
         <label for="deadline" style="color: black;">Deadline Pengerjaan</label>
-        <input name="deadline" type="date" id="tanggalDiterima" class="form-control" style="margin-bottom: 10px;>
+        <input name="deadline" type="date" id="tanggalDiterima" class="form-control" style="margin-bottom: 10px;">
         <label for="alasan" style="color: black;">Catatan</label>
         <input name="alasan" type="text" id="alasanPenolakan" class="form-control" placeholder="Masukkan alasan" style="width: 100%; padding: 10px; font-size: 16px;">
         <input type="hidden" name="status" value="Disetujui">
-        <button name="simpan" type="submit" class="btn-success" onclick="saveDate()" style="margin-top: 10px;">Simpan</button>
+        <button name="simpan" type="submit" class="btn-success" onclick="saveDate()" style="margin-top: 10px;">Save</button>
         </form>
     </div>
 </div>
@@ -413,29 +427,28 @@ $conn->close();
         <label for="alasan" style="color: black;">Alasan</label>
         <input name="alasan" type="text" id="alasanPenolakan" class="form-control" placeholder="Masukkan alasan" style="width: 100%; padding: 10px; font-size: 16px;">
         <input type="hidden" name="status" value="Tidak Disetujui">
-        <button name="simpan" type="submit" class="btn-success" onclick="saveAlasan()" style="margin-top: 10px;">Simpan</button>
+        <button name="simpan" type="submit" class="btn-success" onclick="saveAlasan()" style="margin-top: 10px;">Save</button>
         </form>
     </div>
 </div>
 
 
     <script>
-    function terimaPengajuan() {
+function tandatangan() {
+    // Buka modal saat tombol ditekan
+    document.getElementById("tandatangan").style.display = "block";
+}
+
+function tututpmodal() {
+    document.getElementById("tandatangan").style.display = "none";
+}
+
+function terimaPengajuan() {
     // Buka modal saat tombol ditekan
     document.getElementById("dateModal").style.display = "block";
 }
 
 function saveDate() {
-    var tanggal = document.getElementById("tanggalDiterima").value;
-    
-    if (tanggal) {
-        alert("Tanggal diterima: " + tanggal);
-        // Tambahkan logika lain untuk menyimpan tanggal
-        
-    } else {
-        alert("Harap pilih tanggal.");
-    }
-    
     // Tutup modal setelah simpan
     closeModal();
 }
