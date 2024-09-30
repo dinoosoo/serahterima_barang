@@ -14,6 +14,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $status = $row['status'];
+    $tandatangan = $row['tanda_tangan_persetujuan'];
     $id_ruangan = $row['ruangan'];
     $id_aplikasi = $row['nama_aplikasi'];
     $id_topik = $row['topik'];
@@ -292,16 +293,23 @@ $conn->close();
 </head>
 <body>
 <div class="button-group">
+    <!-- Tombol Print yang selalu muncul -->
     <button class="print-button" onclick="window.print()">Print</button>
-    <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
-    <hr style="color: black; length: 40px; margin: 10px 0;">
-    <?php if ($_SESSION["role"] == "kabag") : ?>
-    <button class="btn-success" onclick="tandatangan()">Signature</button>
-<?php elseif ($status != "Disetujui" && $status != "Tidak Disetujui") : ?>
-    <button class="btn-success" onclick="terimaPengajuan()">Receive</button>
-    <button class="btn-danger" onclick="tolakPengajuan()">Reject</button>
-<?php endif; ?>
 
+    <!-- Tampilkan tombol Back hanya jika sudah login -->
+    <?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "") : ?>
+        <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
+    <?php endif; ?>
+
+    <hr style="color: black; length: 40px; margin: 10px 0;">
+
+    <!-- Tampilkan tombol Signature, Receive, dan Reject berdasarkan role dan status -->
+    <?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $_SESSION["role"] == "kabag" && $tandatangan == "") : ?>
+        <button class="btn-success" onclick="tandatangan()">Signature</button>
+    <?php elseif (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $status != "Disetujui" && $status != "Tidak Disetujui") : ?>
+        <button class="btn-success" onclick="terimaPengajuan()">Receive</button>
+        <button class="btn-danger" onclick="tolakPengajuan()">Reject</button>
+    <?php endif; ?>
 </div>
     <div class="container">
         <img src="img/logorsud.jpeg" alt="Logo RSUD" class="logo">
@@ -512,7 +520,7 @@ function saveAlasan() {
         // Redirect dengan alasan penolakan
         window.location.href = 'serah_pengajuan.php?id=' + id + '&jenis_berkas=' + jenisBerkas + '&alasan=' + encodeURIComponent(alasan);
     } else {
-        alert("Harap masukkan alasan penolakan.");
+        //alert("Harap masukkan alasan penolakan.");
     }
 
     // Tutup modal setelah menyimpan alasan
