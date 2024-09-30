@@ -374,10 +374,10 @@ $conn->close();
                     <img src="<?php echo $row['tanda_tangan_persetujuan']; ?>" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -30px; margin-top: -30px; position: relative; z-index: 0;">
                     
                     <!-- Nama dengan jarak dekat ke garis -->
-                    <p  style="margin: 0; text-decoration: underline 2px; position: relative; z-index: 1;">Djamal Abdul Nasir, S.Kom</p>
+                    <p  style="margin: 0; text-decoration: underline 2px; position: relative; z-index: 1;">dr.Prima Nugroho, M.AP</p>
 
                     <!-- Garis dan NIP -->
-                    <p style="margin: 0; position: relative; z-index: 1;">NIPPPK. 198305282023211008</p>
+                    <p style="margin: 0; position: relative; z-index: 1;">NIP. 197705262006041011</p>
                 </td>
                 <td style="text-align: center; font-weight: bold;" colspan="2">
                     <p style="margin: 0; font-weight: normal">Bangkalan, <?php echo $row['tanggal'];?></p>
@@ -472,9 +472,7 @@ function saveAlasan() {
         
         // Redirect dengan alasan penolakan
         window.location.href = 'serah_pengajuan.php?id=' + id + '&jenis_berkas=' + jenisBerkas + '&alasan=' + encodeURIComponent(alasan);
-    } else {
-        alert("Harap masukkan alasan penolakan.");
-    }
+    } 
 
     // Tutup modal setelah menyimpan alasan
     closeAlasanModal();
