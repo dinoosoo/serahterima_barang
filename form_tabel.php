@@ -102,7 +102,7 @@
                             <div class="col-lg-12">
                                 <div class="p-5">
                                     <?php $kembali = $_GET['kembali']; ?>
-                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='<?php echo $kembali;?>'">Back</button>                                   
+                                    <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='<?php echo $kembali;?>'">Kembali</button>                                   
                                     <?php
                                         $conn = new mysqli("localhost", "root", "", "masterruangan");
 
@@ -204,7 +204,7 @@ $conn->close();
 <div class="form-group">
     <label for="ruangan">Ruangan</label>
     <select class="form-control" id="ruangan" name="ruangan" required>
-        <option value="" disabled selected></option> Opsi default
+    <option value="" disabled selected>Pilih Ruangan</option> Opsi default
         <?php
             $conn = new mysqli("localhost", "root", "", "masterruangan");
 
@@ -229,7 +229,7 @@ $conn->close();
 <div class="form-group">
     <label for="jenis">Jenis</label>
     <select class="form-control" id="jenis" name="jenis" required>
-        <option value="" disabled selected></option> Opsi default
+    <option value="" disabled selected>Pilih Jenis</option> Opsi default
         <?php
             $conn = new mysqli("localhost", "root", "", "masterruangan");
 
