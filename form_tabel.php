@@ -117,13 +117,14 @@
                                     </div>
 
 
-    <?php
+                                    <?php
 $conn = new mysqli("localhost", "root", "", "masterruangan");
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
+// Handle form submission
 if (isset($_POST['signaturesubmit'])) {
     $signature = $_POST['signature'];
     $jenis_berkas = $_POST['jenis_berkas'];
@@ -178,6 +179,7 @@ if (isset($_POST['signaturesubmit'])) {
     }
 }
 
+// Close connection after form submission
 $conn->close();
 ?>
 
@@ -201,54 +203,55 @@ $conn->close();
             <input type="date" class="form-control" id="tanggal" name="tanggal" required>
         </div>
         <!-- Ruangan -->
-<div class="form-group">
-    <label for="ruangan">Ruangan</label>
-    <select class="form-control" id="ruangan" name="ruangan" required>
-    <option value="" disabled selected>Pilih Ruangan</option> Opsi default
-        <?php
-            $conn = new mysqli("localhost", "root", "", "masterruangan");
+        <div class="form-group">
+            <label for="ruangan">Ruangan</label>
+            <select class="form-control" id="ruangan" name="ruangan" required>
+                <option value="" disabled selected>Pilih Ruangan</option> <!-- Opsi default -->
+                <?php
+                    $conn = new mysqli("localhost", "root", "", "masterruangan");
 
-            if ($conn->connect_error) {
-                die("Koneksi gagal: " . $conn->connect_error);
-            }
+                    if ($conn->connect_error) {
+                        die("Koneksi gagal: " . $conn->connect_error);
+                    }
 
-            $sql = "SELECT id, ruangan FROM master_ruangan";
-            $result = $conn->query($sql);
+                    $sql = "SELECT id, ruangan FROM master_ruangan";
+                    $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<option value=\"" . $row["ruangan"] . "\">" . $row["ruangan"] . "</option>";
-                }
-            }
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<option value=\"" . $row["id"] . "\">" . $row["ruangan"] . "</option>";
+                        }
+                    }
 
-            $conn->close();
-        ?>
-    </select>
-</div>
+                    $conn->close();
+                ?>
+            </select>
+        </div>
         <!-- Jenis -->
-<div class="form-group">
-    <label for="jenis">Jenis</label>
-    <select class="form-control" id="jenis" name="jenis" required>
-    <option value="" disabled selected>Pilih Jenis</option> Opsi default
-        <?php
-            $conn = new mysqli("localhost", "root", "", "masterruangan");
+        <div class="form-group">
+            <label for="jenis">Jenis</label>
+            <select class="form-control" id="jenis" name="jenis" required>
+                <option value="" disabled selected>Pilih Jenis</option> <!-- Opsi default -->
+                <?php
+                    $conn = new mysqli("localhost", "root", "", "masterruangan");
 
-            if ($conn->connect_error) {
-                die("Koneksi gagal: " . $conn->connect_error);
-            }
+                    if ($conn->connect_error) {
+                        die("Koneksi gagal: " . $conn->connect_error);
+                    }
 
-            $sql = "SELECT id, jenis FROM master_jenis";
-            $result = $conn->query($sql);
+                    $sql = "SELECT id, jenis FROM master_jenis";
+                    $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<option value=\"" . $row["jenis"] . "\">" . $row["jenis"] . "</option>";
-                }
-            } 
-            $conn->close();
-        ?>
-    </select>
-</div>
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<option value=\"" . $row["id"] . "\">" . $row["jenis"] . "</option>";
+                        }
+                    } 
+                    $conn->close();
+                ?>
+            </select>
+        </div>
+
         <!-- Jumlah -->
         <div class="form-group">
             <label for="jumlah">Jumlah</label>
