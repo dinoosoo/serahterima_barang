@@ -232,7 +232,7 @@ $conn->close();
                     echo '
                     <div class="d-flex justify-content-end mb-3">
                         <a href="form_tabel.php?kembali=tabel.php" class="btn btn-success">
-                            <i class="fas fa-plus"></i> Tambah Data
+                            <i class="fas fa-plus"></i> Insert
                         </a>
                     </div>';
                 }
@@ -263,15 +263,15 @@ $conn->close();
                                     <td>" . $row['tanggal_masuk'] . "</td>
                                     <td>" . ($isOpen ? 'Belum Selesai' : $row['tanggal_selesai']) . "</td>
                                     <td>
-                                        <a href='tabeldetail.php?id=" . $row['id'] . "&status=" . $isOpen . "' class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>";
+                                        <a href='tabeldetail.php?id=" . $row['id'] . "&status=" . $isOpen . "&jenis_berkas=Baru' class='btn btn-info'><i class='fas fa-info-circle'></i> Detail</a>";
 
                                         if ($isOpen) {
                                             echo "
                                                 <form method='post' style='display:inline;' action=''>
                                                     <input type='hidden' name='transaction_id' value='" . $row['id'] . "'>
                                                     <button type='submit' class='btn btn-danger' name='tutup_transaksi'
-                                                        onclick=\"return confirm('Apakah Anda yakin akan menutup transaksi ini?');\">
-                                                        Tutup Transaksi
+                                                        onclick=\"return confirm('Apakah Anda yakin akan menutup transaksi ini?');\"><i class='fas fa-lock'></i>
+                                                        Closed
                                                     </button>
                                                 </form>";
                                         }

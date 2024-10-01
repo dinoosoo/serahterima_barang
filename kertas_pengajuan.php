@@ -153,7 +153,7 @@ $conn->close();
             height: 275mm; /* Tinggi kertas A4 */
             padding: 20mm;
             padding-top: 0;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
             background-color: #ffffff;
             position: relative;
             overflow: hidden;
@@ -285,7 +285,11 @@ $conn->close();
             border: 1px solid #ccc;
             border-radius: 5px; /* Membuat sudut input melengkung */
             box-sizing: border-box; /* Agar padding terhitung dalam lebar */
+        }.rincian {
+            max-width: 600px; 
+            word-wrap: break-word; 
         }
+
 
     </style>
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -294,19 +298,19 @@ $conn->close();
 <body>
 <div class="button-group">
     <!-- Tombol Print yang selalu muncul -->
-    <button class="print-button" onclick="window.print()">Print</button>
+    <button class="print-button" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
 
     <!-- Tampilkan tombol Back hanya jika sudah login -->
     <?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "") : ?>
-        <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
+        <button class="btn-danger" onclick="window.location.href='serah_pengajuan.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';"><i class="fas fa-arrow-left"></i> Back</button>
     <?php endif; ?>
 
-    <hr style="color: black; length: 40px; margin: 10px 0;">
-
     <!-- Tampilkan tombol Signature, Receive, dan Reject berdasarkan role dan status -->
-    <?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $_SESSION["role"] == "kabag" && $tandatangan == "") : ?>
+    <?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $_SESSION["role"] != "it" && $tandatangan == "") : ?>
+        <hr style="color: black; length: 40px; margin: 10px 0;">
         <button class="btn-success" onclick="tandatangan()">Signature</button>
-    <?php elseif (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $status != "Disetujui" && $status != "Tidak Disetujui") : ?>
+    <?php endif; if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $status != "Disetujui" && $status != "Tidak Disetujui") : ?>
+        <hr style="color: black; length: 40px; margin: 10px 0;">
         <button class="btn-success" onclick="terimaPengajuan()">Receive</button>
         <button class="btn-danger" onclick="tolakPengajuan()">Reject</button>
     <?php endif; ?>
@@ -342,7 +346,7 @@ $conn->close();
         </tr>
         <tr>
             <th colspan="2" style="vertical-align: top; font-weight: normal;">Rincian:
-            <p ><?php echo $row['rincian'];?></p>
+            <p class="rincian"><?php echo $row['rincian'];?></p>
             </th> <!-- Menggunakan colspan -->
         </tr>
             </tbody>
@@ -403,7 +407,7 @@ $conn->close();
                 <p style="margin: 0; position: relative; z-index: 1;">Plt. kabag. Perencanaan dan Evaluasi</p>
                 <p style="margin: 0; position: relative; z-index: 1;">Instalasi IT</p>
                     <!-- Tanda tangan otomatis ditempatkan lebih mepet -->
-                    <img src="<?php echo $row['tanda_tangan_persetujuan']; ?>" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -30px; margin-top: -30px; position: relative; z-index: 0;">
+                    <img src="<?php echo $row['tanda_tangan_persetujuan']; ?>" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -30px; margin-top: -10px; position: relative; z-index: 0;">
                     
                     <!-- Nama dengan jarak dekat ke garis -->
                     <p  style="margin: 0; text-decoration: underline 2px; position: relative; z-index: 1;">dr.Prima Nugroho, M.AP</p>
