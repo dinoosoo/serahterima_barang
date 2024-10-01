@@ -1,6 +1,8 @@
 <?php
 session_start();
-$id = isset($_GET['id']) ? $_GET['id'] : null;
+$id = $_GET['id'];
+$status = $_GET['status'];
+$jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
     // Koneksi ke database
 $conn = new mysqli("localhost", "root", "", "masterruangan");
 
@@ -9,13 +11,27 @@ if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
 }
 
+$sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
+    FROM form_serah_terima fs
+    JOIN master_ruangan mr ON fs.ruangan = mr.id
+    JOIN master_jenis mj ON fs.jenis = mj.id
+    WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
+$no =1;
+$result = $conn->query($sql);
+
 // Memeriksa apakah ID dan jenis_berkas ada di GET
-if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
-    $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
+if (isset($_POST['tampil'])) {
+    $jenis_berkas = isset($_POST['jenis_berkas']) && !empty($_POST['jenis_berkas']) ? $_POST['jenis_berkas'] : 'Baru';
+
+    $sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
+        FROM form_serah_terima fs
+        JOIN master_ruangan mr ON fs.ruangan = mr.id
+        JOIN master_jenis mj ON fs.jenis = mj.id
+        WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
     $no =1;
-    $sql = "SELECT * FROM form_serah_terima WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
     $result = $conn->query($sql);
 }
+// Query untuk mengambil data dari form_serah_terima dengan join ke master_ruangan dan master_jenis
 
 $sql = "SELECT * FROM priode WHERE tanggal_selesai IS NULL AND id=$id";
 $cektombol = $conn->query($sql)->fetch_assoc();
@@ -205,29 +221,58 @@ $cektombol = $conn->query($sql)->fetch_assoc();
       <!-- Tombol Plus -->
       <?php if ($cektombol != null) : ?>
       <a href="form_tabel.php?kembali=tabel.php" class="btn btn-success">
-        <i class="fas fa-plus"></i> Plus
+        <i class="fas fa-plus"></i> Insert
       </a>
        <?php endif; ?>
       <!-- Tombol Print -->
-      <a href="kertas.php?id=<?php echo isset($_GET['id']) ? $_GET['id'] : ''; ?>&jenis_berkas=<?php echo isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''; ?>" class="btn btn-primary ms-2">
+      <a href="kertas.php?id=<?php echo $id; ?>&status=<?php echo $status; ?>&jenis_berkas=<?php echo $jenis_berkas; ?>" class="btn btn-primary ms-2">
         <i class="fas fa-print"></i> Print
       </a>
     </div>
   </div>
 </div>
 
-                      <div class="table-container">
-                      <div class="form-group">
-                        <form method="GET" action="tabeldetail.php">
-                            <input type="hidden" name="status" value="<?php echo $status = $_GET['status']; ?>">
-                            <input type="hidden" name="id" value="<?php echo $id = $_GET['id']; ?>"> <!-- ID tetap dikirim -->
-                            <input type="radio" id="barangBaru" name="jenis_berkas" value="Baru">
-                            <label for="barangBaru">Barang Baru</label>
-                            <input type="radio" id="barangRusak" name="jenis_berkas" value="Rusak">
-                            <label for="barangRusak">Barang Rusak</label>
-                            <button type="submit" class="btn btn-primary">Show</button>
-                        </form>
-                    </div>
+<?php
+// Koneksi ke database
+$conn = new mysqli("localhost", "root", "", "masterruangan");
+
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Ambil status dan ID dari URL
+$status = isset($_GET['status']) ? $_GET['status'] : '';
+$id = isset($_GET['id']) ? $_GET['id'] : '';
+
+// Query untuk mengambil data dari form_serah_terima dengan join ke master_ruangan dan master_jenis
+$sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
+        FROM form_serah_terima fs
+        JOIN master_ruangan mr ON fs.ruangan = mr.id
+        JOIN master_jenis mj ON fs.jenis = mj.id";
+
+
+$result = $conn->query($sql);
+?>
+
+<div class="table-container">
+    <div class="form-group">
+        <form method="GET" action="tabeldetail.php">
+            <!-- Validasi jika $_GET['status'] ada -->
+            <input type="hidden" name="status" value="<?php echo isset($_GET['status']) ? htmlspecialchars($_GET['status']) : ''; ?>">
+            <!-- Validasi jika $_GET['id'] ada -->
+            <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? htmlspecialchars($_GET['id']) : ''; ?>"> <!-- ID tetap dikirim -->
+            
+            <input type="radio" id="barangBaru" name="jenis_berkas" value="Baru">
+            <label for="barangBaru">Barang Baru</label>
+            
+            <input type="radio" id="barangRusak" name="jenis_berkas" value="Rusak">
+            <label for="barangRusak">Barang Rusak</label>
+            
+            <button type="submit" class="btn btn-primary">Show</button>
+        </form>
+    </div>
+</div>
+
 
                     <div class="table-container">
                         <table class="table table-bordered">
@@ -245,28 +290,30 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                             </thead>
                             <tbody>
                             <?php
-                                if (isset($result) && $result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>" . $no++ . "</td>";
-                                        echo "<td>" . $row['tanggal'] . "</td>";
-                                        echo "<td>" . $row['ruangan'] . "</td>";
-                                        echo "<td>" . $row['jenis'] . "</td>";
-                                        echo "<td>" . $row['jumlah'] . "</td>";
-                                        echo "<td>" . $row['keterangan'] . "</td>";
-                                        echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan'></td>";
-                                        if ($status){
-                                        echo "<td><a href='edit_form_tabel.php?id={$row['id']}&lokasi={$_GET['id']}' class='btn btn-primary mr-2'>Edit</a></td>";
-                                        }
-                                        echo "</tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='7' style='text-align: center;'>Tidak ada data.</td></tr>";
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+                    if (isset($result) && $result->num_rows > 0) {
+                        $no = 1;
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . $no++ . "</td>";
+                            echo "<td>" . $row['tanggal'] . "</td>";
+                            echo "<td>" . $row['ruangan'] . "</td>"; // Nama ruangan dari master_ruangan
+                            echo "<td>" . $row['jenis'] . "</td>";   // Nama jenis dari master_jenis
+                            echo "<td>" . $row['jumlah'] . "</td>";
+                            echo "<td>" . $row['keterangan'] . "</td>";
+                            echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan' width='100'></td>";
+                            if ($status) {
+                                echo "<td><a href='edit_form_tabel.php?id={$row['id']}&lokasi={$id}' class='btn btn-primary mr-2'>Edit</a></td>";
+                            }
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='8' style='text-align: center;'>Tidak ada data.</td></tr>";
+                    }
+                ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
             <!-- End of Footer -->
 
         </div>

@@ -258,13 +258,13 @@ $conn->close();
         }
         if ($_SESSION["role"] == "kabag") {
             // Query dengan JOIN ke tabel master_ruangan untuk mengambil nama ruangan
-            $sql = "SELECT fp.id, fp.nama, mr.ruangan AS nama_ruangan, fp.status
+            $sql = "SELECT fp.id, fp.nama, mr.ruangan AS nama_ruangan, fp.status, fp.tanda_tangan_persetujuan
                 FROM form_pengajuan fp
                 JOIN master_ruangan mr ON fp.ruangan = mr.id
                 WHERE status='Disetujui' or status='Tidak Disetujui'";  // JOIN antara form_pengajuan dan master_ruangan
         } else {
             // Query dengan JOIN ke tabel master_ruangan untuk mengambil nama ruangan
-            $sql = "SELECT fp.id, fp.nama, mr.ruangan AS nama_ruangan, fp.status
+            $sql = "SELECT fp.id, fp.nama, mr.ruangan AS nama_ruangan, fp.status, fp.tanda_tangan_persetujuan
                 FROM form_pengajuan fp
                 JOIN master_ruangan mr ON fp.ruangan = mr.id";  // JOIN antara form_pengajuan dan master_ruangan
         }
@@ -281,9 +281,17 @@ $conn->close();
                 echo "<td>" . $row['nama_ruangan'] . "</td>"; // Tampilkan Nama Ruangan
                 echo "<td>" . $row['status'] . "</td>";
                 echo "<td>
-                        <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Open</a>
-                        <a href='serah_pengajuan.php?delete_id=" . $row['id'] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>Delete</a>
-                      </td>";
+                <a href='kertas_pengajuan.php?id=" . $row['id'] . "' class='btn btn-info btn-sm'>Open</a>
+                <a href='serah_pengajuan.php?delete_id=" . $row['id'] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Apakah Anda yakin ingin menghapus data ini?\")'>Delete</a>";
+
+                    // Pindahkan logika centang ke dalam kolom aksi
+                    if (($row['status'] == "Disetujui" || $row['status'] == "Tidak Disetujui") && $row['tanda_tangan_persetujuan'] != "") {
+                        echo " <i class='fas fa-check'></i><i class='fas fa-check'></i>"; // Tampilkan dua centang
+                    } else if ($row['status'] == "Disetujui" || $row['status'] == "Tidak Disetujui") {
+                        echo " <i class='fas fa-check'></i>"; // Tampilkan satu centang
+                    }
+                    
+                echo "</td>"; // Pastikan penutup <td> ada di sini
                 echo "</tr>";
                 $no++;
             }

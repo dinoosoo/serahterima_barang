@@ -1,3 +1,24 @@
+<?php
+// Koneksi ke database
+$conn = new mysqli("localhost", "root", "", "masterruangan");
+
+// Periksa koneksi
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+// Memeriksa apakah ID dan jenis_berkas ada di GET
+$id = $_GET['id'];
+$status = $_GET['status'];
+$jenis_berkas = $_GET['jenis_berkas'];
+$sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
+    FROM form_serah_terima fs
+    JOIN master_ruangan mr ON fs.ruangan = mr.id
+    JOIN master_jenis mj ON fs.jenis = mj.id
+    WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
+$no =1;
+$result = $conn->query($sql);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +41,7 @@
             width: 210mm; /* Lebar kertas A4 */
             height: 420mm; /* Tinggi kertas A4 */
             padding: 20mm;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
             background-color: #ffffff;
             position: relative;
             overflow: hidden;
@@ -127,7 +148,7 @@
             color: white;
         }
         .back-button {
-            background-color: red;
+            background-color:#dc3545;
             color: white;
         }
 
@@ -151,26 +172,20 @@
                 margin: 0;
             }
         }.data-table img {
-            max-width: 50px;
+            max-width: 130px;
+            margin: -10px
         }
     </style>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="button-group">
-        <button class="print-button" onclick="window.print()">Print</button>
-        <button class="back-button" onclick="window.location.href='tabeldetail.php?id=<?php echo urlencode(isset($_GET['id']) ? $_GET['id'] : ''); ?>&jenis_berkas=<?php echo urlencode(isset($_GET['jenis_berkas']) ? $_GET['jenis_berkas'] : ''); ?>';">Back</button>
+        <button class="print-button" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+        <button class="back-button" onclick="window.location.href='tabeldetail.php?id=<?php echo $_GET['id'];?>&jenis_berkas=<?php echo $_GET['jenis_berkas'];?>&status=<?php echo $_GET['status'];?>'"><i class="fas fa-arrow-left"></i> Back</button>
+
 
     </div>
     <?php
-// Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "masterruangan");
-
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-
 // Menentukan teks judul berdasarkan parameter jenis_berkas
 $judul = "TANDA SERAH TERIMA BARANG RUSAK"; // Default title
 if (isset($_GET['jenis_berkas'])) {
@@ -178,17 +193,6 @@ if (isset($_GET['jenis_berkas'])) {
     if ($jenis_berkas == "Baru") {
         $judul = "TANDA SERAH TERIMA BARANG BARU";
     }
-}
-
-// Memeriksa apakah ID dan jenis_berkas ada di GET
-if (isset($_GET['id']) && isset($_GET['jenis_berkas'])) {
-    $id = isset($_GET['id']) ? $_GET['id'] : null;
-    $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
-    $no = 1;
-    $sql = "SELECT * FROM form_serah_terima WHERE id_transaksi = '$id' AND jenis_berkas = '$jenis_berkas'";
-    $result = $conn->query($sql);
-} else {
-    echo "";
 }
 ?>
     <div class="container">
