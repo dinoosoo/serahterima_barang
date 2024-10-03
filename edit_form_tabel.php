@@ -223,14 +223,14 @@ $conn->close();
             die("Koneksi gagal: " . $conn->connect_error);
         }
 
-        $sql = "SELECT id, ruangan FROM master_ruangan";
+        $sql = "SELECT id, ruangan FROM master_ruangan WHERE nonaktif=1";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 // Cek apakah ruangan di database sama dengan nilai $isi['ruangan']
                 $selected = ($isi['ruangan'] == $row['ruangan']) ? 'selected' : '';
-                echo "<option value=\"" . $row["ruangan"] . "\" $selected>" . $row["ruangan"] . "</option>";
+                echo "<option value=\"" . $row["id"] . "\" $selected>" . $row["ruangan"] . "</option>";
             }
         } else {
             echo "<option value=''>No data available</option>";
@@ -254,14 +254,14 @@ $conn->close();
             die("Koneksi gagal: " . $conn->connect_error);
         }
 
-        $sql = "SELECT id, jenis FROM master_jenis";
+        $sql = "SELECT id, jenis FROM master_jenis WHERE nonaktif=1";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 // Cek apakah ruangan di database sama dengan nilai $isi['ruangan']
                 $selected = ($isi['jenis'] == $row['jenis']) ? 'selected' : '';
-                echo "<option value=\"" . $row["jenis"] . "\" $selected>" . $row["jenis"] . "</option>";
+                echo "<option value=\"" . $row["id"] . "\" $selected>" . $row["jenis"] . "</option>";
             }
         } else {
             echo "<option value=''>No data available</option>";

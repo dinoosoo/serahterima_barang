@@ -207,7 +207,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                         <table class="table table-striped">
                           <thead>
                             <tr>
-                              <th>ID</th>
+                              <th>No</th>
                               <th>Aplikasi</th>
                               <th colspan=2 class="centered-cell">Aksi</th>
                             </tr>
@@ -223,28 +223,36 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                                 die("Koneksi gagal: " . $conn->connect_error);
                             }
 
-                            // Ambil data dari tabel tjenis
-                            $sql = "SELECT id, aplikasi FROM master_aplikasi";
-                            $result = $conn->query($sql);
+// Ambil data dari tabel tjenis
+$sql = "SELECT * FROM master_aplikasi";
+$result = $conn->query($sql);
 
-                            // Loop melalui hasil dan buat baris tabel
-                            if ($result->num_rows > 0) {
-                                while ($row = $result->fetch_assoc()) {
-                                    echo "<tr>
-                                    <td>" . $row["id"] . "</td>
-                                    <td>" . $row["aplikasi"] . "</td>
-                                    <td>
-                                        <div class='d-flex justify-content-center'>
-                                        <a href='master_aplikasi.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Change</a>
-                                        <a href='crud/hapus.php?id={$row['id']}&tabel=master_aplikasi&master=master_aplikasi.php' class='btn btn-danger'>Wipe</a>
-                                        </div>
-                                    </td>
-                                    </tr>";
-                                }
-                            } else {
-                              echo "<tr><td colspan='3' style='text-align: center;'>No data</td></tr>";
-      
-                            }
+// Loop melalui hasil dan buat baris tabel
+if ($result->num_rows > 0) {
+    $no = 1;
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>
+        <td>" . $no++ . "</td>
+        <td>" . $row["aplikasi"] . "</td>
+        <td>
+            <div class='d-flex justify-content-center'>
+            <a href='master_aplikasi.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Change</a>";
+        
+        // Bagian ini diubah untuk menampilkan 'Restore' atau 'Remove'
+        if ($row['nonaktif'] == 0) {
+            echo "<a href='crud/hapus.php?id={$row['id']}&tabel=master_aplikasi&master=master_aplikasi.php' class='btn btn-success'>Restore</a>";
+        } else {
+            echo "<a href='crud/hapus.php?id={$row['id']}&tabel=master_aplikasi&master=master_aplikasi.php' class='btn btn-danger'>Remove</a>";
+        }
+
+        echo "</div>
+        </td>
+        </tr>";
+    }
+} else {
+    echo "<tr><td colspan='3' style='text-align: center;'>No data</td></tr>";
+}
+
 
                             // Tutup koneksi
                             $conn->close();

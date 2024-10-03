@@ -11,18 +11,17 @@ $id = $_GET['id'];
 $tabel = $_GET['tabel'];
 $master = $_GET['master'];
 
+$sql = "SELECT * FROM `$tabel` WHERE id=$id";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
 
-$sql = "DELETE FROM `$tabel` WHERE id=$id";
-
-if ($conn->query($sql) === TRUE) {
-    $sql = "SET @autoid := 0";
+if ($row['nonaktif']== 0){
+    $sql = "UPDATE `$tabel` SET nonaktif=1 WHERE id=$id";
     $conn->query($sql);
-    $sql = "UPDATE `$tabel` SET id = @autoid := (@autoid + 1)";
-    $conn->query($sql);
-    $sql = "ALTER TABLE `$tabel` AUTO_INCREMENT = 1";
+} else {
+    $sql = "UPDATE `$tabel` SET nonaktif=0 WHERE id=$id";
     $conn->query($sql);
 }
-
 $conn->close();
 
 // Redirect kembali ke halaman form

@@ -206,7 +206,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                         <table class="table table-striped">
                           <thead>
                             <tr>
-                              <th>ID</th>
+                              <th>No</th>
                               <th>Ruangan</th>
                               <th colspan=2 class="centered-cell">Aksi</th>
                             </tr>
@@ -223,20 +223,25 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                             }
 
                             // Ambil data dari tabel tjenis
-                            $sql = "SELECT id, ruangan FROM master_ruangan";
+                            $sql = "SELECT * FROM master_ruangan";
                             $result = $conn->query($sql);
 
                             // Loop melalui hasil dan buat baris tabel
                             if ($result->num_rows > 0) {
+                                $no = 1;
                                 while ($row = $result->fetch_assoc()) {
                                     echo "<tr>
-                                    <td>" . $row["id"] . "</td>
+                                    <td>" . $no++ . "</td>
                                     <td>" . $row["ruangan"] . "</td>
                                     <td>
                                         <div class='d-flex justify-content-center'>
-                                        <a href='master_ruangan.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Change</a>
-                                        <a href='crud/hapus.php?id={$row['id']}&tabel=master_ruangan&master=master_ruangan.php' class='btn btn-danger'>Wipe</a>
-                                        </div>
+                                        <a href='master_ruangan.php?id={$row['id']}&edit=1' class='btn btn-primary mr-2'>Change</a>";
+                                    if ($row['nonaktif']== 0){
+                                        echo "<a href='crud/hapus.php?id={$row['id']}&tabel=master_ruangan&master=master_ruangan.php' class='btn btn-success'>Restore</a>";
+                                    } else {
+                                        echo "<a href='crud/hapus.php?id={$row['id']}&tabel=master_ruangan&master=master_ruangan.php' class='btn btn-danger'>Remove</a>";
+                                    }
+                                    echo "</div>
                                     </td>
                                     </tr>";
                                 }
