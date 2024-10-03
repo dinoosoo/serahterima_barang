@@ -210,7 +210,7 @@
                                         die("Koneksi gagal: " . $conn->connect_error);
                                     }
 
-                                    $sql = "SELECT id, ruangan FROM master_ruangan";
+                                    $sql = "SELECT id, ruangan FROM master_ruangan WHERE nonaktif=1";
                                     $result = $conn->query($sql);
 
                                     if ($result->num_rows > 0) {
@@ -238,7 +238,7 @@
                                 }
 
                                 // Query untuk mengambil data dari master_aplikasi
-                                $sql = "SELECT id, aplikasi FROM master_aplikasi";
+                                $sql = "SELECT id, aplikasi FROM master_aplikasi WHERE nonaktif=1";
                                 $result = $conn->query($sql);
 
                                 // Jika ada data, tampilkan dalam dropdown
@@ -278,7 +278,7 @@
                                         die("Koneksi gagal: " . $conn->connect_error);
                                     }
 
-                                    $sql = "SELECT id, topik FROM master_topik";
+                                    $sql = "SELECT id, topik FROM master_topik WHERE nonaktif=1";
                                     $result = $conn->query($sql);
 
                                     if ($result->num_rows > 0) {
