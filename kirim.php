@@ -15,6 +15,7 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $email = $row['email'];
     $alasan = $row['alasan'];
+    $status = $row['status'];
 }
 
 // PHPMailer setup
@@ -27,7 +28,7 @@ require 'PHPMailer/src/SMTP.php';
 
 // Pastikan email dan data lain sudah diambil dengan benar
 $email = htmlspecialchars($email);
-$judul = htmlspecialchars("Surat Anda Diterima");
+$judul = htmlspecialchars("Surat Anda " . $status);
 $pesan = htmlspecialchars($alasan);
 
 // Buat link menuju halaman pengajuan dengan ID yang relevan
