@@ -51,7 +51,7 @@ try {
     $mail->Port       = 587;
 
     // Set email sender dan recipient
-    $mail->setFrom('devitproduction@gmail.com', 'Admin Syamrabu');
+    $mail->setFrom('devitproduction@gmail.com', 'Kepala IT Syamrabu');
     $mail->addAddress($email);
 
     // Konten email
