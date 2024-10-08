@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'koneksi.php';
 
 if(!isset($_SESSION["login"])){
     header("Location: tampilan.php");
@@ -215,13 +216,6 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                           <tbody id="jenis-table-body">
                             <!-- Data will be added here by PHP -->
                             <?php
-                            // Koneksi ke database
-                            $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-                            // Periksa koneksi
-                            if ($conn->connect_error) {
-                                die("Koneksi gagal: " . $conn->connect_error);
-                            }
 
 // Ambil data dari tabel tjenis
 $sql = "SELECT * FROM master_aplikasi";
@@ -270,13 +264,6 @@ if ($result->num_rows > 0) {
                     </div>
                     <div class="card-body">
                         <?php
-                            // Koneksi ke database
-                            $conn = new mysqli("localhost", "root", "", "masterruangan");
-
-                            // Periksa conn
-                            if ($conn->connect_error) {
-                                die("Koneksi gagal: " . $conn->connect_error);
-                            };
                             
                             $edit = isset($_GET['edit']) ? $_GET['edit'] : 0;
                             $row = array('id' => '', 'aplikasi' => '');
