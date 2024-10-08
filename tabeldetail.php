@@ -234,7 +234,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
 
 <?php
 // Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "masterruangan");
+$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);

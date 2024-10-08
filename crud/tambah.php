@@ -1,6 +1,6 @@
 <?php
 // Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "masterruangan");
+$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
 // Periksa koneksi
 if ($conn->connect_error) {

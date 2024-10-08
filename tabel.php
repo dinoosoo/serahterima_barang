@@ -11,7 +11,7 @@ if($_SESSION["role"] == "kabag"){
     exit;
 }
 $host = 'localhost';
-$db = 'masterruangan';
+$db = 'magang_syamrabu';
 $user = 'root';
 $pass = '';
 

@@ -104,7 +104,7 @@
                                     <?php $kembali = $_GET['kembali']; ?>
                                     <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='<?php echo $kembali;?>'">Kembali</button>                                   
                                     <?php
-                                        $conn = new mysqli("localhost", "root", "", "masterruangan");
+                                        $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
                                         if ($conn->connect_error) {
                                             die("Koneksi gagal: " . $conn->connect_error);
@@ -118,7 +118,7 @@
 
 
                                     <?php
-$conn = new mysqli("localhost", "root", "", "masterruangan");
+$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
@@ -208,7 +208,7 @@ $conn->close();
             <select class="form-control" id="ruangan" name="ruangan" required>
                 <option value="" disabled selected>Pilih Ruangan</option> <!-- Opsi default -->
                 <?php
-                    $conn = new mysqli("localhost", "root", "", "masterruangan");
+                    $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
                     if ($conn->connect_error) {
                         die("Koneksi gagal: " . $conn->connect_error);
@@ -233,7 +233,7 @@ $conn->close();
             <select class="form-control" id="jenis" name="jenis" required>
                 <option value="" disabled selected>Pilih Jenis</option> <!-- Opsi default -->
                 <?php
-                    $conn = new mysqli("localhost", "root", "", "masterruangan");
+                    $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
                     if ($conn->connect_error) {
                         die("Koneksi gagal: " . $conn->connect_error);

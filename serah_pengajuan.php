@@ -14,7 +14,7 @@ if ($_SESSION["role"] == "") {
 }
 
 // Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "masterruangan");
+$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
 // Cek koneksi
 if ($conn->connect_error) {
@@ -250,7 +250,7 @@ $conn->close();
     <tbody>
         <?php
         // Koneksi ke database
-        $conn = new mysqli("localhost", "root", "", "masterruangan");
+        $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
         // Cek koneksi
         if ($conn->connect_error) {

@@ -103,7 +103,7 @@
                                 <div class="p-5">
                                 <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabeldetail.php?id=<?php echo $_GET['lokasi'];  ?>'">Kembali</button>                                   
                                     <?php
-                                        $conn = new mysqli("localhost", "root", "", "masterruangan");
+                                        $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
                                         if ($conn->connect_error) {
                                             die("Koneksi gagal: " . $conn->connect_error);

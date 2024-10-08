@@ -12,7 +12,7 @@ if($_SESSION["role"] != "admin"){
 }
 
 $host = 'localhost';
-$db = 'masterruangan';
+$db = 'magang_syamrabu';
 $user = 'root';
 $pass = '';
 

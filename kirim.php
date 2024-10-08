@@ -1,6 +1,6 @@
 <?php
 $id = $_GET['id']; // Ambil ID dari URL
-$conn = new mysqli("localhost", "root", "", "masterruangan");
+$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
 // Periksa koneksi
 if ($conn->connect_error) {
