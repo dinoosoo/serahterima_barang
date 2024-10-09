@@ -307,7 +307,7 @@ $result = $conn->query($sql);
                 </tbody>
             </table>
         </div>
-        <script>
+<script>
             function searchTable() {
                 var input, filter, table, tr, td, i, txtValue;
                 input = document.getElementById("searchInput");

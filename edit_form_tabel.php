@@ -117,7 +117,7 @@
 
 
     <?php
-$conn = new mysqli("localhost", "root", "", "masterruangan");
+$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
@@ -217,7 +217,7 @@ $conn->close();
     <select class="form-control" id="ruangan" name="ruangan" required>
     <option value="" disabled selected></option> <!-- Default option tetap ada -->
     <?php
-        $conn = new mysqli("localhost", "root", "", "masterruangan");
+        $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
         if ($conn->connect_error) {
             die("Koneksi gagal: " . $conn->connect_error);
@@ -248,7 +248,7 @@ $conn->close();
     <select class="form-control" id="jenis" name="jenis" required>
     <option value="" disabled selected></option> <!-- Default option tetap ada -->
     <?php
-        $conn = new mysqli("localhost", "root", "", "masterruangan");
+        $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
         if ($conn->connect_error) {
             die("Koneksi gagal: " . $conn->connect_error);
