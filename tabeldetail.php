@@ -296,7 +296,7 @@ $result = $conn->query($sql);
                             echo "<td>" . $row['keterangan'] . "</td>";
                             echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan' width='100'></td>";
                             if ($status) {
-                                echo "<td><a href='edit_form_tabel.php?id={$row['id']}&lokasi={$id}' class='btn btn-primary mr-2'>Edit</a></td>";
+                                echo "<td><a href='edit_form_tabel.php?id={$row['id']}&lokasi={$id}&jenis_berkas=$jenis_berkas&status=$status' class='btn btn-primary mr-2'>Edit</a></td>";
                             }
                             echo "</tr>";
                         }

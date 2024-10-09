@@ -292,11 +292,11 @@
                             </select>
                         </div>
                         <!-- Rincian -->
-<div class="form-group">
-    <label for="rincian">Rincian</label>
-    <textarea class="form-control" id="rincian" name="rincian" rows="3" maxlength="500" required></textarea>
-    <small id="rincianCounter" class="form-text text-muted">0/500 characters</small>
-</div>
+                            <div class="form-group">
+                                <label for="rincian">Rincian</label>
+                                <textarea class="form-control" id="rincian" name="rincian" rows="3" maxlength="500" required></textarea>
+                                <small id="rincianCounter" class="form-text text-muted">0/500 characters</small>
+                            </div>
 
                                         <!-- Tanda Tangan -->
                                         <div class="form-group">

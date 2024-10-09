@@ -101,7 +101,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="p-5">
-                                <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabeldetail.php?id=<?php echo $_GET['lokasi'];  ?>'">Kembali</button>                                   
+                                <button class="btn btn-primary ml-2 mb-5" onclick="window.location.href='tabeldetail.php?id=<?php echo $_GET['lokasi'];  ?>&jenis_berkas=<?php echo $_GET['jenis_berkas'];  ?>&status=<?php echo $_GET['status'];  ?>'">Kembali</button>                                   
                                     <?php
                                         $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
@@ -169,7 +169,7 @@ if (isset($_POST['signaturesubmit'])) {
                     if ($conn->query($sql) === TRUE) {
                         $msg = "<div class='alert alert-success' id='notification'>Data berhasil disimpan.</div>";
                         // Redirect kembali ke halaman form
-                        header("Location: tabeldetail.php?id={$_GET['lokasi']}");
+                        header("Location: tabeldetail.php?id={$_GET['lokasi']}&jenis_berkas={$_GET['jenis_berkas']}&status={$_GET['status']}");
                         exit();
                     } else {
                         $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan data: " . $conn->error . "</div>";
@@ -229,7 +229,7 @@ $conn->close();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 // Cek apakah ruangan di database sama dengan nilai $isi['ruangan']
-                $selected = ($isi['ruangan'] == $row['ruangan']) ? 'selected' : '';
+                $selected = ($isi['id'] == $row['id']) ? 'selected' : '';
                 echo "<option value=\"" . $row["id"] . "\" $selected>" . $row["ruangan"] . "</option>";
             }
         } else {
@@ -260,7 +260,7 @@ $conn->close();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 // Cek apakah ruangan di database sama dengan nilai $isi['ruangan']
-                $selected = ($isi['jenis'] == $row['jenis']) ? 'selected' : '';
+                $selected = ($isi['id'] == $row['id']) ? 'selected' : '';
                 echo "<option value=\"" . $row["id"] . "\" $selected>" . $row["jenis"] . "</option>";
             }
         } else {
@@ -281,9 +281,10 @@ $conn->close();
         </div>
         <!-- Keterangan -->
         <div class="form-group">
-            <label for="keterangan">Keterangan</label>
-            <textarea class="form-control" id="keterangan" name="keterangan" rows="3" required><?php echo htmlspecialchars($isi['keterangan']); ?></textarea>
-        </div>
+    <label for="keterangan">Keterangan</label>
+    <textarea class="form-control" id="keterangan" name="keterangan" rows="3" maxlength="50" required><?php echo htmlspecialchars($isi['keterangan']);?></textarea>
+    <small id="wordCounter" class="form-text text-muted">0/50 characters</small>
+</div>
         <!-- Tanda Tangan -->
         <div class="form-group">
             <label for="signature">Tanda Tangan</label>
@@ -393,6 +394,12 @@ $conn->close();
             }, 1000); // Delay to match the transition
         }
     }, 5000);
+    document.getElementById('keterangan').addEventListener('input', function () {
+    var textLength = this.value.length;
+    var maxLength = this.getAttribute('maxlength');
+    document.getElementById('wordCounter').innerText = textLength + "/" + maxLength + " characters";
+});
+
 </script>
 
 </body>

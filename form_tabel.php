@@ -371,18 +371,9 @@ $conn->close();
             }
         }, 5000);
         document.getElementById('keterangan').addEventListener('input', function () {
-    var text = this.value.trim();
-    var words = text.split(/\s+/); // Split by spaces
-    var wordCount = words.length;
-    var maxWords = 50;
-
-    if (wordCount > maxWords) {
-        // If words exceed 50, limit the input
-        this.value = words.slice(0, maxWords).join(" ");
-        wordCount = maxWords;
-    }
-
-    document.getElementById('wordCounter').innerText = wordCount + "/" + maxWords + " words";
+    var textLength = this.value.length;
+    var maxLength = this.getAttribute('maxlength');
+    document.getElementById('wordCounter').innerText = textLength + "/" + maxLength + " characters";
 });
 
     </script>
