@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+require 'koneksi.php';
 if (!isset($_SESSION["login"])) {
     header("Location: index.php");
     exit;
@@ -9,18 +9,6 @@ if (!isset($_SESSION["login"])) {
 if($_SESSION["role"] == "kabag"){
     header("Location: admin.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
     exit;
-}
-$host = 'localhost';
-$db = 'masterruangan';
-$user = 'root';
-$pass = '';
-
-// Membuat koneksi
-$conn = new mysqli($host, $user, $pass, $db);
-
-// Mengecek koneksi
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
 }
 
 // Mengambil data dari tabel 'priode'
@@ -44,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['tutup_transaksi'])) {
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
 }
-$conn->close();
 ?>
 
 <!DOCTYPE html>

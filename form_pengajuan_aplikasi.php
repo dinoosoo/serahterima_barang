@@ -109,7 +109,7 @@
 
                                     <?php
                                         // Koneksi ke database
-                                        $conn = new mysqli("localhost", "root", "", "masterruangan");
+                                        $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
                                         if ($conn->connect_error) {
                                             die("Koneksi gagal: " . $conn->connect_error);
@@ -204,13 +204,13 @@
                             <select class="form-control" id="ruangan" name="ruangan" required>
                                 <option value="" disabled selected>Pilih Ruangan</option> Opsi default
                                 <?php
-                                    $conn = new mysqli("localhost", "root", "", "masterruangan");
+                                    $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
                                     if ($conn->connect_error) {
                                         die("Koneksi gagal: " . $conn->connect_error);
                                     }
 
-                                    $sql = "SELECT id, ruangan FROM master_ruangan WHERE nonaktif=1";
+                                    $sql = "SELECT id, ruangan FROM master_ruangan";
                                     $result = $conn->query($sql);
 
                                     if ($result->num_rows > 0) {
@@ -230,7 +230,7 @@
                         <option value="" disabled selected>Pilih Aplikasi</option> Opsi default
                             <?php
                                 // Koneksi ke database master_aplikasi
-                                $conn = new mysqli("localhost", "root", "", "masterruangan");
+                                $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
                                 // Cek koneksi
                                 if ($conn->connect_error) {
@@ -238,7 +238,7 @@
                                 }
 
                                 // Query untuk mengambil data dari master_aplikasi
-                                $sql = "SELECT id, aplikasi FROM master_aplikasi WHERE nonaktif=1";
+                                $sql = "SELECT id, aplikasi FROM master_aplikasi";
                                 $result = $conn->query($sql);
 
                                 // Jika ada data, tampilkan dalam dropdown
@@ -272,13 +272,13 @@
                             <option value="" disabled selected>Pilih Topik</option> Opsi default
                                 <?php
                                     // Ambil data dari tabel master_topik
-                                    $conn = new mysqli("localhost", "root", "", "masterruangan");
+                                    $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
                                     if ($conn->connect_error) {
                                         die("Koneksi gagal: " . $conn->connect_error);
                                     }
 
-                                    $sql = "SELECT id, topik FROM master_topik WHERE nonaktif=1";
+                                    $sql = "SELECT id, topik FROM master_topik";
                                     $result = $conn->query($sql);
 
                                     if ($result->num_rows > 0) {
@@ -292,18 +292,20 @@
                             </select>
                         </div>
                         <!-- Rincian -->
-                        <div class="form-group">
-                            <label for="rincian">Rincian</label>
-                            <textarea class="form-control" id="rincian" name="rincian" rows="3" required></textarea>
-                        </div>
+<div class="form-group">
+    <label for="rincian">Rincian</label>
+    <textarea class="form-control" id="rincian" name="rincian" rows="3" maxlength="500" required></textarea>
+    <small id="rincianCounter" class="form-text text-muted">0/500 characters</small>
+</div>
+
                                         <!-- Tanda Tangan -->
                                         <div class="form-group">
                                             <label for="signature">Tanda Tangan</label>
-                                            <div id="canvasDiv" style="display: flex; justify-content: center;">
+                                            <div id="canvasDiv">
                                                 <canvas id="signatureCanvas" width="400" height="200"></canvas>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-danger" id="clearSignature">Clear</button>
+                                        <button type="button" class="btn btn-primary" id="clearSignature">Clear</button>
                                         <input type="hidden" id="signature" name="signature">
                                         <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
                                     </div>
@@ -325,6 +327,12 @@
     <script src="js/sb-admin-2.min.js"></script>
 
     <script>
+        document.getElementById('rincian').addEventListener('input', function () {
+    var textLength = this.value.length;
+    var maxLength = this.getAttribute('maxlength');
+    document.getElementById('rincianCounter').innerText = textLength + "/" + maxLength + " characters";
+});
+
     document.addEventListener("DOMContentLoaded", function () {
         var canvas = document.getElementById('signatureCanvas');
         var ctx = canvas.getContext('2d');

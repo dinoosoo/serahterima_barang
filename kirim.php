@@ -1,6 +1,6 @@
 <?php
 $id = $_GET['id']; // Ambil ID dari URL
-$conn = new mysqli("localhost", "root", "", "masterruangan");
+$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
 // Periksa koneksi
 if ($conn->connect_error) {
@@ -52,7 +52,7 @@ try {
     $mail->Port       = 587;
 
     // Set email sender dan recipient
-    $mail->setFrom('devitproduction@gmail.com', 'Admin Syamrabu');
+    $mail->setFrom('devitproduction@gmail.com', 'Kepala IT Syamrabu');
     $mail->addAddress($email);
 
     // Konten email

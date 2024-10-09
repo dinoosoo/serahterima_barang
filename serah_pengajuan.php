@@ -14,7 +14,7 @@ if ($_SESSION["role"] == "") {
 }
 
 // Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "masterruangan");
+$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
 // Cek koneksi
 if ($conn->connect_error) {
@@ -250,7 +250,7 @@ $conn->close();
     <tbody>
         <?php
         // Koneksi ke database
-        $conn = new mysqli("localhost", "root", "", "masterruangan");
+        $conn = new mysqli("localhost", "root", "", "magang_syamrabu");
 
         // Cek koneksi
         if ($conn->connect_error) {
@@ -305,6 +305,29 @@ $conn->close();
 </table>
 
     </div>
+    <script>
+            function searchTable() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchInput");
+                filter = input.value.toLowerCase();
+                table = document.getElementById("dataTable");
+                tr = table.getElementsByTagName("tr");
+
+                for (i = 1; i < tr.length; i++) { // Skip the header row
+                    tr[i].style.display = "none";
+                    td = tr[i].getElementsByTagName("td");
+                    for (var j = 0; j < td.length; j++) {
+                        if (td[j]) {
+                            txtValue = td[j].textContent || td[j].innerText;
+                            if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            </script>
 </div>
 <footer class="sticky-footer bg-white">
                 <div class="container my-auto">

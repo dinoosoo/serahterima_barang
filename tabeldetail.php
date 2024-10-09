@@ -3,13 +3,7 @@ session_start();
 $id = $_GET['id'];
 $status = $_GET['status'];
 $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
-    // Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "masterruangan");
-
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+require 'koneksi.php';
 
 $sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
     FROM form_serah_terima fs
@@ -157,7 +151,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
             <div id="content">
 
                                 <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             <div class="mb-3">
                     <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Search data...">
                 </div>
@@ -233,25 +227,45 @@ $cektombol = $conn->query($sql)->fetch_assoc();
 </div>
 
 <?php
+// Koneksi ke database
+$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
+
+if ($conn->connect_error) {
+    die("Koneksi gagal: " . $conn->connect_error);
+}
+
+// Ambil status dan ID dari URL
+$status = isset($_GET['status']) ? $_GET['status'] : '';
+$id = isset($_GET['id']) ? $_GET['id'] : '';
+
+// Query untuk mengambil data dari form_serah_terima dengan join ke master_ruangan dan master_jenis
+$sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
+        FROM form_serah_terima fs
+        JOIN master_ruangan mr ON fs.ruangan = mr.id
+        JOIN master_jenis mj ON fs.jenis = mj.id";
 
 
+$result = $conn->query($sql);
 ?>
 
 <div class="table-container">
-<div class="form-group">
-    <form method="post">
-        <input type="radio" id="barangBaru" name="jenis_berkas" value="Baru" 
-        <?php echo (isset($_POST['jenis_berkas']) && $_POST['jenis_berkas'] == 'Baru') ? 'checked' : ''; ?>>
-        <label for="barangBaru">Barang Baru</label>
-        
-        <input type="radio" id="barangRusak" name="jenis_berkas" value="Rusak"
-        <?php echo (isset($_POST['jenis_berkas']) && $_POST['jenis_berkas'] == 'Rusak') ? 'checked' : ''; ?>>
-        <label for="barangRusak">Barang Rusak</label>
-        
-        <button type="submit" name="tampil" class="btn btn-primary">Show</button>
-    </form>
+    <div class="form-group">
+        <form method="GET" action="tabeldetail.php">
+            <!-- Validasi jika $_GET['status'] ada -->
+            <input type="hidden" name="status" value="<?php echo isset($_GET['status']) ? htmlspecialchars($_GET['status']) : ''; ?>">
+            <!-- Validasi jika $_GET['id'] ada -->
+            <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? htmlspecialchars($_GET['id']) : ''; ?>"> <!-- ID tetap dikirim -->
+            
+            <input type="radio" id="barangBaru" name="jenis_berkas" value="Baru">
+            <label for="barangBaru">Barang Baru</label>
+            
+            <input type="radio" id="barangRusak" name="jenis_berkas" value="Rusak">
+            <label for="barangRusak">Barang Rusak</label>
+            
+            <button type="submit" class="btn btn-primary">Show</button>
+        </form>
+    </div>
 </div>
-
 
 
                     <div class="table-container">
@@ -271,6 +285,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                             <tbody>
                             <?php
                     if (isset($result) && $result->num_rows > 0) {
+                        $no = 1;
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>";
                             echo "<td>" . $no++ . "</td>";
@@ -291,10 +306,6 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                 ?>
                 </tbody>
             </table>
-        </div>
-    </div>
-            <!-- End of Footer -->
-
         </div>
         <script>
             function searchTable() {
@@ -319,8 +330,20 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                 }
             }
             </script>
+        </div>
+        <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; MAGANG SYAMRABU  2024</span>
+                    </div>
+                    <div >
+                        
+                    </div>
+                </div>
+            </footer>
     </div>
-    <div>
+</div>
+
         <!-- Logout Modal-->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">

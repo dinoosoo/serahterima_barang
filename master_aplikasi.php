@@ -1,7 +1,6 @@
 <?php
 session_start();
 require 'koneksi.php';
-
 if(!isset($_SESSION["login"])){
     header("Location: tampilan.php");
     exit;
@@ -217,6 +216,7 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                             <!-- Data will be added here by PHP -->
                             <?php
 
+
 // Ambil data dari tabel tjenis
 $sql = "SELECT * FROM master_aplikasi";
 $result = $conn->query($sql);
@@ -248,8 +248,8 @@ if ($result->num_rows > 0) {
 }
 
 
-                            // Tutup koneksi
-                            $conn->close();
+                          
+
                             ?>
                           </tbody>
                         </table>
@@ -265,6 +265,8 @@ if ($result->num_rows > 0) {
                     <div class="card-body">
                         <?php
                             
+
+
                             $edit = isset($_GET['edit']) ? $_GET['edit'] : 0;
                             $row = array('id' => '', 'aplikasi' => '');
                             if ($edit) {
