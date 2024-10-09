@@ -292,10 +292,12 @@
                             </select>
                         </div>
                         <!-- Rincian -->
-                        <div class="form-group">
-                            <label for="rincian">Rincian</label>
-                            <textarea class="form-control" id="rincian" name="rincian" rows="3" required></textarea>
-                        </div>
+<div class="form-group">
+    <label for="rincian">Rincian</label>
+    <textarea class="form-control" id="rincian" name="rincian" rows="3" maxlength="500" required></textarea>
+    <small id="rincianCounter" class="form-text text-muted">0/500 characters</small>
+</div>
+
                                         <!-- Tanda Tangan -->
                                         <div class="form-group">
                                             <label for="signature">Tanda Tangan</label>
@@ -325,6 +327,12 @@
     <script src="js/sb-admin-2.min.js"></script>
 
     <script>
+        document.getElementById('rincian').addEventListener('input', function () {
+    var textLength = this.value.length;
+    var maxLength = this.getAttribute('maxlength');
+    document.getElementById('rincianCounter').innerText = textLength + "/" + maxLength + " characters";
+});
+
     document.addEventListener("DOMContentLoaded", function () {
         var canvas = document.getElementById('signatureCanvas');
         var ctx = canvas.getContext('2d');

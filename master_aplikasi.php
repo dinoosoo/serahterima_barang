@@ -248,8 +248,8 @@ if ($result->num_rows > 0) {
 }
 
 
-                            // Tutup koneksi
-                            $conn->close();
+                          
+
                             ?>
                           </tbody>
                         </table>
@@ -265,6 +265,8 @@ if ($result->num_rows > 0) {
                     <div class="card-body">
                         <?php
                             
+
+
                             $edit = isset($_GET['edit']) ? $_GET['edit'] : 0;
                             $row = array('id' => '', 'aplikasi' => '');
                             if ($edit) {

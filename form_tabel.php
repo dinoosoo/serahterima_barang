@@ -257,11 +257,22 @@ $conn->close();
             <label for="jumlah">Jumlah</label>
             <input type="number" class="form-control" id="jumlah" name="jumlah" min="0" required>
         </div>
-        <!-- Keterangan -->
-        <div class="form-group">
-            <label for="keterangan">Keterangan</label>
-            <textarea class="form-control" id="keterangan" name="keterangan" rows="3" required></textarea>
-        </div>
+<!-- Keterangan -->
+<div class="form-group">
+    <label for="keterangan">Keterangan</label>
+    <textarea class="form-control" id="keterangan" name="keterangan" rows="3" required></textarea>
+    <small id="wordCounter" class="form-text text-muted">0/50 words</small>
+</div>
+
+<!-- Optional CSS to handle long words -->
+<style>
+    #keterangan {
+        overflow-wrap: break-word; /* Word wrapping for long words */
+        word-wrap: break-word; /* Deprecated, but supported in older browsers */
+        word-break: break-word; /* Break words if they are too long */
+    }
+</style>
+
         <!-- Tanda Tangan -->
         <div class="form-group">
             <label for="signature">Tanda Tangan</label>
@@ -290,7 +301,7 @@ $conn->close();
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/sb-admin-2.min.js"></script>
-
+     
     <script>
         var canvas = document.getElementById('signatureCanvas');
         var context = canvas.getContext('2d');
@@ -359,6 +370,21 @@ $conn->close();
                 }, 1000); // Delay to match the transition
             }
         }, 5000);
+        document.getElementById('keterangan').addEventListener('input', function () {
+    var text = this.value.trim();
+    var words = text.split(/\s+/); // Split by spaces
+    var wordCount = words.length;
+    var maxWords = 50;
+
+    if (wordCount > maxWords) {
+        // If words exceed 50, limit the input
+        this.value = words.slice(0, maxWords).join(" ");
+        wordCount = maxWords;
+    }
+
+    document.getElementById('wordCounter').innerText = wordCount + "/" + maxWords + " words";
+});
+
     </script>
 </body>
 

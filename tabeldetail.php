@@ -3,13 +3,7 @@ session_start();
 $id = $_GET['id'];
 $status = $_GET['status'];
 $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
-    // Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "masterruangan");
-
-// Periksa koneksi
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+require 'koneksi.php';
 
 $sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
     FROM form_serah_terima fs
@@ -157,7 +151,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
             <div id="content">
 
                                 <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
             <div class="mb-3">
                     <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Search data...">
                 </div>
@@ -313,10 +307,6 @@ $result = $conn->query($sql);
                 </tbody>
             </table>
         </div>
-    </div>
-            <!-- End of Footer -->
-
-        </div>
         <script>
             function searchTable() {
                 var input, filter, table, tr, td, i, txtValue;
@@ -340,8 +330,20 @@ $result = $conn->query($sql);
                 }
             }
             </script>
+        </div>
+        <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; MAGANG SYAMRABU  2024</span>
+                    </div>
+                    <div >
+                        
+                    </div>
+                </div>
+            </footer>
     </div>
-    <div>
+</div>
+
         <!-- Logout Modal-->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">

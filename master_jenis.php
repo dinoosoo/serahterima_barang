@@ -244,8 +244,6 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
       
                             }
 
-                            // Tutup koneksi
-                            $conn->close();
                             ?>
                           </tbody>
                         </table>

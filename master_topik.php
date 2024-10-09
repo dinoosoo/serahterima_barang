@@ -241,9 +241,6 @@ if($_SESSION["role"] != "admin" && $_SESSION["role"] != "it"){
                         echo "<tr><td colspan='3' style='text-align: center;'>No data</td></tr>";
 
                       }
-
-                            // Tutup koneksi
-                            $conn->close();
                             ?>
                           </tbody>
                         </table>
