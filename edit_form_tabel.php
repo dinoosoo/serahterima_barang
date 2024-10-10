@@ -283,7 +283,7 @@ $conn->close();
         <div class="form-group">
     <label for="keterangan">Keterangan</label>
     <textarea class="form-control" id="keterangan" name="keterangan" rows="3" maxlength="50" required><?php echo htmlspecialchars($isi['keterangan']);?></textarea>
-    <small id="wordCounter" class="form-text text-muted">0/50 characters</small>
+    <small id="wordCounter" class="form-text text-muted">0/50 Karakter</small>
 </div>
         <!-- Tanda Tangan -->
         <div class="form-group">
@@ -397,7 +397,7 @@ $conn->close();
     document.getElementById('keterangan').addEventListener('input', function () {
     var textLength = this.value.length;
     var maxLength = this.getAttribute('maxlength');
-    document.getElementById('wordCounter').innerText = textLength + "/" + maxLength + " characters";
+    document.getElementById('wordCounter').innerText = textLength + "/" + maxLength + " Karakter";
 });
 
 </script>

@@ -39,7 +39,7 @@ $result = $conn->query($sql);
 
         .container {
             width: 210mm; /* Lebar kertas A4 */
-            height: 420mm; /* Tinggi kertas A4 */
+            height: 275mm; /* Tinggi kertas A4 */
             padding: 20mm;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
             background-color: #ffffff;
@@ -47,11 +47,13 @@ $result = $conn->query($sql);
             overflow: hidden;
         }
 
-.data-table th:nth-child(4), 
-.data-table td:nth-child(4) { /* Kolom Keterangan */
-    width: 200px; /* Tentukan lebar kolom Keterangan */
-    min-width: 200px; /* Pastikan kolom tidak lebih kecil dari ukuran ini */
-}
+        .data-table th:nth-child(4), 
+        .data-table td:nth-child(4) {
+            max-width: 180px;
+            min-width: 10px;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
 
 .data-table th:last-child, 
 .data-table td:last-child { /* Kolom TTD */
@@ -91,6 +93,8 @@ $result = $conn->query($sql);
             margin-top: 20px;
             margin-left: 10mm;
             margin-right:10mm;
+            word-break: break-all;
+            
         }
 
         .data-table {

@@ -260,8 +260,8 @@ $conn->close();
 <!-- Keterangan -->
 <div class="form-group">
     <label for="keterangan">Keterangan</label>
-    <textarea class="form-control" id="keterangan" name="keterangan" rows="3" required></textarea>
-    <small id="wordCounter" class="form-text text-muted">0/50 words</small>
+    <textarea class="form-control" id="keterangan" name="keterangan" rows="3" maxlength="50" required></textarea>
+    <small id="wordCounter" class="form-text text-muted">0/50 Karakter</small>
 </div>
 
 <!-- Optional CSS to handle long words -->
@@ -373,7 +373,7 @@ $conn->close();
         document.getElementById('keterangan').addEventListener('input', function () {
     var textLength = this.value.length;
     var maxLength = this.getAttribute('maxlength');
-    document.getElementById('wordCounter').innerText = textLength + "/" + maxLength + " characters";
+    document.getElementById('wordCounter').innerText = textLength + "/" + maxLength + " Karakter";
 });
 
     </script>

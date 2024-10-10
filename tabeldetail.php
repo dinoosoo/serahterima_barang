@@ -4,12 +4,11 @@ $id = $_GET['id'];
 $status = $_GET['status'];
 $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
 require 'koneksi.php';
-
-$sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
+$sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd, fs.id_transaksi
     FROM form_serah_terima fs
     JOIN master_ruangan mr ON fs.ruangan = mr.id
     JOIN master_jenis mj ON fs.jenis = mj.id
-    WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
+    WHERE fs.id_transaksi = $id  AND fs.jenis_berkas = '$jenis_berkas'";
 $no =1;
 $result = $conn->query($sql);
 
@@ -21,7 +20,7 @@ if (isset($_POST['tampil'])) {
         FROM form_serah_terima fs
         JOIN master_ruangan mr ON fs.ruangan = mr.id
         JOIN master_jenis mj ON fs.jenis = mj.id
-        WHERE id_transaksi = '$id'  AND jenis_berkas = '$jenis_berkas'";
+        WHERE fs.id_transaksi = $id  AND fs.jenis_berkas = '$jenis_berkas'";
     $no =1;
     $result = $conn->query($sql);
 }
@@ -226,28 +225,6 @@ $cektombol = $conn->query($sql)->fetch_assoc();
   </div>
 </div>
 
-<?php
-// Koneksi ke database
-$conn = new mysqli("localhost", "root", "", "magang_syamrabu");
-
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
-
-// Ambil status dan ID dari URL
-$status = isset($_GET['status']) ? $_GET['status'] : '';
-$id = isset($_GET['id']) ? $_GET['id'] : '';
-
-// Query untuk mengambil data dari form_serah_terima dengan join ke master_ruangan dan master_jenis
-$sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
-        FROM form_serah_terima fs
-        JOIN master_ruangan mr ON fs.ruangan = mr.id
-        JOIN master_jenis mj ON fs.jenis = mj.id";
-
-
-$result = $conn->query($sql);
-?>
-
 <div class="table-container">
     <div class="form-group">
         <form method="GET" action="tabeldetail.php">
@@ -256,10 +233,12 @@ $result = $conn->query($sql);
             <!-- Validasi jika $_GET['id'] ada -->
             <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? htmlspecialchars($_GET['id']) : ''; ?>"> <!-- ID tetap dikirim -->
             
-            <input type="radio" id="barangBaru" name="jenis_berkas" value="Baru">
+            <input type="radio" id="barangBaru" name="jenis_berkas" value="Baru"
+            <?php echo (isset($_GET['jenis_berkas']) && $_GET['jenis_berkas'] == 'Baru') ? 'checked' : ''; ?>>
             <label for="barangBaru">Barang Baru</label>
             
-            <input type="radio" id="barangRusak" name="jenis_berkas" value="Rusak">
+            <input type="radio" id="barangRusak" name="jenis_berkas" value="Rusak"
+            <?php echo (isset($_GET['jenis_berkas']) && $_GET['jenis_berkas'] == 'Rusak') ? 'checked' : ''; ?>>
             <label for="barangRusak">Barang Rusak</label>
             
             <button type="submit" class="btn btn-primary">Show</button>
@@ -292,7 +271,7 @@ $result = $conn->query($sql);
                             echo "<td>" . $row['tanggal'] . "</td>";
                             echo "<td>" . $row['ruangan'] . "</td>"; // Nama ruangan dari master_ruangan
                             echo "<td>" . $row['jenis'] . "</td>";   // Nama jenis dari master_jenis
-                            echo "<td>" . $row['jumlah'] . "</td>";
+                            echo "<td>" . $row['id_transaksi'] . "</td>";
                             echo "<td>" . $row['keterangan'] . "</td>";
                             echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan' width='100'></td>";
                             if ($status) {

@@ -286,8 +286,8 @@ $conn->close();
             border-radius: 5px; /* Membuat sudut input melengkung */
             box-sizing: border-box; /* Agar padding terhitung dalam lebar */
         }.rincian {
-            max-width: 600px; 
             word-wrap: break-word; 
+            word-break: break-all;
         }
 
 
@@ -311,8 +311,8 @@ $conn->close();
         <button class="btn-success" onclick="tandatangan()">Signature</button>
     <?php endif; if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $status != "Disetujui" && $status != "Tidak Disetujui") : ?>
         <hr style="color: black; length: 40px; margin: 10px 0;">
-        <button class="btn-success" onclick="terimaPengajuan()">Receive</button>
-        <button class="btn-danger" onclick="tolakPengajuan()">Reject</button>
+        <button class="btn-success" onclick="terimaPengajuan()">Disetujui</button>
+        <button class="btn-danger" onclick="tolakPengajuan()">Tidak Disetujui</button>
     <?php endif; ?>
 </div>
     <div class="container">
@@ -358,7 +358,7 @@ $conn->close();
             <tr>
                 <td style="border: 1px solid white;"></td>
                 <td style="border: 1px solid white;"></td>
-                <td style= "widht: 30%; text-align: center; font-weight: bold; border: 1px solid white;">
+                <td style= "padding: 0; widht: 30%; text-align: center; font-weight: bold; border: 1px solid white;">
                     <p style="margin: 0px;">Mengetahui</p>
                     <h4 style="margin: 0px;">Kepala Unit/Ruangan</h4>
                     <img src=<?php echo $row['tanda_tangan'];?> style="width: 160px; height: auto; margin-bottom: -15px;"></img>
@@ -367,7 +367,7 @@ $conn->close();
                 </td>
             </tr>
             <tr>
-                <td style="border: 1px solid white;" colspan="3">
+                <td style="padding: 0; border: 1px solid white;" colspan="3">
                     <hr style="border: none; border-top: 1px dashed black; width: 100%;">
                 </td>
             </tr>

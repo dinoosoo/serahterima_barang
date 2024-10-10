@@ -295,7 +295,7 @@
                             <div class="form-group">
                                 <label for="rincian">Rincian</label>
                                 <textarea class="form-control" id="rincian" name="rincian" rows="3" maxlength="500" required></textarea>
-                                <small id="rincianCounter" class="form-text text-muted">0/500 characters</small>
+                                <small id="rincianCounter" class="form-text text-muted">0/500 Karakter</small>
                             </div>
 
                                         <!-- Tanda Tangan -->
@@ -330,7 +330,7 @@
         document.getElementById('rincian').addEventListener('input', function () {
     var textLength = this.value.length;
     var maxLength = this.getAttribute('maxlength');
-    document.getElementById('rincianCounter').innerText = textLength + "/" + maxLength + " characters";
+    document.getElementById('rincianCounter').innerText = textLength + "/" + maxLength + " Karakter";
 });
 
     document.addEventListener("DOMContentLoaded", function () {
