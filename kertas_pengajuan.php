@@ -286,9 +286,21 @@ $conn->close();
             border-radius: 5px; /* Membuat sudut input melengkung */
             box-sizing: border-box; /* Agar padding terhitung dalam lebar */
         }.rincian {
-            word-wrap: break-word; 
-            word-break: break-all;
-        }
+    white-space: pre-wrap;  /* Menjaga newline dan spasi */
+    word-wrap: break-word;   /* Memecah kata panjang agar tidak keluar layout */
+    line-height: 1.5;        /* Memberi jarak antar baris untuk kejelasan */
+}
+
+.btn-dark-grey {
+    background-color: #555; /* Ganti dengan kode warna dark grey yang Anda inginkan */
+    color: white; /* Warna teks putih untuk kontras */
+    border: none; /* Menghilangkan border default */
+}
+
+.btn-dark-grey:hover {
+    background-color: #444; /* Warna saat hover */
+}
+
 
 
     </style>
@@ -307,13 +319,22 @@ $conn->close();
 
     <!-- Tampilkan tombol Signature, Receive, dan Reject berdasarkan role dan status -->
     <?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $_SESSION["role"] != "it" && $tandatangan == "") : ?>
-        <hr style="color: black; length: 40px; margin: 10px 0;">
-        <button class="btn-success" onclick="tandatangan()">Signature</button>
-    <?php endif; if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $status != "Disetujui" && $status != "Tidak Disetujui") : ?>
-        <hr style="color: black; length: 40px; margin: 10px 0;">
-        <button class="btn-success" onclick="terimaPengajuan()">Disetujui</button>
-        <button class="btn-danger" onclick="tolakPengajuan()">Tidak Disetujui</button>
-    <?php endif; ?>
+    <hr style="color: black; length: 40px; margin: 10px 0;">
+    <button class="btn-success" onclick="tandatangan()">Signature</button>
+<?php endif; ?>
+
+<?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $status != "Disetujui" && $status != "Tidak Disetujui") : ?>
+    <hr style="color: black; length: 40px; margin: 10px 0;">
+    <button class="btn-success" onclick="terimaPengajuan()">Disetujui</button>
+    <button class="btn-danger" onclick="tolakPengajuan()">Tidak Disetujui</button>
+<?php endif; ?>
+
+<!-- Tombol Edit: fungsinya tergantung pada status -->
+<?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && ($status == "Disetujui" || $status == "Tidak Disetujui")) : ?>
+    <button class="print-button" onclick="openEditModal('<?php echo $status; ?>')"><i class="fa fa-pencil-alt"></i> Edit</button>
+<?php endif; ?>
+
+
 </div>
     <div class="container">
         <img src="img/logorsud.jpeg" alt="Logo RSUD" class="logo">
@@ -345,10 +366,12 @@ $conn->close();
             <th style="font-weight: normal;"><?php echo $topik['topik'];?></th>
         </tr>
         <tr>
-            <th colspan="2" style="vertical-align: top; font-weight: normal;">Rincian:
-            <p class="rincian"><?php echo $row['rincian'];?></p>
-            </th> <!-- Menggunakan colspan -->
-        </tr>
+    <th colspan="2" style="vertical-align: top; font-weight: normal;">
+        Rincian:
+        <p class="rincian" style="white-space: pre-wrap;"><?php echo htmlspecialchars($row['rincian']); ?></p>
+    </th>
+</tr>
+
             </tbody>
         </table>
         </tr>
@@ -360,7 +383,7 @@ $conn->close();
                 <td style="border: 1px solid white;"></td>
                 <td style= "padding: 0; widht: 30%; text-align: center; font-weight: bold; border: 1px solid white;">
                     <p style="margin: 0px;">Mengetahui</p>
-                    <h4 style="margin: 0px;">Kepala Unit/Ruangan</h4>
+                    <h4 style="margin: 0px;text-align: left;">Kepala Unit/Ruangan</h4>
                     <img src=<?php echo $row['tanda_tangan'];?> style="width: 160px; height: auto; margin-bottom: -15px;"></img>
                     <p style="margin: 0; text-decoration: underline 2px;"><?php echo $row['nama'];?></p>
                     <p style="margin: 0; text-align: left;">NIP :<?php if ($row['nip']) { echo $row['nip'];} else {echo "-";}?></p>
@@ -452,28 +475,30 @@ $conn->close();
 </div>
    
             <!-- Modal -->
+<!-- Modal untuk edit deadline dan catatan (untuk status Disetujui) -->
 <div id="dateModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <form method="post">
-        <label for="deadline" style="color: black;">Deadline Pengerjaan</label>
-        <input name="deadline" type="date" id="tanggalDiterima" class="form-control" style="margin-bottom: 10px;">
-        <label for="alasan" style="color: black;">Catatan</label>
-        <input name="alasan" type="text" id="alasanPenolakan" class="form-control" placeholder="Masukkan alasan" style="width: 100%; padding: 10px; font-size: 16px;">
-        <input type="hidden" name="status" value="Disetujui">
-        <button name="simpan" type="submit" class="btn-success" onclick="saveDate()" style="margin-top: 10px;">Save</button>
+            <label for="deadline" style="color: black;">Deadline Pengerjaan</label>
+            <input name="deadline" type="date" id="tanggalDiterima" class="form-control" style="margin-bottom: 10px;" value="<?php echo isset($deadline) ? $deadline : ''; ?>">
+            <label for="alasan" style="color: black;">Catatan</label>
+            <input name="alasan" type="text" id="editAlasan" class="form-control" placeholder="Masukkan catatan" style="width: 100%; padding: 10px; font-size: 16px;" maxlength="50" value="<?php echo isset($catatan) ? $catatan : ''; ?>">
+            <input type="hidden" name="status" value="Disetujui">
+            <button name="simpan" type="submit" class="btn-success" onclick="saveDate()" style="margin-top: 10px;">Save</button>
         </form>
     </div>
 </div>
-<!-- Modal untuk input alasan penolakan -->
+
+<!-- Modal untuk alasan penolakan (untuk status Tidak Disetujui) -->
 <div id="alasanModal" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="closeAlasanModal()">&times;</span>
         <form method="post">
-        <label for="alasan" style="color: black;">Alasan</label>
-        <input name="alasan" type="text" id="alasanPenolakan" class="form-control" placeholder="Masukkan alasan" style="width: 100%; padding: 10px; font-size: 16px;">
-        <input type="hidden" name="status" value="Tidak Disetujui">
-        <button name="simpan" type="submit" class="btn-success" onclick="saveAlasan()" style="margin-top: 10px;">Save</button>
+            <label for="alasan" style="color: black;">Alasan</label>
+            <input name="alasan" type="text" id="alasanPenolakan" class="form-control" placeholder="Masukkan alasan" style="width: 100%; padding: 10px; font-size: 16px;" maxlength="50" value="<?php echo isset($alasan) ? $alasan : ''; ?>">
+            <input type="hidden" name="status" value="Tidak Disetujui">
+            <button name="simpan" type="submit" class="btn-success" onclick="saveAlasan()" style="margin-top: 10px;">Save</button>
         </form>
     </div>
 </div>
@@ -527,6 +552,16 @@ function saveAlasan() {
     // Tutup modal setelah menyimpan alasan
     closeAlasanModal();
 }
+function openEditModal(status) {
+    if (status == 'Disetujui') {
+        // Jika status diterima, buka modal edit deadline dan catatan
+        document.getElementById("dateModal").style.display = "block";
+    } else if (status == 'Tidak Disetujui') {
+        // Jika status ditolak, buka modal edit alasan penolakan
+        document.getElementById("alasanModal").style.display = "block";
+    }
+}
+
 
 function closeAlasanModal() {
     document.getElementById("alasanModal").style.display = "none";

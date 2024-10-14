@@ -201,22 +201,21 @@ $conn->close();
                         </div>
                                                 <!-- Nav Item - User Information -->
                                                 <li class="nav-item dropdown no-arrow">
-    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-user-circle fa-2x"></i> 
-    </a>
-    <!-- Dropdown - User Information -->
-    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-            Logout
-        </a>
-    </div>
-</li>
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user-circle fa-2x"></i> 
+                                </a>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+                            </ul>
+                            </nav>
 
-                </ul>
-            </nav>
-
-</li>
+                            </li>
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
@@ -296,7 +295,7 @@ $conn->close();
                 $no++;
             }
         } else {
-            echo "<tr><td colspan='5'>Tidak ada data</td></tr>";  // Update colspan agar mencakup semua kolom
+            echo "<tr><td colspan='5' class='text-center'>No data found</td></tr>";
         }
 
         $conn->close();

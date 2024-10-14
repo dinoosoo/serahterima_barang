@@ -150,10 +150,10 @@ $cektombol = $conn->query($sql)->fetch_assoc();
             <div id="content">
 
                                 <!-- Topbar -->
-                                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-            <div class="mb-3">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <!-- <div class="mb-3">
                     <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Search data...">
-                </div>
+                </div> -->
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Topbar Links -->
@@ -177,17 +177,17 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                     
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-user-circle fa-2x"></i> <!-- Ganti gambar dengan ikon kepala polos -->
-    </a>
-    <!-- Dropdown - User Information -->
-    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-            Logout
-        </a>
-    </div>
-</li>
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user-circle fa-2x"></i> <!-- Ganti gambar dengan ikon kepala polos -->
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
                     </ul>
 
                 </nav>
@@ -196,58 +196,56 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                      <!-- Content Wrapper -->
- <div class="content-wrapper">
-<!-- Content Header -->
-<div class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1 class="m-0 text-dark">Detail</h1>
-      </div>
-    </div>
-    <div class="d-flex justify-content-end mb-3">
-      <!-- Tombol Back -->
-      <a href="tabel.php" class="btn btn-danger me-2">
-        <i class="fas fa-arrow-left"></i> Back
-      </a>
+                <div class="content-wrapper">
+                <!-- Content Header -->
+                <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Detail</h1>
+                    </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-3">
+                    <!-- Tombol Back -->
+                    <a href="tabel.php" class="btn btn-danger me-2">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
       
-      <!-- Tombol Plus -->
-      <?php if ($cektombol != null) : ?>
-      <a href="form_tabel.php?kembali=tabel.php" class="btn btn-success">
-        <i class="fas fa-plus"></i> Insert
-      </a>
-       <?php endif; ?>
-      <!-- Tombol Print -->
-      <a href="kertas.php?id=<?php echo $id; ?>&status=<?php echo $status; ?>&jenis_berkas=<?php echo $jenis_berkas; ?>" class="btn btn-primary ms-2">
-        <i class="fas fa-print"></i> Print
-      </a>
-    </div>
-  </div>
-</div>
+                    <!-- Tombol Plus -->
+                    <?php if ($cektombol != null) : ?>
+                    <a href="form_tabel.php?kembali=tabel.php" class="btn btn-success">
+                        <i class="fas fa-plus"></i> Insert
+                    </a>
+                    <?php endif; ?>
+                    <!-- Tombol Print -->
+                    <a href="kertas.php?id=<?php echo $id; ?>&status=<?php echo $status; ?>&jenis_berkas=<?php echo $jenis_berkas; ?>" class="btn btn-primary ms-2">
+                        <i class="fas fa-print"></i> Print
+                    </a>
+                    </div>
+                </div>
+                </div>
 
-<div class="table-container">
-    <div class="form-group">
-        <form method="GET" action="tabeldetail.php">
-            <!-- Validasi jika $_GET['status'] ada -->
-            <input type="hidden" name="status" value="<?php echo isset($_GET['status']) ? htmlspecialchars($_GET['status']) : ''; ?>">
-            <!-- Validasi jika $_GET['id'] ada -->
-            <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? htmlspecialchars($_GET['id']) : ''; ?>"> <!-- ID tetap dikirim -->
-            
-            <input type="radio" id="barangBaru" name="jenis_berkas" value="Baru"
-            <?php echo (isset($_GET['jenis_berkas']) && $_GET['jenis_berkas'] == 'Baru') ? 'checked' : ''; ?>>
-            <label for="barangBaru">Barang Baru</label>
-            
-            <input type="radio" id="barangRusak" name="jenis_berkas" value="Rusak"
-            <?php echo (isset($_GET['jenis_berkas']) && $_GET['jenis_berkas'] == 'Rusak') ? 'checked' : ''; ?>>
-            <label for="barangRusak">Barang Rusak</label>
-            
-            <button type="submit" class="btn btn-primary">Show</button>
-        </form>
-    </div>
-</div>
-
-
-                    <div class="table-container">
+                <div class="table-container">
+                    <div class="form-group">
+                        <form method="GET" action="tabeldetail.php">
+                            <!-- Validasi jika $_GET['status'] ada -->
+                            <input type="hidden" name="status" value="<?php echo isset($_GET['status']) ? htmlspecialchars($_GET['status']) : ''; ?>">
+                            <!-- Validasi jika $_GET['id'] ada -->
+                            <input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? htmlspecialchars($_GET['id']) : ''; ?>"> <!-- ID tetap dikirim -->
+                            
+                            <input type="radio" id="barangBaru" name="jenis_berkas" value="Baru"
+                            <?php echo (isset($_GET['jenis_berkas']) && $_GET['jenis_berkas'] == 'Baru') ? 'checked' : ''; ?>>
+                            <label for="barangBaru">Barang Baru</label>
+                            
+                            <input type="radio" id="barangRusak" name="jenis_berkas" value="Rusak"
+                            <?php echo (isset($_GET['jenis_berkas']) && $_GET['jenis_berkas'] == 'Rusak') ? 'checked' : ''; ?>>
+                            <label for="barangRusak">Barang Rusak</label>
+                            
+                            <button type="submit" class="btn btn-primary">Show</button>
+                        </form>
+                    </div>
+                </div>
+                        <div class="table-container">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -280,69 +278,34 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='8' style='text-align: center;'>Tidak ada data.</td></tr>";
+                        echo "<tr><td colspan='5' class='text-center'>No data found</td></tr>";
                     }
                 ?>
                 </tbody>
             </table>
         </div>
-<script>
-            function searchTable() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("searchInput");
-                filter = input.value.toLowerCase();
-                table = document.getElementById("dataTable");
-                tr = table.getElementsByTagName("tr");
-
-                for (i = 1; i < tr.length; i++) { // Skip the header row
-                    tr[i].style.display = "none";
-                    td = tr[i].getElementsByTagName("td");
-                    for (var j = 0; j < td.length; j++) {
-                        if (td[j]) {
-                            txtValue = td[j].textContent || td[j].innerText;
-                            if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                                tr[i].style.display = "";
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            </script>
-        </div>
-        <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; MAGANG SYAMRABU  2024</span>
-                    </div>
-                    <div >
-                        
+        
+                    <!-- Logout Modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Apakah Anda yakin ingin keluar dari halaman ini? 
+                                Pastikan untuk menyimpan semua pekerjaan Anda sebelum melanjutkan.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-primary" href="logout.php">Logout</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </footer>
-    </div>
-</div>
-
-        <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Apakah Anda yakin ingin keluar dari halaman ini? 
-                    Pastikan untuk menyimpan semua pekerjaan Anda sebelum melanjutkan.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- End of Page Wrapper -->
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
