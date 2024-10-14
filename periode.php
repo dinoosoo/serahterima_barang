@@ -6,7 +6,7 @@ if (!isset($_SESSION["login"])) {
     exit;
 }
 // Pastikan pengguna adalah admin
-if($_SESSION["role"] != "admin"){
+if($_SESSION["role"] == "kabag"){
     header("Location: index.php"); // Arahkan ke halaman yang menunjukkan akses tidak diizinkan
     exit;
 }
@@ -240,6 +240,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </footer>
     </div>
 </div>
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Apakah Anda yakin ingin keluar dari halaman ini? 
+                    Pastikan untuk menyimpan semua pekerjaan Anda sebelum melanjutkan.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
