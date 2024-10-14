@@ -330,7 +330,7 @@ $conn->close();
 <?php endif; ?>
 
 <!-- Tombol Edit: fungsinya tergantung pada status -->
-<?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && ($status == "Disetujui" || $status == "Tidak Disetujui")) : ?>
+<?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && $_SESSION["role"] != "kabag" && ($status == "Disetujui" || $status == "Tidak Disetujui")) : ?>
     <button class="print-button" onclick="openEditModal('<?php echo $status; ?>')"><i class="fa fa-pencil-alt"></i> Edit</button>
 <?php endif; ?>
 
