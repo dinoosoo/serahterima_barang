@@ -211,9 +211,9 @@ if (isset($_GET['jenis_berkas'])) {
         <table class="data-table">
             <thead>
                 <tr>
-                    <th rowspan="2">NO</th>
+                    <th rowspan="2" style="width: 25px;">NO</th>
                     <th rowspan="2">Tanggal</th>
-                    <th rowspan="2">Ruangan</th>
+                    <th rowspan="2" style="width: 75px;">Ruangan</th>
                     <th colspan="3">Barang</th>
                     <th rowspan="2">TTD</th>
                 </tr>

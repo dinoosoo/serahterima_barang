@@ -275,12 +275,10 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                             if ($status) {
                                 echo "<td><a href='edit_form_tabel.php?id={$row['id']}&lokasi={$id}&jenis_berkas=$jenis_berkas&status=$status' class='btn btn-primary mr-2'>Edit</a></td>";
                             }
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='5' class='text-center'>No data found</td></tr>";
-                    }
-                ?>
+                            echo "</td></tr>";
+                            }
+                        } 
+                        ?>
                 </tbody>
             </table>
         </div>
