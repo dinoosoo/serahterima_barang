@@ -4,7 +4,7 @@ $id = $_GET['id'];
 $status = $_GET['status'];
 $jenis_berkas = $_GET['jenis_berkas']; // Hindari SQL Injection pada string
 require 'koneksi.php';
-$sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd, fs.id_transaksi
+$sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan,  fs.photo, fs.ttd, fs.id_transaksi
     FROM form_serah_terima fs
     JOIN master_ruangan mr ON fs.ruangan = mr.id
     JOIN master_jenis mj ON fs.jenis = mj.id
@@ -16,7 +16,7 @@ $result = $conn->query($sql);
 if (isset($_POST['tampil'])) {
     $jenis_berkas = isset($_POST['jenis_berkas']) && !empty($_POST['jenis_berkas']) ? $_POST['jenis_berkas'] : 'Baru';
 
-    $sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.ttd 
+    $sql = "SELECT fs.id, fs.tanggal, mr.ruangan, mj.jenis, fs.jumlah, fs.keterangan, fs.photo, fs.ttd 
         FROM form_serah_terima fs
         JOIN master_ruangan mr ON fs.ruangan = mr.id
         JOIN master_jenis mj ON fs.jenis = mj.id
@@ -255,6 +255,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                                     <th>Jenis</th>
                                     <th>Jumlah</th>
                                     <th>Keterangan</th>
+                                    <th>Foto</th>
                                     <th>Tanda Tangan</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -271,6 +272,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                             echo "<td>" . $row['jenis'] . "</td>";   // Nama jenis dari master_jenis
                             echo "<td>" . $row['id_transaksi'] . "</td>";
                             echo "<td>" . $row['keterangan'] . "</td>";
+                            echo "<td><img src='" . $row['photo'] . "' alt='Tanda Tangan' width='100'></td>";
                             echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan' width='100'></td>";
                             if ($status) {
                                 echo "<td><a href='edit_form_tabel.php?id={$row['id']}&lokasi={$id}&jenis_berkas=$jenis_berkas&status=$status' class='btn btn-primary mr-2'>Edit</a></td>";
@@ -278,7 +280,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='5' class='text-center'>No data found</td></tr>";
+                        echo "<tr><td colspan='9' class='text-center'>No data found</td></tr>";
                     }
                 ?>
                 </tbody>
