@@ -51,7 +51,14 @@ if (isset($_POST['simpan'])) {
 
     $sql = "UPDATE form_pengajuan SET status='$status', deadline='$deadline', alasan='$alasan' WHERE id=$id";
     if ($conn->query($sql) === TRUE) {
+        $sql = "SELECT tanda_tangan_persetujuan FROM form_pengajuan WHERE id=$id";
+        $result = $conn->query($sql);
+        $tanda_tangan_persetujuan = $result->fetch_assoc();
+        if ($tanda_tangan_persetujuan == ''){
         header("Location: kertas_pengajuan.php?id=$id");
+        } else {
+        header("Location: kirim.php?id=$id");
+        }
     } else {
         echo "Error: " . $conn->error;
     }
@@ -93,6 +100,18 @@ if (isset($_POST['kirim'])) {
     }
 }
 
+// edit
+if (isset($_GET['edit_id'])) {
+    $edit_id = $_GET['edit_id'];
+    $edit_sql = "UPDATE form_pengajuan SET status='Sudah Terbuka', deadline='', alasan='' WHERE id=$edit_id";
+
+    if ($conn->query($edit_sql) === TRUE) {
+        header("Location: kertas_pengajuan.php?id=$id"); // Refresh page after delete
+        exit;
+    } else {
+        echo "Gagal mengedit data: " . $conn->error;
+    }
+}
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -335,6 +354,7 @@ $conn->close();
 <?php endif; ?>
 
 
+
 </div>
     <div class="container">
         <img src="img/logorsud.jpeg" alt="Logo RSUD" class="logo">
@@ -433,7 +453,7 @@ $conn->close();
                     <img src="<?php echo $row['tanda_tangan_persetujuan']; ?>" alt="Tanda Tangan" style="width: 160px; height: auto; margin-bottom: -30px; margin-top: -10px; position: relative; z-index: 0;">
                     
                     <!-- Nama dengan jarak dekat ke garis -->
-                    <p  style="margin: 0; text-decoration: underline 2px; position: relative; z-index: 1;">dr.Prima Nugroho, M.AP</p>
+                    <p  style="margin: 0; text-decoration: underline 2px; position: relative; z-index: 1;">Dr.Prima Nugroho, M.AP</p>
 
                     <!-- Garis dan NIP -->
                     <p style="margin: 0; position: relative; z-index: 1;">NIP. 197705262006041011</p>
