@@ -125,8 +125,16 @@ if ($conn->connect_error) {
 
 $id = $_GET['id'];
 
+$sql = "SELECT * FROM form_serah_terima WHERE id=$id";
+$result = $conn->query($sql);
+if ($result && $result->num_rows > 0) {
+    $isi = $result->fetch_assoc();
+}
+
+
 if (isset($_POST['signaturesubmit'])) {
     $signature = $_POST['signature'];
+    $capturedImage = $_POST['capturedImage'];
     $jenis_berkas = $_POST['jenis_berkas'];
     $tanggal = $_POST['tanggal'];
     $ruangan = $_POST['ruangan'];
@@ -134,36 +142,45 @@ if (isset($_POST['signaturesubmit'])) {
     $jumlah = $_POST['jumlah'];
     $keterangan = $_POST['keterangan'];
 
-    if (empty($signature)) {
-        $msg = "<div class='alert alert-danger' id='notification'>Tidak ada data tanda tangan yang diterima.</div>";
+    // Validate if an image was captured
+    if (empty($signature) || empty($capturedImage)) {
+        $msg = "<div class='alert alert-danger' id='notification'>Tanda tangan dan foto diperlukan.</div>";
     } else {
+        // Handle signature saving (same as before)
         $signatureFileName = uniqid() . '.png';
         $signature = str_replace('data:image/png;base64,', '', $signature);
         $signature = str_replace(' ', '+', $signature);
-        $data = base64_decode($signature);
+        $signatureData = base64_decode($signature);
 
-        if ($data === false) {
-            $msg = "<div class='alert alert-danger' id='notification'>Gagal mendekode tanda tangan.</div>";
+        $capturedFileName = uniqid() . '_photo.png';
+        $capturedImage = str_replace('data:image/png;base64,', '', $capturedImage);
+        $capturedImage = str_replace(' ', '+', $capturedImage);
+        $capturedData = base64_decode($capturedImage);
+
+        if ($signatureData === false || $capturedData === false) {
+            $msg = "<div class='alert alert-danger' id='notification'>Gagal mendekode tanda tangan atau foto.</div>";
         } else {
-            $dir = 'signatures';
+            $dir = 'uploads';
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
             }
 
-            $file = $dir . '/' . $signatureFileName;
-            if (file_put_contents($file, $data) === false) {
-                $msg = "<div class='alert alert-danger' id='notification'>Gagal menyimpan tanda tangan.</div>";
-            } else {
-                // Ambil ID transaksi dari tabel periode yang kolom tanggal_selesai-nya masih kosong
+            $signatureFile = $dir . '/' . $signatureFileName;
+            $capturedFile = $dir . '/' . $capturedFileName;
+
+            // Save signature and image
+            if (file_put_contents($signatureFile, $signatureData) !== false && file_put_contents($capturedFile, $capturedData) !== false) {
+                //cari periode yang belum terisi
                 $sql = "SELECT id FROM priode WHERE tanggal_selesai IS NULL LIMIT 1";
                 $result = $conn->query($sql);
-                
-                if ($result->num_rows > 0) {
-                    $row = $result->fetch_assoc();
-                    $id_transaksi = $row['id'];
-                    
+                $row = $result->fetch_assoc();
+                $id_transaksi = $row['id'];
+                if($_POST['capturedImage'] == $isi['photo']){
+                    $capturedFile = $isi['photo'];
+                }
+                // Save both signature and captured image to the database                    
                     // Masukkan data ke dalam tabel form_serah_terima, termasuk jenis_berkas dan id_transaksi
-                    $sql = "UPDATE form_serah_terima SET jenis_berkas = '$jenis_berkas', tanggal = '$tanggal', ruangan = '$ruangan', jenis = '$jenis', jumlah = '$jumlah', keterangan = '$keterangan', ttd = '$file'
+                    $sql = "UPDATE form_serah_terima SET jenis_berkas = '$jenis_berkas', tanggal = '$tanggal', ruangan = '$ruangan', jenis = '$jenis', jumlah = '$jumlah', keterangan = '$keterangan', ttd = '$signatureFile', photo = '$capturedFile'
                             WHERE id = $id";
 
                     if ($conn->query($sql) === TRUE) {
@@ -180,13 +197,8 @@ if (isset($_POST['signaturesubmit'])) {
             }
         }
     }
-}
 
-$sql = "SELECT * FROM form_serah_terima WHERE id=$id";
-$result = $conn->query($sql);
-if ($result && $result->num_rows > 0) {
-    $isi = $result->fetch_assoc();
-}
+
 
 $conn->close();
 ?>
@@ -229,7 +241,7 @@ $conn->close();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 // Cek apakah ruangan di database sama dengan nilai $isi['ruangan']
-                $selected = ($isi['id'] == $row['id']) ? 'selected' : '';
+                $selected = ($isi['ruangan'] == $row['id']) ? 'selected' : '';
                 echo "<option value=\"" . $row["id"] . "\" $selected>" . $row["ruangan"] . "</option>";
             }
         } else {
@@ -260,7 +272,7 @@ $conn->close();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 // Cek apakah ruangan di database sama dengan nilai $isi['ruangan']
-                $selected = ($isi['id'] == $row['id']) ? 'selected' : '';
+                $selected = ($isi['jenis'] == $row['id']) ? 'selected' : '';
                 echo "<option value=\"" . $row["id"] . "\" $selected>" . $row["jenis"] . "</option>";
             }
         } else {
@@ -285,12 +297,27 @@ $conn->close();
     <textarea class="form-control" id="keterangan" name="keterangan" rows="3" maxlength="50" required><?php echo htmlspecialchars($isi['keterangan']);?></textarea>
     <small id="wordCounter" class="form-text text-muted">0/50 Karakter</small>
 </div>
-        <!-- Tanda Tangan -->
-        <div class="form-group">
+<!-- HTML for Camera Capture -->
+<div class="form-group">
+    <label for="camera">Menangkap Gambar</label><br>
+    <button type="button" class="btn btn-success" id="startCamera" style="display: block; margin-bottom: 10px;">Mulai Camera</button>
+    <button type="button" class="btn btn-danger" id="captureImage" style="display:none; margin-bottom: 10px;">Menangkap</button>
+    <video id="video" width="320" height="240" autoplay style="display:none;"></video>
+    <canvas id="photoCanvas" width="320" height="240" style="display:none;"></canvas>
+    <!-- Elemen gambar untuk menampilkan pratinjau -->
+    <img id="hasilGambar" src="<?php echo $isi['photo'];?>" alt="Foto" style="width: 320px; height: 240px; margin-bottom: 20px;">
+
+    <!-- Input hidden untuk menyimpan gambar yang sudah ditangkap -->
+    <input type="hidden" id="capturedImage" name="capturedImage" value="<?php echo $isi['photo'];?>">
+</div>
+
+<!-- Tanda Tangan -->
+<div class="form-group">
             <label for="signature">Tanda Tangan</label>
             <div id="canvasDiv" style="display: flex; justify-content: center;">
                 <canvas id="signatureCanvas" width="400" height="200"
-                <?php echo 'value="' . htmlspecialchars($isi['ttd']) . '"'; ?>></canvas>
+                <?php echo 'value="' . htmlspecialchars($isi['ttd']) . '"'; ?>>
+                </canvas>
             </div>
         </div>
         <button type="button" class="btn btn-danger" id="clearSignature">Clear</button>
@@ -308,14 +335,52 @@ $conn->close();
             </div>
         </div>
     </div>
+<!-- JavaScript -->
+<script>
+    // Camera access and image capture logic
+    const video = document.getElementById('video');
+    const photoCanvas = document.getElementById('photoCanvas');
+    const startCameraBtn = document.getElementById('startCamera');
+    const captureImageBtn = document.getElementById('captureImage');
+    const capturedImageInput = document.getElementById('capturedImage');
+    const hasilGambar = document.getElementById('hasilGambar');
 
-    <!-- JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin-2.min.js"></script>
+    startCameraBtn.addEventListener('click', function() {
+        // Request access to the camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                video.srcObject = stream;
+                video.style.display = 'block';
+                captureImageBtn.style.display = 'inline-block';
+                hasilGambar.style.display = 'none';
+                startCameraBtn.style.display = 'none';
+            })
+            .catch(function(err) {
+                console.log("Error accessing the camera: " + err);
+            });
+    });
 
-    <script>
+    captureImageBtn.addEventListener('click', function() {
+        // Draw the video frame onto the canvas
+        const context = photoCanvas.getContext('2d');
+        context.drawImage(video, 0, 0, photoCanvas.width, photoCanvas.height);
+        
+        // Convert the captured image to a base64 string
+        const imageDataURL = photoCanvas.toDataURL('image/png');
+        capturedImageInput.value = imageDataURL; // Save it in the hidden input
+        
+        // Display the captured image in the img element
+        hasilGambar.src = imageDataURL;
+        hasilGambar.style.display = 'block'; // Tampilkan gambar baru
+
+        // Hide the video feed after capturing the image
+        video.style.display = 'none';
+        captureImageBtn.style.display = 'none';
+        startCameraBtn.style.display = 'inline-block';
+    });
+
+</script>
+<script>
     var canvas = document.getElementById('signatureCanvas');
     var context = canvas.getContext('2d');
     var isDrawing = false;

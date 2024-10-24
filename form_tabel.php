@@ -162,9 +162,14 @@ if (isset($_POST['signaturesubmit'])) {
 
             // Save signature and image
             if (file_put_contents($signatureFile, $signatureData) !== false && file_put_contents($capturedFile, $capturedData) !== false) {
+                //cari periode yang belum terisi
+                $sql = "SELECT id FROM priode WHERE tanggal_selesai IS NULL LIMIT 1";
+                $result = $conn->query($sql);
+                $row = $result->fetch_assoc();
+                $id_transaksi = $row['id'];
                 // Save both signature and captured image to the database
-                $sql = "INSERT INTO form_serah_terima (jenis_berkas, tanggal, ruangan, jenis, jumlah, keterangan, ttd, photo)
-                        VALUES ('$jenis_berkas', '$tanggal', '$ruangan', '$jenis', '$jumlah', '$keterangan', '$signatureFile', '$capturedFile')";
+                $sql = "INSERT INTO form_serah_terima (jenis_berkas, tanggal, ruangan, jenis, jumlah, keterangan, ttd, photo, id_transaksi)
+                        VALUES ('$jenis_berkas', '$tanggal', '$ruangan', '$jenis', '$jumlah', '$keterangan', '$signatureFile', '$capturedFile', '$id_transaksi')";
 
                 if ($conn->query($sql) === TRUE) {
                     $msg = "<div class='alert alert-success' id='notification'>Data berhasil disimpan.</div>";
@@ -275,21 +280,23 @@ $conn->close();
 <!-- HTML for Camera Capture -->
 <div class="form-group">
     <label for="camera">Menangkap Gambar</label><br>
-    <button type="button" class="btn btn-secondary" id="startCamera">Mulai Camera</button>
-    <button type="button" class="btn btn-danger" id="captureImage" style="display:none;">Menangkap</button>
+    <button type="button" class="btn btn-success" id="startCamera" style="display: block; margin-bottom: 10px;">Mulai Camera</button>
+    <button type="button" class="btn btn-danger" id="captureImage" style="display:none; margin-bottom: 10px;">Menangkap</button>
     <video id="video" width="320" height="240" autoplay style="display:none;"></video>
     <canvas id="photoCanvas" width="320" height="240" style="display:none;"></canvas>
+    <!-- Elemen gambar untuk menampilkan pratinjau -->
+    <img id="hasilGambar" src="<?php echo $isi['photo'];?>" alt="Foto" style="width: 320px; height: 240px; margin-bottom: 20px;">
+
+    <!-- Input hidden untuk menyimpan gambar yang sudah ditangkap -->
+    <input type="hidden" id="capturedImage" name="capturedImage" value="<?php echo $isi['photo'];?>">
 </div>
-<input type="hidden" id="capturedImage" name="capturedImage">
-
-
-        <!-- Tanda Tangan -->
-        <div class="form-group">
-            <label for="signature">Tanda Tangan</label>
-            <div id="canvasDiv" style="display: flex; justify-content: center;">
-                <canvas id="signatureCanvas" width="400" height="200"></canvas>
-            </div>
+<!-- Tanda Tangan -->
+<div class="form-group">
+        <label for="signature">Tanda Tangan</label>
+        <div id="canvasDiv" style="display: flex; justify-content: center;">
+            <canvas id="signatureCanvas" width="400" height="200"></canvas>
         </div>
+</div>
         <button type="button" class="btn btn-danger" id="clearSignature">Clear</button>
         <input type="hidden" id="signature" name="signature">
         <button type="submit" class="btn btn-primary" name="signaturesubmit">Submit</button>
@@ -313,39 +320,50 @@ $conn->close();
     <script src="js/sb-admin-2.min.js"></script>
      
     <script>
-        // Camera access and image capture logic
-const video = document.getElementById('video');
-const photoCanvas = document.getElementById('photoCanvas');
-const startCameraBtn = document.getElementById('startCamera');
-const captureImageBtn = document.getElementById('captureImage');
-const capturedImageInput = document.getElementById('capturedImage');
+    // Camera access and image capture logic
+    const video = document.getElementById('video');
+    const photoCanvas = document.getElementById('photoCanvas');
+    const startCameraBtn = document.getElementById('startCamera');
+    const captureImageBtn = document.getElementById('captureImage');
+    const capturedImageInput = document.getElementById('capturedImage');
+    const hasilGambar = document.getElementById('hasilGambar');
 
-startCameraBtn.addEventListener('click', function() {
-    // Request access to the camera
-    navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function(stream) {
-            video.srcObject = stream;
-            video.style.display = 'block';
-            captureImageBtn.style.display = 'inline-block';
-        })
-        .catch(function(err) {
-            console.log("Error accessing the camera: " + err);
-        });
-});
+    startCameraBtn.addEventListener('click', function() {
+        // Request access to the camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                video.srcObject = stream;
+                video.style.display = 'block';
+                captureImageBtn.style.display = 'inline-block';
+                hasilGambar.style.display = 'none';
+                startCameraBtn.style.display = 'none';
+            })
+            .catch(function(err) {
+                console.log("Error accessing the camera: " + err);
+            });
+    });
 
-captureImageBtn.addEventListener('click', function() {
-    // Draw the video frame onto the canvas
-    const context = photoCanvas.getContext('2d');
-    context.drawImage(video, 0, 0, photoCanvas.width, photoCanvas.height);
-    
-    // Convert the captured image to a base64 string
-    const imageDataURL = photoCanvas.toDataURL('image/png');
-    capturedImageInput.value = imageDataURL; // Save it in the hidden input
-    
-    // Hide the video feed after capturing the image
-    video.style.display = 'none';
-    captureImageBtn.style.display = 'none';
-});
+    captureImageBtn.addEventListener('click', function() {
+        // Draw the video frame onto the canvas
+        const context = photoCanvas.getContext('2d');
+        context.drawImage(video, 0, 0, photoCanvas.width, photoCanvas.height);
+        
+        // Convert the captured image to a base64 string
+        const imageDataURL = photoCanvas.toDataURL('image/png');
+        capturedImageInput.value = imageDataURL; // Save it in the hidden input
+        
+        // Display the captured image in the img element
+        hasilGambar.src = imageDataURL;
+        hasilGambar.style.display = 'block'; // Tampilkan gambar baru
+
+        // Hide the video feed after capturing the image
+        video.style.display = 'none';
+        captureImageBtn.style.display = 'none';
+        startCameraBtn.style.display = 'inline-block';
+    });
+
+</script>
+<script>
 
 
         var canvas = document.getElementById('signatureCanvas');

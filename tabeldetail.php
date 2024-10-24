@@ -272,7 +272,7 @@ $cektombol = $conn->query($sql)->fetch_assoc();
                             echo "<td>" . $row['jenis'] . "</td>";   // Nama jenis dari master_jenis
                             echo "<td>" . $row['id_transaksi'] . "</td>";
                             echo "<td>" . $row['keterangan'] . "</td>";
-                            echo "<td><img src='" . $row['photo'] . "' alt='Tanda Tangan' width='100'></td>";
+                            echo "<td><img src='" . $row['photo'] . "' alt='Foto' width='100'></td>";
                             echo "<td><img src='" . $row['ttd'] . "' alt='Tanda Tangan' width='100'></td>";
                             if ($status) {
                                 echo "<td><a href='edit_form_tabel.php?id={$row['id']}&lokasi={$id}&jenis_berkas=$jenis_berkas&status=$status' class='btn btn-primary mr-2'>Edit</a></td>";
