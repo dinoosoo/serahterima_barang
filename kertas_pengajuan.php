@@ -51,18 +51,23 @@ if (isset($_POST['simpan'])) {
 
     $sql = "UPDATE form_pengajuan SET status='$status', deadline='$deadline', alasan='$alasan' WHERE id=$id";
     if ($conn->query($sql) === TRUE) {
-        $sql = "SELECT tanda_tangan_persetujuan FROM form_pengajuan WHERE id=$id";
-        $result = $conn->query($sql);
-        $tanda_tangan_persetujuan = $result->fetch_assoc();
-        if ($tanda_tangan_persetujuan == ''){
-        header("Location: kertas_pengajuan.php?id=$id");
-        } else {
-        header("Location: kirim.php?id=$id");
-        }
-    } else {
-        echo "Error: " . $conn->error;
+         // Ambil kolom tanda_tangan_persetujuan dari form_pengajuan
+         $sql = "SELECT tanda_tangan_persetujuan FROM form_pengajuan WHERE id=$id";
+         $result = $conn->query($sql);
+         $row = $result->fetch_assoc();
+ 
+         // Cek apakah tanda_tangan_persetujuan kosong atau tidak
+         if (empty($row['tanda_tangan_persetujuan'])) {
+             // Jika kosong, arahkan ke halaman kertas_pengajuan
+             header("Location: kertas_pengajuan.php?id=$id");
+         } else {
+             // Jika tidak kosong, arahkan ke halaman kirim.php
+             header("Location: kirim.php?id=$id");
+         }
+     } else {
+         echo "Error: " . $conn->error;
+     }
     }
-}
 
 if (isset($_POST['kirim'])) {
     $signature = $_POST['signature'];
@@ -350,7 +355,7 @@ $conn->close();
 
 <!-- Tombol Edit: fungsinya tergantung pada status -->
 <?php if (isset($_SESSION["login"]) && $_SESSION["login"] != "" && ($status == "Disetujui" || $status == "Tidak Disetujui")) : ?>
-    <button class="print-button" onclick="openEditModal('<?php echo $status; ?>')"><i class="fa fa-pencil-alt"></i> Edit</button>
+    <button class="print-button" onclick="window.location.href='kertas_pengajuan.php?id=<?php echo $id;?>&edit_id=<?php echo $id;?>'"><i class="fa fa-pencil-alt"></i> Edit</button>
 <?php endif; ?>
 
 
